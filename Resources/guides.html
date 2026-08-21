@@ -1,440 +1,1055 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
-        
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <title>Pulse Analytics Group LLC | Digital Marketing, SEO & Website Development</title>
-
-        <meta name="description"
-            content="Pulse Analytics Group LLC helps businesses grow through strategic digital marketing, search engine optimization, website development, Google Ads management, analytics, AI-powered marketing solutions, and data-driven business strategies.">
-
-        <meta name="keywords"
-            content="Digital Marketing, SEO, Search Engine Optimization, Website Development, Google Ads, Analytics, AI Marketing, Social Media Marketing, Local SEO">
-
+        <title>
+            Marketing Guides | Pulse Analytics Group LLC
+        </title>
+        <meta name="description" content="Research-driven marketing guides from Pulse Analytics Group LLC covering SEO, analytics, Google Ads, local SEO, websites, AI marketing, branding, e-commerce, and business growth.">
         <meta name="author" content="Pulse Analytics Group LLC">
-
-        <!-- Open Graph -->
-
-        <meta property="og:title" content="Pulse Analytics Group LLC">
-
-        <meta property="og:description"
-            content="Helping businesses grow through strategic digital marketing, modern websites, and measurable results.">
-
-        <meta property="og:type" content="website">
-
-        <!-- Favicon -->
-
-        <link rel="icon" href="assets/images/favicon.ico">
-
-        <!-- Google Fonts -->
-
+        <meta name="robots" content="index, follow">
         <link rel="preconnect" href="https://fonts.googleapis.com">
-
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet">
-
-        <!-- Font Awesome -->
-
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-
-        <!-- Stylesheet -->
-
-        <link rel="stylesheet" href="styles.css">
-
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="canonical" href="https://www.pulseanalyticsgroup.com/Resources/guides.html">
+        <script type="application/ld+json">
+                {
+                  "@context":"https://schema.org",
+                  "@type":"CollectionPage",
+                  "name":"Marketing Guides",
+                  "url":"https://www.pulseanalyticsgroup.com/Resources/guides.html",
+                  "description":"Research-driven marketing and growth guides from Pulse Analytics Group LLC.",
+                  "isPartOf":{"@type":"WebSite","name":"Pulse Analytics Group LLC","url":"https://www.pulseanalyticsgroup.com/"}
+                }
+        </script>
+        <script type="application/ld+json">
+                {
+                  "@context":"https://schema.org",
+                  "@type":"BreadcrumbList",
+                  "itemListElement":[
+                    {"@type":"ListItem","position":1,"name":"Home","item":"https://www.pulseanalyticsgroup.com/"},
+                    {"@type":"ListItem","position":2,"name":"Resources","item":"https://www.pulseanalyticsgroup.com/Resources/blog.html"},
+                    {"@type":"ListItem","position":3,"name":"Marketing Guides","item":"https://www.pulseanalyticsgroup.com/Resources/guides.html"}
+                  ]
+                }
+        </script>
+        <style>
+                .guides-hero{padding:7rem 0 4.5rem;background:linear-gradient(135deg,#f7f9fc 0%,#fff 72%);border-bottom:1px solid rgba(10,46,111,.08)}
+                .guides-hero-inner{max-width:900px}
+                .guides-hero h1{margin:.6rem 0 1rem;font-size:clamp(2.5rem,5vw,4.8rem);line-height:1.03}
+                .guides-hero p{max-width:800px}
+                .guide-search{position:relative;max-width:760px;margin-top:2rem}
+                .guide-search input{width:100%;min-height:58px;padding:0 3rem 0 1.2rem;border:1px solid rgba(10,46,111,.14);border-radius:10px;font:inherit;box-shadow:0 10px 30px rgba(10,46,111,.06)}
+                .guide-search i{position:absolute;right:1.1rem;top:50%;transform:translateY(-50%);color:#1976D2}
+                .guide-filters{display:flex;flex-wrap:wrap;gap:.55rem;margin:2rem 0 3.5rem}
+                .guide-filter{border:1px solid rgba(10,46,111,.12);background:#fff;border-radius:999px;padding:.55rem .9rem;font:inherit;font-size:.75rem;font-weight:700;cursor:pointer}
+                .guide-filter.is-active,.guide-filter:hover{color:#1976D2;border-color:#1976D2;background:#f7fbff}
+                .guide-section{margin-bottom:5rem;scroll-margin-top:110px}
+                .guide-section-head{max-width:820px;margin-bottom:1.7rem}
+                .guide-section-head h2{margin:.45rem 0 .55rem}
+                .guide-section-head p{opacity:.7}
+                .guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem}
+                .guide-card{display:flex;flex-direction:column;padding:1.5rem;border:1px solid rgba(10,46,111,.09);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(10,46,111,.045);min-height:280px}
+                .guide-card:hover{box-shadow:0 16px 38px rgba(10,46,111,.08)}
+                .guide-type{font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1976D2}
+                .guide-card h3{margin:.7rem 0 .6rem;font-size:1.15rem}
+                .guide-card p{font-size:.81rem;line-height:1.65;opacity:.72}
+                .guide-card-footer{margin-top:auto;padding-top:1rem;display:flex;gap:1rem;flex-wrap:wrap}
+                .guide-card-footer a{font-size:.76rem;font-weight:750;text-decoration:none}
+                .feature-guide{display:grid;grid-template-columns:1.2fr .8fr;gap:2rem;padding:2rem;border:1px solid rgba(10,46,111,.08);border-radius:14px;background:linear-gradient(120deg,#f7f9fc,#fff)}
+                .feature-guide h2{margin:.5rem 0 .7rem}
+                .feature-guide p{line-height:1.7}
+                .feature-visual{display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,rgba(25,118,210,.08),rgba(10,46,111,.03));min-height:230px}
+                .feature-visual i{font-size:4rem;color:#1976D2;opacity:.7}
+                .guide-note{margin-top:1.5rem;padding:1rem 1.1rem;border-left:3px solid #1976D2;background:#f7f9fc;font-size:.75rem;line-height:1.65}
+                .no-guides{display:none;padding:2rem;border:1px dashed rgba(10,46,111,.15);border-radius:10px;text-align:center;opacity:.7}
+                .no-guides.is-visible{display:block}
+                .guides-cta{padding:4.5rem 0;background:linear-gradient(135deg,#f7f9fc,#fff);border-top:1px solid rgba(10,46,111,.08)}
+                @media(max-width:1000px){.guide-grid{grid-template-columns:repeat(2,1fr)}.feature-guide{grid-template-columns:1fr}}
+                @media(max-width:700px){.guides-hero{padding:5.5rem 0 3.5rem}.guide-grid{grid-template-columns:1fr}}
+        </style>
     </head>
-
     <body>
-
-        
         <header>
-
             <div class="container">
-
                 <!-- ===========================
                     BRANDING
                 ============================ -->
-
                 <div class="header-brand">
-
                     <div class="header-logo">
-
                         <a href="index.html" class="logo">
-
                             <img src="assetts/images/transparent logo PA.jpeg"
                                 alt="Pulse Analytics Group LLC Logo">
-
                         </a>
-
                     </div>
-
                     <div class="header-branding">
-
-                        <h1>Pulse Analytics Group LLC</h1>
-
-                        <p>Strategic Digital Marketing &amp; Growth Solutions</p>
-
+                        <h1>
+                            Pulse Analytics Group LLC
+                        </h1>
+                        <p>
+                            Strategic Digital Marketing &amp; Growth Solutions
+                        </p>
                     </div>
-
                 </div>
-
                 <!-- ===========================
                     NAVIGATION
                 ============================ -->
-
                 <div class="header-nav">
-
                     <nav id="primary-navigation">
-
                         <ul class="nav-links">
-
-                            <li><a href="index.html">Home</a></li>
-
-                            <!-- SERVICES -->
-
-                            <li class="dropdown">
-
-                                <a href="services.html">
-
-                                    Services
-
-                                    <i class="fa-solid fa-chevron-down"></i>
-
-                                </a>
-
-                                <ul class="dropdown-menu">
-
-                                    <li><a href="services/seo.html">Search Engine Optimization</a></li>
-
-                                    <li><a href="services/local-seo.html">Local SEO</a></li>
-
-                                    <li><a href="services/google-ads.html">Google Ads Management</a></li>
-
-                                    <li><a href="services/web-design.html">Website Design &amp; Development</a></li>
-
-                                    <li><a href="services/analytics-reporting.html">Analytics &amp; Reporting</a></li>
-
-                                    <li><a href="services/social-media.html">Social Media Marketing</a></li>
-
-                                    <li><a href="services/ai-marketing.html">AI Marketing Solutions</a></li>
-
-                                    <li><a href="services/branding.html">Brand Strategy</a></li>
-
-                                    <li><a href="services.html">View All Services</a></li>
-
-                                </ul>
-
-                            </li>
-
-                            <!-- SOLUTIONS -->
-
-                            <li class="dropdown">
-
-                                <a href="solutions.html">
-
-                                    Solutions
-
-                                    <i class="fa-solid fa-chevron-down"></i>
-
-                                </a>
-
-                                <ul class="dropdown-menu">
-
-                                    <li><a href="solutions/lead-generation.html">Lead Generation</a></li>
-
-                                    <li><a href="solutions/local-business.html">Local Business Growth</a></li>
-
-                                    <li><a href="solutions/ecommerce.html">E-Commerce</a></li>
-
-                                    <li><a href="solutions/startups.html">Startup Marketing</a></li>
-
-                                    <li><a href="solutions/enterprise.html">Enterprise Solutions</a></li>
-
-                                </ul>
-
-                            </li>
-
-                            <!-- ABOUT -->
-
-                            <li class="dropdown">
-
-                                <a href="about.html">
-
-                                    About
-
-                                    <i class="fa-solid fa-chevron-down"></i>
-
-                                </a>
-
-                                <ul class="dropdown-menu">
-
-                                    <li><a href="about.html">Our Company</a></li>
-
-                                    <li><a href="#">Mission &amp; Values</a></li>
-
-                                    <li><a href="#">Our Process</a></li>
-
-                                    <li><a href="#">Why Choose Pulse Analytics</a></li>
-
-                                </ul>
-
-                            </li>
-
-                            <!-- RESOURCES -->
-
-                            <li class="dropdown">
-
-                                <a href="blog.html">
-
-                                    Resources
-
-                                    <i class="fa-solid fa-chevron-down"></i>
-
-                                </a>
-
-                                <ul class="dropdown-menu">
-
-                                    <li><a href="blog.html">Blog</a></li>
-
-                                    <li><a href="#">Marketing Guides</a></li>
-
-                                    <li><a href="#">Free Resources</a></li>
-
-                                    <li><a href="faq.html">FAQ</a></li>
-
-                                </ul>
-
-                            </li>
-
                             <li>
-
-                                <a href="contact.html">Contact</a>
-
+                                <a href="index.html">
+                                    Home
+                                </a>
                             </li>
-
+                            <!-- SERVICES -->
+                            <li class="dropdown">
+                                <a href="services.html">
+                                    Services
+                                    <i class="fa-solid fa-chevron-down">
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="services/seo.html">
+                                            Search Engine Optimization
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/local-seo.html">
+                                            Local SEO
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/google-ads.html">
+                                            Google Ads Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/web-design.html">
+                                            Website Design &amp; Development
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/analytics-reporting.html">
+                                            Analytics &amp; Reporting
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/social-media.html">
+                                            Social Media Marketing
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/ai-marketing.html">
+                                            AI Marketing Solutions
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services/branding.html">
+                                            Brand Strategy
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="services.html">
+                                            View All Services
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- SOLUTIONS -->
+                            <li class="dropdown">
+                                <a href="solutions.html">
+                                    Solutions
+                                    <i class="fa-solid fa-chevron-down">
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="solutions/lead-generation.html">
+                                            Lead Generation
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="solutions/local-business.html">
+                                            Local Business Growth
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="solutions/ecommerce.html">
+                                            E-Commerce
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="solutions/startups.html">
+                                            Startup Marketing
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="solutions/enterprise.html">
+                                            Enterprise Solutions
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- ABOUT -->
+                            <li class="dropdown">
+                                <a href="about.html">
+                                    About
+                                    <i class="fa-solid fa-chevron-down">
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="about.html">
+                                            Our Company
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Mission &amp; Values
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Our Process
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Why Choose Pulse Analytics
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- RESOURCES -->
+                            <li class="dropdown">
+                                <a href="blog.html">
+                                    Resources
+                                    <i class="fa-solid fa-chevron-down">
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="blog.html">
+                                            Blog
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Marketing Guides
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Free Resources
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="faq.html">
+                                            FAQ
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="contact.html">
+                                    Contact
+                                </a>
+                            </li>
                         </ul>
-
                     </nav>
-
-                </div>                                      
-                
-
+                </div>
             </div>
-
         </header>
-
-    
-
         <main>
-            <footer id="footer">
-
+            <section class="guides-hero">
                 <div class="container">
-
-                    <div class="footer-grid">
-
-                        <!-- Company Information -->
-
-                        <div class="footer-column">
-
-                            <img src="assetts/images/logo/PulseAnalyticsTransparLogo.png"
+                    <div class="guides-hero-inner">
+                        <span class="section-label">
+                            MARKETING GUIDES
+                        </span>
+                        <h1>
+                            Understand the System Behind the Strategy.
+                        </h1>
+                        <p class="section-intro">
+                            These guides are designed to explain how modern marketing actually works—from
+                            technical SEO and measurement to paid search, local visibility, AI, websites,
+                            branding, and growth. The goal is not simply to tell you what to do, but to
+                            help you understand why it matters and how the pieces connect.
+                        </p>
+                        <div class="guide-search">
+                            <input id="guide-search" type="search" placeholder="Search marketing guides..." aria-label="Search marketing guides">
+                            <i class="fa-solid fa-magnifying-glass" aria-hidden="true">
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="services-introduction">
+                <div class="container">
+                    <div class="guide-filters" aria-label="Guide categories">
+                        <button class="guide-filter is-active" data-filter="all">
+                            All Guides
+                        </button>
+                        <button class="guide-filter" data-filter="seo">
+                            SEO
+                        </button>
+                        <button class="guide-filter" data-filter="analytics">
+                            Analytics
+                        </button>
+                        <button class="guide-filter" data-filter="advertising">
+                            Advertising
+                        </button>
+                        <button class="guide-filter" data-filter="growth">
+                            Growth
+                        </button>
+                        <button class="guide-filter" data-filter="technology">
+                            Technology
+                        </button>
+                        <button class="guide-filter" data-filter="strategy">
+                            Strategy
+                        </button>
+                    </div>
+                    <section class="guide-section">
+                        <div class="feature-guide guide-item" data-category="strategy" data-search="how digital marketing works strategy channels measurement customer journey">
+                            <div>
+                                <span class="guide-type">
+                                    Featured Guide
+                                </span>
+                                <h2>
+                                    How the Digital Marketing System Fits Together
+                                </h2>
+                                <p>
+                                    Marketing works best when strategy, positioning, content, search, advertising,
+                                    websites, analytics, and customer experience operate as connected parts of one
+                                    system. This foundational guide explains how those pieces interact and where
+                                    businesses commonly lose effectiveness when they are treated separately.
+                                </p>
+                                <a class="btn-primary" href="#">
+                                    Read the Guide →
+                                </a>
+                                <div class="guide-note">
+                                    <strong>
+                                        Inside:
+                                    </strong>
+                                    strategy → audience → website → acquisition → measurement → optimization.
+                                </div>
+                            </div>
+                            <div class="feature-visual" aria-hidden="true">
+                                <i class="fa-solid fa-diagram-project">
+                                </i>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="guide-section" id="seo-guides">
+                        <div class="guide-section-head">
+                            <span class="section-label">
+                                SEO
+                            </span>
+                            <h2>
+                                Search Is a Technical and Strategic Discipline.
+                            </h2>
+                            <p>
+                                Guides that go beyond keywords and explain the systems that influence visibility, relevance, performance, and discoverability.
+                            </p>
+                        </div>
+                        <div class="guide-grid">
+                            <article class="guide-card guide-item" data-category="seo" data-search="seo beyond keywords technical seo lcp fcp json ld schema">
+                                <span class="guide-type">
+                                    Technical SEO
+                                </span>
+                                <h3>
+                                    SEO Is More Than Keywords
+                                </h3>
+                                <p>
+                                    Explore technical performance, crawlability, indexing, structured data, relevance, internal linking, content quality, and user experience.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/seo.html">
+                                        Explore SEO →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="seo" data-search="core web vitals lcp fcp performance seo">
+                                <span class="guide-type">
+                                    Performance
+                                </span>
+                                <h3>
+                                    Core Web Vitals &amp; Search Performance
+                                </h3>
+                                <p>
+                                    Understand why page experience and loading behavior matter, including the roles of LCP, FCP, responsiveness, and technical implementation.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/seo.html">
+                                        SEO Services →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="seo" data-search="structured data json ld schema search engines">
+                                <span class="guide-type">
+                                    Structured Data
+                                </span>
+                                <h3>
+                                    JSON-LD &amp; Structured Data Explained
+                                </h3>
+                                <p>
+                                    Learn what structured data does, where it fits into a website, and how machine-readable context can support search understanding.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="seo" data-search="google search console seo guide indexing queries">
+                                <span class="guide-type">
+                                    Search
+                                </span>
+                                <h3>
+                                    Google Search Console: What the Data Tells You
+                                </h3>
+                                <p>
+                                    Learn how search queries, impressions, clicks, indexing information, and performance reporting can inform SEO decisions.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/analytics-reporting.html">
+                                        Analytics &amp; Reporting →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="seo" data-search="local seo google business profile local search">
+                                <span class="guide-type">
+                                    Local SEO
+                                </span>
+                                <h3>
+                                    How Local Search Actually Works
+                                </h3>
+                                <p>
+                                    Understand local relevance, business information, Google Business Profile, reviews, proximity, website signals, and local visibility.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/local-seo.html">
+                                        Local SEO →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="seo" data-search="internal linking seo architecture">
+                                <span class="guide-type">
+                                    Site Architecture
+                                </span>
+                                <h3>
+                                    Internal Linking as an SEO System
+                                </h3>
+                                <p>
+                                    Learn how internal links connect content, distribute context, support navigation, and help search engines understand relationships between pages.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/seo.html">
+                                        Explore SEO →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <section class="guide-section" id="analytics-guides">
+                        <div class="guide-section-head">
+                            <span class="section-label">
+                                ANALYTICS &amp; MEASUREMENT
+                            </span>
+                            <h2>
+                                Turn Activity Into Evidence.
+                            </h2>
+                            <p>
+                                Guides for understanding the measurement infrastructure behind modern marketing decisions.
+                            </p>
+                        </div>
+                        <div class="guide-grid">
+                            <article class="guide-card guide-item" data-category="analytics" data-search="google analytics ga4 guide measurement events conversions">
+                                <span class="guide-type">
+                                    Analytics
+                                </span>
+                                <h3>
+                                    Google Analytics: From Traffic to Decisions
+                                </h3>
+                                <p>
+                                    Understand what analytics can reveal about acquisition, engagement, conversions, and customer behavior—and what it cannot tell you by itself.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/analytics-reporting.html">
+                                        Analytics Services →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="analytics" data-search="google tag manager guide tags triggers variables measurement">
+                                <span class="guide-type">
+                                    Measurement Infrastructure
+                                </span>
+                                <h3>
+                                    Google Tag Manager Explained
+                                </h3>
+                                <p>
+                                    Learn how tags, triggers, and variables create a flexible measurement layer between a website and the platforms that need its data.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="analytics" data-search="marketing attribution guide conversion tracking">
+                                <span class="guide-type">
+                                    Attribution
+                                </span>
+                                <h3>
+                                    Understanding Marketing Attribution
+                                </h3>
+                                <p>
+                                    Explore why the path to a conversion is rarely represented by a single click and how measurement can provide better decision context.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <section class="guide-section" id="advertising-guides">
+                        <div class="guide-section-head">
+                            <span class="section-label">
+                                ADVERTISING
+                            </span>
+                            <h2>
+                                Paid Acquisition Requires More Than a Budget.
+                            </h2>
+                            <p>
+                                Understand the systems around paid search, targeting, landing pages, conversion tracking, and optimization.
+                            </p>
+                        </div>
+                        <div class="guide-grid">
+                            <article class="guide-card guide-item" data-category="advertising" data-search="google ads search campaign guide keywords bidding conversion tracking">
+                                <span class="guide-type">
+                                    Google Ads
+                                </span>
+                                <h3>
+                                    How Google Ads Search Campaigns Work
+                                </h3>
+                                <p>
+                                    Understand campaign structure, search intent, targeting, bidding, creative, landing pages, conversion measurement, and optimization.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/google-ads.html">
+                                        Google Ads →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="advertising" data-search="landing page paid advertising conversion relevance">
+                                <span class="guide-type">
+                                    Conversion
+                                </span>
+                                <h3>
+                                    The Landing Page Is Part of the Ad
+                                </h3>
+                                <p>
+                                    Learn why relevance and continuity between the advertisement, landing page, offer, and conversion path can materially affect campaign effectiveness.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/web-design.html">
+                                        Website Development →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="advertising" data-search="google ads budget guide paid search planning">
+                                <span class="guide-type">
+                                    Planning
+                                </span>
+                                <h3>
+                                    Before You Spend on Google Ads
+                                </h3>
+                                <p>
+                                    A practical framework for determining whether objectives, tracking, landing pages, market demand, and budget are ready for paid search.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/google-ads.html">
+                                        Google Ads →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <section class="guide-section" id="growth-guides">
+                        <div class="guide-section-head">
+                            <span class="section-label">
+                                GROWTH
+                            </span>
+                            <h2>
+                                Growth Is a System, Not a Single Tactic.
+                            </h2>
+                            <p>
+                                Guides for connecting acquisition, conversion, retention, customer experience, and measurement.
+                            </p>
+                        </div>
+                        <div class="guide-grid">
+                            <article class="guide-card guide-item" data-category="growth" data-search="lead generation funnel conversion guide">
+                                <span class="guide-type">
+                                    Lead Generation
+                                </span>
+                                <h3>
+                                    How a Lead Generation System Works
+                                </h3>
+                                <p>
+                                    Trace the path from discovery to inquiry and understand the roles of targeting, messaging, landing pages, forms, follow-up, and measurement.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../solutions/lead-generation.html">
+                                        Lead Generation →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="growth" data-search="local business growth guide local visibility">
+                                <span class="guide-type">
+                                    Local Growth
+                                </span>
+                                <h3>
+                                    How Local Business Growth Actually Works
+                                </h3>
+                                <p>
+                                    Connect local search visibility, reputation, website conversion, community presence, customer acquisition, and retention.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../solutions/local-business.html">
+                                        Local Business Growth →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="growth" data-search="startup marketing viability guide startup">
+                                <span class="guide-type">
+                                    Startup
+                                </span>
+                                <h3>
+                                    Marketing Readiness for Startups
+                                </h3>
+                                <p>
+                                    Examine the foundations that should exist before a startup attempts to scale acquisition: market, positioning, product, website, channels, and measurement.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../solutions/startups.html">
+                                        Startup Marketing →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <section class="guide-section" id="technology-guides">
+                        <div class="guide-section-head">
+                            <span class="section-label">
+                                TECHNOLOGY
+                            </span>
+                            <h2>
+                                Technology Should Support the Strategy.
+                            </h2>
+                            <p>
+                                Guides for understanding the platforms and systems that support modern marketing operations.
+                            </p>
+                        </div>
+                        <div class="guide-grid">
+                            <article class="guide-card guide-item" data-category="technology" data-search="shopify ecommerce guide platform">
+                                <span class="guide-type">
+                                    E-Commerce
+                                </span>
+                                <h3>
+                                    Choosing an E-Commerce Platform
+                                </h3>
+                                <p>
+                                    Compare the strategic considerations behind managed commerce platforms, content-management systems, and custom commerce environments.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../solutions/ecommerce.html">
+                                        E-Commerce →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="technology" data-search="hubspot crm guide marketing automation">
+                                <span class="guide-type">
+                                    CRM
+                                </span>
+                                <h3>
+                                    Where HubSpot Fits in the Marketing Stack
+                                </h3>
+                                <p>
+                                    Understand the role of CRM, marketing automation, customer data, lead management, and reporting in a connected marketing system.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../Resources/free-resources.html#hubspot-resources">
+                                        HubSpot Resources →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="technology" data-search="screaming frog technical seo crawler">
+                                <span class="guide-type">
+                                    Technical SEO
+                                </span>
+                                <h3>
+                                    What a Website Crawler Can Tell You
+                                </h3>
+                                <p>
+                                    Understand how crawling tools can expose technical and structural issues that are difficult to identify through visual inspection alone.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../Resources/free-resources.html#recommended-technology">
+                                        Recommended Tools →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <section class="guide-section" id="strategy-guides">
+                        <div class="guide-section-head">
+                            <span class="section-label">
+                                STRATEGY
+                            </span>
+                            <h2>
+                                Better Decisions Begin With Better Questions.
+                            </h2>
+                            <p>
+                                Strategic guides for evaluating priorities, positioning, technology, and marketing investment.
+                            </p>
+                        </div>
+                        <div class="guide-grid">
+                            <article class="guide-card guide-item" data-category="strategy" data-search="marketing strategy guide goals objectives">
+                                <span class="guide-type">
+                                    Strategy
+                                </span>
+                                <h3>
+                                    From Business Objective to Marketing KPI
+                                </h3>
+                                <p>
+                                    Learn how broad business objectives can be translated into measurable marketing outcomes without confusing activity with results.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="strategy" data-search="branding strategy positioning guide">
+                                <span class="guide-type">
+                                    Brand Strategy
+                                </span>
+                                <h3>
+                                    Why Positioning Comes Before Promotion
+                                </h3>
+                                <p>
+                                    Explore how positioning clarifies who a business serves, what it offers, why it matters, and how it should be differentiated.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/branding.html">
+                                        Brand Strategy →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                            <article class="guide-card guide-item" data-category="strategy" data-search="ai marketing strategy human decision making">
+                                <span class="guide-type">
+                                    AI Strategy
+                                </span>
+                                <h3>
+                                    Where AI Belongs in Marketing
+                                </h3>
+                                <p>
+                                    Examine AI as a tool for analysis, assistance, and workflow improvement while keeping human judgment responsible for context and decisions.
+                                </p>
+                                <div class="guide-card-footer">
+                                    <a href="../services/ai-marketing.html">
+                                        AI Marketing →
+                                    </a>
+                                    <a href="#">
+                                        Read Guide →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <div id="no-guides" class="no-guides">
+                        No guides matched your search. Try a broader term or another category.
+                    </div>
+                </div>
+            </section>
+            <section class="guides-cta">
+                <div class="container">
+                    <span class="section-label">
+                        KEEP EXPLORING
+                    </span>
+                    <h2>
+                        Have a Specific Question?
+                    </h2>
+                    <p class="section-intro">
+                        Use the guides to understand the system, explore the free resources for practical tools, or ask Pulse Analytics about a specific business problem.
+                    </p>
+                    <a class="btn-primary" href="../Resources/free-resources.html">
+                        Explore Free Resources →
+                    </a>
+                    <a class="btn-secondary" href="../contact.html">
+                        Start a Conversation →
+                    </a>
+                </div>
+            </section>
+        </main>
+        <footer id="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- Company Information -->
+                    <div class="footer-column">
+                        <img src="assetts/images/logo/PulseAnalyticsTransparLogo.png"
                                 alt="Pulse Analytics Group LLC Logo"
                                 class="footer-logo">
-
-                            <h3>Pulse Analytics Group LLC</h3>
-
-                            <p>
-
-                                Helping businesses grow through strategic digital
-                                marketing, modern website development, data-driven
-                                analytics, and innovative technology solutions.
-
-                            </p>
-
-                            <div class="social-icons">
-
-                                <a href="#" aria-label="Facebook">
-
-                                    <i class="fa-brands fa-facebook-f"></i>
-
-                                </a>
-
-                                <a href="#" aria-label="Instagram">
-
-                                    <i class="fa-brands fa-instagram"></i>
-
-                                </a>
-
-                                <a href="#" aria-label="LinkedIn">
-
-                                    <i class="fa-brands fa-linkedin-in"></i>
-
-                                </a>
-
-                                <a href="#" aria-label="YouTube">
-
-                                    <i class="fa-brands fa-youtube"></i>
-
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Services -->
-
-                        <div class="footer-column">
-
-                            <h3>Services</h3>
-
-                            <ul>
-
-                                <li><a href="services/seo.html">Search Engine Optimization</a></li>
-
-                                <li><a href="services/local-seo.html">Local SEO</a></li>
-
-                                <li><a href="services/google-ads.html">Google Ads Management</a></li>
-
-                                <li><a href="services/web-design.html">Website Development</a></li>
-
-                                <li><a href="services/social-media.html">Social Media Marketing</a></li>
-
-                                <li><a href="services/analytics-reporting.html">Analytics & Reporting</a></li>
-
-                                <li><a href="services/ai-marketing.html">AI Marketing Solutions</a></li>
-
-                            </ul>
-
-                        </div>
-
-                        <!-- Resources -->
-
-                        <div class="footer-column">
-
-                            <h3>Resources</h3>
-
-                            <ul>
-
-                                <li><a href="about.html">About Us</a></li>
-
-                                <li><a href="blog.html">Blog</a></li>
-
-                                <li><a href="faq.html">Frequently Asked Questions</a></li>
-
-                                <li><a href="free-website-audit.html">Pulse Performance Audit™</a></li>
-
-                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-
-                                <li><a href="terms-of-service.html">Terms of Service</a></li>
-
-                                <li><a href="sitemap.html">Sitemap</a></li>
-
-                            </ul>
-
-                        </div>
-
-                        <!-- Contact -->
-
-                        <div class="footer-column">
-
-                            <h3>Contact Us</h3>
-
-                            <ul class="contact-list">
-
-                                <li>
-
-                                    <i class="fa-solid fa-location-dot"></i>
-
-                                    Union City, Pennsylvania
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-envelope"></i>
-
-                                    <a href="mailto:info@pulseanalyticsgroup.com">
-
-                                        info@pulseanalyticsgroup.com
-
-                                    </a>
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-phone"></i>
-
-                                    <a href="tel:+18145551234">
-
-                                        (814) 555-1234
-
-                                    </a>
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-clock"></i>
-
-                                    Monday – Friday<br>
-                                    9:00 AM – 5:00 PM
-
-                                </li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-
-                    <hr>
-
-                    <div class="footer-bottom">
-
+                        <h3>
+                            Pulse Analytics Group LLC
+                        </h3>
                         <p>
-
-                            &copy; 2026 Pulse Analytics Group LLC. All Rights Reserved.
-
+                            Helping businesses grow through strategic digital
+                            marketing, modern website development, data-driven
+                            analytics, and innovative technology solutions.
                         </p>
-
-                        <p>
-
-                            Helping Businesses Grow Through Strategic Marketing,
-                            Modern Technology, and Measurable Results.
-
-                        </p>
-
+                        <div class="social-icons">
+                            <a href="#" aria-label="Facebook">
+                                <i class="fa-brands fa-facebook-f">
+                                </i>
+                            </a>
+                            <a href="#" aria-label="Instagram">
+                                <i class="fa-brands fa-instagram">
+                                </i>
+                            </a>
+                            <a href="#" aria-label="LinkedIn">
+                                <i class="fa-brands fa-linkedin-in">
+                                </i>
+                            </a>
+                            <a href="#" aria-label="YouTube">
+                                <i class="fa-brands fa-youtube">
+                                </i>
+                            </a>
+                        </div>
                     </div>
-
+                    <!-- Services -->
+                    <div class="footer-column">
+                        <h3>
+                            Services
+                        </h3>
+                        <ul>
+                            <li>
+                                <a href="services/seo.html">
+                                    Search Engine Optimization
+                                </a>
+                            </li>
+                            <li>
+                                <a href="services/local-seo.html">
+                                    Local SEO
+                                </a>
+                            </li>
+                            <li>
+                                <a href="services/google-ads.html">
+                                    Google Ads Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="services/web-design.html">
+                                    Website Development
+                                </a>
+                            </li>
+                            <li>
+                                <a href="services/social-media.html">
+                                    Social Media Marketing
+                                </a>
+                            </li>
+                            <li>
+                                <a href="services/analytics-reporting.html">
+                                    Analytics & Reporting
+                                </a>
+                            </li>
+                            <li>
+                                <a href="services/ai-marketing.html">
+                                    AI Marketing Solutions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Resources -->
+                    <div class="footer-column">
+                        <h3>
+                            Resources
+                        </h3>
+                        <ul>
+                            <li>
+                                <a href="about.html">
+                                    About Us
+                                </a>
+                            </li>
+                            <li>
+                                <a href="blog.html">
+                                    Blog
+                                </a>
+                            </li>
+                            <li>
+                                <a href="faq.html">
+                                    Frequently Asked Questions
+                                </a>
+                            </li>
+                            <li>
+                                <a href="free-website-audit.html">
+                                    Pulse Performance Audit™
+                                </a>
+                            </li>
+                            <li>
+                                <a href="privacy-policy.html">
+                                    Privacy Policy
+                                </a>
+                            </li>
+                            <li>
+                                <a href="terms-of-service.html">
+                                    Terms of Service
+                                </a>
+                            </li>
+                            <li>
+                                <a href="sitemap.html">
+                                    Sitemap
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Contact -->
+                    <div class="footer-column">
+                        <h3>
+                            Contact Us
+                        </h3>
+                        <ul class="contact-list">
+                            <li>
+                                <i class="fa-solid fa-location-dot">
+                                </i>
+                                Union City, Pennsylvania
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-envelope">
+                                </i>
+                                <a href="mailto:info@pulseanalyticsgroup.com">
+                                    info@pulseanalyticsgroup.com
+                                </a>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-phone">
+                                </i>
+                                <a href="tel:+18145551234">
+                                    (814) 555-1234
+                                </a>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-clock">
+                                </i>
+                                Monday – Friday
+                                <br>
+                                9:00 AM – 5:00 PM
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
-            </footer>
-
-        </main>
-
-        <!-- ==========================================
-            BACK TO TOP BUTTON
-        =========================================== -->
-
-        <button id="backToTop"
-                aria-label="Back to Top">
-
-            <i class="fa-solid fa-arrow-up"></i>
-
-        </button>
-
-        <!-- ==========================================
-            JAVASCRIPT
-        =========================================== -->
-
-        <script src="main.js"></script>
-
+                <hr>
+                <div class="footer-bottom">
+                    <p>
+                        &copy; 2026 Pulse Analytics Group LLC. All Rights Reserved.
+                    </p>
+                    <p>
+                        Helping Businesses Grow Through Strategic Marketing,
+                        Modern Technology, and Measurable Results.
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <script>
+                document.addEventListener("DOMContentLoaded",function(){
+                 const search=document.getElementById("guide-search");
+                 const filters=[...document.querySelectorAll(".guide-filter")];
+                 const items=[...document.querySelectorAll(".guide-item")];
+                 const empty=document.getElementById("no-guides");
+                 let active="all";
+                 function apply(){
+                   const q=(search.value||"").trim().toLowerCase();
+                   let count=0;
+                   items.forEach(item=>{
+                     const cat=item.dataset.category||"";
+                     const text=(item.textContent+" "+(item.dataset.search||"")).toLowerCase();
+                     const show=(active==="all"||cat===active)&&(!q||text.includes(q));
+                     item.style.display=show?"":"none";
+                     if(show) count++;
+                   });
+                   document.querySelectorAll(".guide-section").forEach(section=>{
+                     if(section.querySelector(".feature-guide")) return;
+                     const visible=[...section.querySelectorAll(".guide-item")].some(i=>i.style.display!=="none");
+                     section.style.display=visible?"":"none";
+                   });
+                   empty.classList.toggle("is-visible",count===0);
+                 }
+                 filters.forEach(btn=>btn.addEventListener("click",()=>{
+                   filters.forEach(b=>b.classList.remove("is-active"));
+                   btn.classList.add("is-active");
+                   active=btn.dataset.filter||"all";
+                   apply();
+                 }));
+                 search.addEventListener("input",apply);
+                 apply();
+                });
+        </script>
+        <script src="../main.js">
+        </script>
     </body>
-
 </html>
-    

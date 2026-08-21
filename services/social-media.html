@@ -16,11 +16,7 @@
 
     <meta name="description"
         content="Professional social media marketing from Pulse Analytics Group LLC. Strategic social media management, content development, audience growth, platform optimization, paid social advertising, analytics, and performance reporting across major social platforms.">
-
-    <meta name="keywords"
-        content="Social Media Marketing, Social Media Management, Facebook Marketing, Instagram Marketing, TikTok Marketing, LinkedIn Marketing, YouTube Marketing, Social Media Strategy, Social Media Advertising, Social Media Analytics, Pulse Analytics Group">
-
-    <meta name="author"
+<meta name="author"
         content="Pulse Analytics Group LLC">
 
     <meta name="robots"
@@ -71,6 +67,392 @@
     <link rel="stylesheet"
         href="../styles.css">
 
+
+        <!-- ==========================================
+            SOCIAL MEDIA SERVICE SCHEMA
+        =========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "@id": "https://www.pulseanalyticsgroup.com/services/social-media.html#service",
+            "name": "Social Media Marketing",
+            "serviceType": "Social Media Marketing",
+            "provider": {
+                "@type": "Organization",
+                "name": "Pulse Analytics Group LLC",
+                "url": "https://www.pulseanalyticsgroup.com/"
+            },
+            "description": "Strategic social media marketing covering audience research, platform selection, content strategy, profile optimization, community management, organic and paid social, analytics, and ongoing optimization.",
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            SOCIAL MEDIA WEBPAGE SCHEMA
+        =========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://www.pulseanalyticsgroup.com/services/social-media.html#webpage",
+            "url": "https://www.pulseanalyticsgroup.com/services/social-media.html",
+            "name": "Social Media Marketing Services | Pulse Analytics Group LLC",
+            "description": "Strategic social media marketing built around audience research, platform selection, content, community, paid and organic social, measurement, and business outcomes.",
+            "publisher": {
+                "@type": "Organization",
+                "name": "Pulse Analytics Group LLC",
+                "url": "https://www.pulseanalyticsgroup.com/"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            SOCIAL MEDIA BREADCRUMB SCHEMA
+        =========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.pulseanalyticsgroup.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Services",
+                    "item": "https://www.pulseanalyticsgroup.com/services.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Social Media Marketing",
+                    "item": "https://www.pulseanalyticsgroup.com/services/social-media.html"
+                }
+            ]
+        }
+        </script>
+
+
+        <style>
+            .social-platform-chart {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+                margin-top: 2.5rem;
+            }
+
+            .social-chart-card,
+            .platform-role-grid article,
+            .content-purpose-grid > div,
+            .social-process-grid > div {
+                padding: 1.4rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 10px;
+                background: #fff;
+            }
+
+            .social-chart-card span,
+            .social-chart-card strong,
+            .social-chart-card small {
+                display: block;
+            }
+
+            .social-chart-card strong {
+                margin: 0.25rem 0 0.6rem;
+                font-size: 2rem;
+                line-height: 1;
+            }
+
+            .social-bar {
+                height: 8px;
+                overflow: hidden;
+                border-radius: 10px;
+                background: #e8edf3;
+            }
+
+            .social-bar span {
+                height: 100%;
+                display: block;
+                border-radius: inherit;
+                background: #1976D2;
+            }
+
+            .social-chart-card small,
+            .research-source {
+                font-size: 0.82rem;
+            }
+
+            .research-source {
+                margin-top: 1rem;
+            }
+
+            .social-framework {
+                display: grid;
+                justify-items: center;
+                gap: 0.65rem;
+                max-width: 650px;
+                margin: 2.5rem auto 0;
+            }
+
+            .social-framework-node {
+                width: min(100%, 560px);
+                display: grid;
+                grid-template-columns: 36px 1fr;
+                column-gap: 0.8rem;
+                padding: 1rem 1.2rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 10px;
+                background: #fff;
+            }
+
+            .social-framework-node i {
+                grid-row: 1 / span 2;
+                align-self: center;
+                text-align: center;
+            }
+
+            .social-framework-node strong,
+            .social-framework-node span {
+                display: block;
+            }
+
+            .social-framework-node span {
+                margin-top: 0.25rem;
+                font-size: 0.88rem;
+            }
+
+            .social-demographic-visual {
+                display: grid;
+                gap: 0.8rem;
+                align-content: center;
+            }
+
+            .demographic-row {
+                display: grid;
+                grid-template-columns: 1fr auto auto;
+                gap: 1rem;
+                align-items: center;
+                padding: 0.9rem 1rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 8px;
+                background: #fff;
+            }
+
+            .demographic-row span {
+                font-size: 0.82rem;
+                opacity: 0.7;
+            }
+
+            .demographic-row b {
+                min-width: 52px;
+                text-align: right;
+                font-size: 1.1rem;
+            }
+
+            .content-purpose-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                margin-top: 2.5rem;
+            }
+
+            .content-purpose-grid i {
+                margin-bottom: 0.8rem;
+                font-size: 1.25rem;
+            }
+
+            .content-purpose-grid p {
+                margin-bottom: 0;
+                font-size: 0.9rem;
+            }
+
+            .distribution-flow,
+            .cross-channel-flow,
+            .social-metrics-flow {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 0.7rem;
+                margin: 2rem 0;
+            }
+
+            .distribution-flow span,
+            .cross-channel-flow span {
+                padding: 0.75rem 1rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 8px;
+                background: #fff;
+                font-weight: 600;
+                font-size: 0.88rem;
+            }
+
+            .organic-paid-visual {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr auto 1fr;
+                align-items: center;
+                gap: 1rem;
+                margin-top: 2.5rem;
+            }
+
+            .organic-paid-visual > div {
+                padding: 1.5rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 10px;
+                background: #fff;
+                text-align: center;
+            }
+
+            .organic-paid-visual > div i {
+                display: block;
+                margin-bottom: 0.6rem;
+            }
+
+            .organic-paid-visual span {
+                display: block;
+                font-size: 0.85rem;
+            }
+
+            .social-metrics-flow > div {
+                min-width: 115px;
+                padding: 1rem 0.8rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 9px;
+                background: #fff;
+                text-align: center;
+            }
+
+            .social-metrics-flow span,
+            .social-metrics-flow strong,
+            .social-metrics-flow small {
+                display: block;
+            }
+
+            .social-metrics-flow span {
+                font-size: 0.72rem;
+                opacity: 0.55;
+            }
+
+            .social-metrics-flow small {
+                margin-top: 0.3rem;
+                font-size: 0.76rem;
+            }
+
+            .reputation-points {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.8rem;
+                margin-top: 2rem;
+            }
+
+            .reputation-points div {
+                padding: 1rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 8px;
+                background: #fff;
+                text-align: center;
+            }
+
+            .reputation-points i,
+            .reputation-points span {
+                display: block;
+            }
+
+            .reputation-points span {
+                margin-top: 0.45rem;
+                font-size: 0.82rem;
+            }
+
+            .social-process-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                margin-top: 2.5rem;
+            }
+
+            .social-process-grid > div {
+                position: relative;
+            }
+
+            .social-process-grid > div > span {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.78rem;
+                font-weight: 700;
+                opacity: 0.5;
+            }
+
+            .social-process-grid p {
+                margin-bottom: 0;
+                font-size: 0.9rem;
+            }
+
+            @media (max-width: 1050px) {
+                .social-platform-chart {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .reputation-points {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            @media (max-width: 800px) {
+                .content-purpose-grid,
+                .social-process-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+
+                .organic-paid-visual {
+                    grid-template-columns: 1fr;
+                }
+
+                .organic-paid-visual > i {
+                    transform: rotate(90deg);
+                    justify-self: center;
+                }
+
+                .social-metrics-flow > i,
+                .distribution-flow > i,
+                .cross-channel-flow > i {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 600px) {
+                .social-platform-chart,
+                .content-purpose-grid,
+                .social-process-grid,
+                .reputation-points {
+                    grid-template-columns: 1fr;
+                }
+
+                .demographic-row {
+                    grid-template-columns: 1fr auto;
+                }
+
+                .demographic-row b {
+                    grid-column: 2;
+                    grid-row: 1 / span 2;
+                }
+            }
+        </style>
+
 </head>
 
 
@@ -92,7 +474,7 @@
                     <a href="../index.html"
                         class="logo">
 
-                        <img src="../assetts/images/transparent logo PA.jpeg"
+                        <img src="../assets/images/transparent logo PA.jpeg"
                             alt="Pulse Analytics Group LLC Logo">
 
                     </a>
@@ -135,7 +517,6 @@
                             </a>
 
                         </li>
-
 
 
                         <!-- SERVICES -->
@@ -212,7 +593,6 @@
                         </li>
 
 
-
                         <!-- SOLUTIONS -->
 
                         <li class="dropdown">
@@ -229,31 +609,31 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Solutions/lead-generation.html">
+                                    <a href="../solutions/lead-generation.html">
                                         Lead Generation
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/local-business-growth.html">
+                                    <a href="../solutions/local-business-growth.html">
                                         Local Business Growth
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/e-commerce.html">
+                                    <a href="../solutions/e-commerce.html">
                                         E-Commerce
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/startup-marketing.html">
+                                    <a href="../solutions/startup-marketing.html">
                                         Startup Marketing
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/enterprise-solutions.html">
+                                    <a href="../solutions/enterprise-solutions.html">
                                         Enterprise Solutions
                                     </a>
                                 </li>
@@ -261,7 +641,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- ABOUT -->
@@ -308,7 +687,6 @@
                         </li>
 
 
-
                         <!-- RESOURCES -->
 
                         <li class="dropdown">
@@ -353,7 +731,6 @@
                         </li>
 
 
-
                         <!-- CONTACT -->
 
                         <li>
@@ -373,7 +750,6 @@
         </div>
 
     </header>
-
 
 
     <!-- ==========================================
@@ -444,7 +820,7 @@
 
                 <div class="hero-image">
 
-                    <img src="../assetts/images/my-Social Media.png"
+                    <img src="../assets/images/my-Social Media.png"
                         alt="Social media marketing strategy">
 
                 </div>
@@ -452,7 +828,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -468,7 +843,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Social Media.png"
+                        <img src="../assets/images/my-Social Media.png"
                             alt="Professional social media marketing">
 
                     </div>
@@ -518,6 +893,256 @@
         </section>
 
 
+        <!-- ==========================================
+            SOCIAL MEDIA LANDSCAPE
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    THE SOCIAL LANDSCAPE
+                </span>
+
+                <h2>
+                    Social Media Is a Market, Not Just a Feed
+                </h2>
+
+                <p class="section-intro">
+                    Social platforms have become major environments for discovery,
+                    communication, education, advertising, customer interaction, and
+                    brand building. Pew Research Center's 2025 survey found that 84%
+                    of U.S. adults use YouTube, 71% use Facebook, 50% use Instagram,
+                    and 37% use TikTok. Those figures demonstrate the scale of the
+                    opportunity, but the differences between platforms are just as
+                    important as their overall reach.
+                </p>
+
+                <p class="section-intro">
+                    The strategic question is not simply whether a business should
+                    "be on social media." It is which audiences matter, where those
+                    audiences spend attention, what the business needs social media
+                    to accomplish, and how performance will be measured.
+                </p>
+
+                <div class="social-platform-chart">
+
+                    <div class="social-chart-card">
+                        <span>YouTube</span>
+                        <strong>84%</strong>
+                        <div class="social-bar"><span style="width:84%"></span></div>
+                        <small>U.S. adults using the platform</small>
+                    </div>
+
+                    <div class="social-chart-card">
+                        <span>Facebook</span>
+                        <strong>71%</strong>
+                        <div class="social-bar"><span style="width:71%"></span></div>
+                        <small>U.S. adults using the platform</small>
+                    </div>
+
+                    <div class="social-chart-card">
+                        <span>Instagram</span>
+                        <strong>50%</strong>
+                        <div class="social-bar"><span style="width:50%"></span></div>
+                        <small>U.S. adults using the platform</small>
+                    </div>
+
+                    <div class="social-chart-card">
+                        <span>TikTok</span>
+                        <strong>37%</strong>
+                        <div class="social-bar"><span style="width:37%"></span></div>
+                        <small>U.S. adults using the platform</small>
+                    </div>
+
+                </div>
+
+                <p class="research-source">
+                    Source:
+                    <a href="https://www.pewresearch.org/internet/2025/11/20/americans-social-media-use-2025/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Pew Research Center — Americans' Social Media Use 2025
+                    </a>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            SOCIAL MEDIA MARKETING SYSTEM
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <span class="section-label">
+                    STRATEGIC SOCIAL MEDIA
+                </span>
+
+                <h2>
+                    Social Media Is a Marketing System
+                </h2>
+
+                <p>
+                    Effective social media begins with the business objective, not
+                    the posting calendar. Different pieces of content can introduce
+                    a brand, educate an audience, demonstrate expertise, create
+                    conversation, support a campaign, generate traffic, or move an
+                    interested prospect toward the next step.
+                </p>
+
+                <div class="social-framework">
+
+                    <div class="social-framework-node">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <strong>Business Objective</strong>
+                        <span>What are we trying to accomplish?</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                    <div class="social-framework-node">
+                        <i class="fa-solid fa-users"></i>
+                        <strong>Audience</strong>
+                        <span>Who are we trying to reach?</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                    <div class="social-framework-node">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <strong>Platform Selection</strong>
+                        <span>Where does that audience spend attention?</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                    <div class="social-framework-node">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <strong>Content Strategy</strong>
+                        <span>What should the audience learn, feel, or do?</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                    <div class="social-framework-node">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <strong>Measurement</strong>
+                        <span>What happened and what does the evidence tell us?</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                    <div class="social-framework-node">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <strong>Optimization</strong>
+                        <span>What should change in the next cycle?</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            AUDIENCE INTELLIGENCE
+        =========================================== -->
+
+        <section class="service-section">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            AUDIENCE INTELLIGENCE
+                        </span>
+
+                        <h2>
+                            Platform Choice Should Follow the Audience
+                        </h2>
+
+                        <p>
+                            Pew's 2025 research illustrates why a single social
+                            strategy rarely fits every business. Instagram usage,
+                            for example, is substantially higher among adults ages
+                            18–29 than among adults 65 and older. TikTok shows a
+                            similarly large age difference, while YouTube and
+                            Facebook reach majorities across broad age groups.
+                        </p>
+
+                        <p>
+                            Demographics do not make the decision by themselves.
+                            They provide evidence that can be combined with the
+                            business's customer profile, geography, offering,
+                            industry, purchase journey, content capabilities, and
+                            objectives.
+                        </p>
+
+                        <a href="https://www.pewresearch.org/internet/fact-sheet/social-media/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn-secondary">
+                            Explore Pew's Social Media Data
+                        </a>
+
+                    </div>
+
+                    <div class="social-demographic-visual">
+
+                        <div class="demographic-row">
+                            <strong>Instagram</strong>
+                            <span>18–29</span>
+                            <b>80%</b>
+                        </div>
+
+                        <div class="demographic-row">
+                            <strong>Instagram</strong>
+                            <span>65+</span>
+                            <b>19%</b>
+                        </div>
+
+                        <div class="demographic-row">
+                            <strong>TikTok</strong>
+                            <span>18–29</span>
+                            <b>63%</b>
+                        </div>
+
+                        <div class="demographic-row">
+                            <strong>TikTok</strong>
+                            <span>65+</span>
+                            <b>12%</b>
+                        </div>
+
+                        <div class="demographic-row">
+                            <strong>YouTube</strong>
+                            <span>18–29</span>
+                            <b>95%</b>
+                        </div>
+
+                        <div class="demographic-row">
+                            <strong>Facebook</strong>
+                            <span>30–49</span>
+                            <b>80%</b>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
 
         <!-- ==========================================
             PLATFORM STRATEGY INTRO
@@ -555,7 +1180,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -636,7 +1260,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Facebook.png"
+                        <img src="../assets/images/my-Facebook.png"
                             alt="Facebook marketing services">
 
                     </div>
@@ -646,7 +1270,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -662,7 +1285,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Instagram.png"
+                        <img src="../assets/images/my-Instagram.png"
                             alt="Instagram marketing services">
 
                     </div>
@@ -738,7 +1361,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -825,7 +1447,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-TikTok.png"
+                        <img src="../assets/images/my-TikTok.png"
                             alt="TikTok marketing services">
 
                     </div>
@@ -835,7 +1457,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -851,7 +1472,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-LinkedIn.png"
+                        <img src="../assets/images/my-LinkedIn.png"
                             alt="LinkedIn marketing services">
 
                     </div>
@@ -927,7 +1548,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1010,7 +1630,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-YouTube.png"
+                        <img src="../assets/images/my-YouTube.png"
                             alt="YouTube marketing services">
 
                     </div>
@@ -1021,6 +1641,489 @@
 
         </section>
 
+
+        <!-- ==========================================
+            PLATFORM DISTRIBUTION
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    PLATFORM DISTRIBUTION
+                </span>
+
+                <h2>
+                    The Goal Is Not to "Hack the Algorithm"
+                </h2>
+
+                <p class="section-intro">
+                    Social platforms use recommendation and delivery systems to
+                    determine which content is shown to which users. The professional
+                    objective is not to chase supposed algorithm shortcuts. It is to
+                    create content that is relevant to the intended audience, fits
+                    the platform, communicates clearly, and earns an appropriate
+                    response.
+                </p>
+
+                <p class="section-intro">
+                    For paid social, the strategy becomes more explicit: campaign
+                    objectives, audience selection, creative, budget, delivery, and
+                    conversion measurement work together. Meta's own advertising
+                    documentation emphasizes selecting an objective aligned with the
+                    result a business wants to achieve.
+                </p>
+
+                <div class="distribution-flow">
+                    <span>Audience</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Content</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Objective</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Distribution</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Response</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Optimization</span>
+                </div>
+
+                <a href="https://www.facebook.com/business/ads/ad-objectives"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn-secondary">
+                    Explore Meta's Ad Objectives
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            CONTENT PURPOSE
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <span class="section-label">
+                    CONTENT STRATEGY
+                </span>
+
+                <h2>
+                    Content Should Have a Job
+                </h2>
+
+                <p>
+                    Posting consistently is not the same as marketing strategically.
+                    Content can educate, demonstrate expertise, encourage conversation,
+                    reinforce a brand, introduce a product, support an offer, or guide
+                    an interested audience toward the next step. The purpose determines
+                    what should be created and how its performance should be interpreted.
+                </p>
+
+                <div class="content-purpose-grid">
+
+                    <div>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <h3>Educate</h3>
+                        <p>Answer questions and provide useful information before asking for a sale.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-comments"></i>
+                        <h3>Engage</h3>
+                        <p>Create opportunities for meaningful interaction and community.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-award"></i>
+                        <h3>Demonstrate</h3>
+                        <p>Show expertise, process, craftsmanship, results, or customer value.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <h3>Promote</h3>
+                        <p>Present products, services, offers, events, and campaigns when appropriate.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-heart"></i>
+                        <h3>Build Trust</h3>
+                        <p>Make the organization credible, accessible, consistent, and human.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <h3>Move Forward</h3>
+                        <p>Give interested audiences a clear and natural next step.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            ORGANIC + PAID
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    ORGANIC + PAID SOCIAL
+                </span>
+
+                <h2>
+                    Organic and Paid Social Can Reinforce One Another
+                </h2>
+
+                <p class="section-intro">
+                    Organic content builds the public presence of a brand. Paid social
+                    can provide additional reach, targeting, testing, and scale when a
+                    campaign objective calls for it. They are different tools serving
+                    different functions, and neither should be treated as a substitute
+                    for strategy.
+                </p>
+
+                <div class="organic-paid-visual">
+
+                    <div>
+                        <i class="fa-solid fa-seedling"></i>
+                        <h3>Organic</h3>
+                        <span>Content · Community · Authority · Trust</span>
+                    </div>
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <div>
+                        <i class="fa-solid fa-bullseye"></i>
+                        <h3>Paid</h3>
+                        <span>Targeting · Reach · Testing · Scale</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div>
+                        <i class="fa-solid fa-chart-line"></i>
+                        <h3>Measurement</h3>
+                        <span>Evidence · Attribution · Optimization</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            BUSINESS PERFORMANCE
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <span class="section-label">
+                    SOCIAL MEDIA MEASUREMENT
+                </span>
+
+                <h2>
+                    Engagement Is a Signal. Business Performance Is the Outcome.
+                </h2>
+
+                <p>
+                    Likes, comments, shares, saves, and follower growth can tell us
+                    how audiences are responding to content. They are not automatically
+                    evidence of revenue. A professional social strategy connects
+                    platform activity to the stage of the customer journey it is
+                    intended to influence.
+                </p>
+
+                <div class="social-metrics-flow">
+
+                    <div>
+                        <span>01</span>
+                        <strong>Reach</strong>
+                        <small>Who saw it?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div>
+                        <span>02</span>
+                        <strong>Engagement</strong>
+                        <small>Who responded?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div>
+                        <span>03</span>
+                        <strong>Traffic</strong>
+                        <small>Who visited?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div>
+                        <span>04</span>
+                        <strong>Leads</strong>
+                        <small>Who raised their hand?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div>
+                        <span>05</span>
+                        <strong>Conversions</strong>
+                        <small>Who took action?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div>
+                        <span>06</span>
+                        <strong>Revenue</strong>
+                        <small>What created value?</small>
+                    </div>
+
+                </div>
+
+                <p class="section-intro compact">
+                    The appropriate metric depends on the objective. Awareness
+                    campaigns may prioritize reach and attention; traffic campaigns
+                    may prioritize visits; lead-generation campaigns may prioritize
+                    qualified leads and cost per result. The important part is aligning
+                    measurement with the reason the campaign exists.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            COMMUNITY & REPUTATION
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    COMMUNITY &amp; REPUTATION
+                </span>
+
+                <h2>
+                    Every Public Interaction Becomes Part of the Brand
+                </h2>
+
+                <p class="section-intro">
+                    Social media is not only a publishing channel. Comments, questions,
+                    direct messages, customer feedback, complaints, reviews, and public
+                    responses all contribute to the way people experience an organization.
+                    Effective community management requires consistency, judgment, timely
+                    responses, and an understanding of when a public conversation should
+                    move into a private channel.
+                </p>
+
+                <div class="reputation-points">
+
+                    <div>
+                        <i class="fa-solid fa-comments"></i>
+                        <span>Community Response</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-star"></i>
+                        <span>Review Awareness</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Reputation Protection</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span>Professional Voice</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            CROSS-CHANNEL MARKETING
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <span class="section-label">
+                    CROSS-CHANNEL MARKETING
+                </span>
+
+                <h2>
+                    Social Media Does Not Operate in a Vacuum
+                </h2>
+
+                <p>
+                    Social media can introduce someone to a business, but the customer
+                    journey may continue through a website, search engine, email,
+                    advertising campaign, phone call, appointment system, or physical
+                    location. Strong strategies connect those channels rather than
+                    treating social media as an isolated activity.
+                </p>
+
+                <div class="cross-channel-flow">
+
+                    <span>Social Discovery</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Website</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Search + Content</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Consideration</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Conversion</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>Analytics</span>
+
+                </div>
+
+                <div class="related-services">
+                    <a href="seo.html">Search Engine Optimization</a>
+                    <a href="analytics-reporting.html">Analytics &amp; Reporting</a>
+                    <a href="google-ads.html">Google Ads Management</a>
+                    <a href="ai-marketing.html">AI Marketing Solutions</a>
+                    <a href="branding.html">Brand Strategy</a>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            AI-ASSISTED SOCIAL MARKETING
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    AI-ASSISTED SOCIAL MARKETING
+                </span>
+
+                <h2>
+                    AI Can Accelerate the Work. It Should Not Replace the Strategy.
+                </h2>
+
+                <p class="section-intro">
+                    AI can assist with topic ideation, content variations, research,
+                    performance analysis, pattern recognition, and creative testing.
+                    Used properly, it can reduce repetitive work and help a marketing
+                    team examine more information.
+                </p>
+
+                <p class="section-intro">
+                    Strategy still requires human judgment. A business's customers,
+                    reputation, positioning, objectives, brand voice, and circumstances
+                    cannot be reduced to a generic prompt. Pulse Analytics treats AI
+                    as an analytical and production tool within a broader human-led
+                    marketing system.
+                </p>
+
+                <a href="ai-marketing.html" class="btn-secondary">
+                    Explore AI Marketing
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            PULSE SOCIAL PROCESS
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <span class="section-label">
+                    THE PULSE SOCIAL PROCESS
+                </span>
+
+                <h2>
+                    Strategy Before Scheduling
+                </h2>
+
+                <div class="social-process-grid">
+
+                    <div>
+                        <span>01</span>
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <h3>Audit</h3>
+                        <p>Review profiles, content, audience, competitors, performance, and opportunities.</p>
+                    </div>
+
+                    <div>
+                        <span>02</span>
+                        <i class="fa-solid fa-users"></i>
+                        <h3>Define</h3>
+                        <p>Clarify the audience, objectives, platforms, voice, and customer journey.</p>
+                    </div>
+
+                    <div>
+                        <span>03</span>
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <h3>Plan</h3>
+                        <p>Build content themes, formats, campaigns, publishing priorities, and measurement.</p>
+                    </div>
+
+                    <div>
+                        <span>04</span>
+                        <i class="fa-solid fa-camera"></i>
+                        <h3>Create</h3>
+                        <p>Produce platform-appropriate content that has a clear purpose.</p>
+                    </div>
+
+                    <div>
+                        <span>05</span>
+                        <i class="fa-solid fa-chart-line"></i>
+                        <h3>Measure</h3>
+                        <p>Evaluate reach, engagement, traffic, leads, conversions, and campaign efficiency.</p>
+                    </div>
+
+                    <div>
+                        <span>06</span>
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <h3>Refine</h3>
+                        <p>Use performance evidence to improve the next cycle of content and campaigns.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
         <!-- ==========================================
@@ -1067,7 +2170,6 @@
         </section>
 
 
-
         <!-- ==========================================
             CONTENT STRATEGY
         =========================================== -->
@@ -1081,7 +2183,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Social Media.png"
+                        <img src="../assets/images/my-Social Media.png"
                             alt="Social media content strategy">
 
                     </div>
@@ -1155,7 +2257,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1235,7 +2336,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Social Media.png"
+                        <img src="../assets/images/my-Social Media.png"
                             alt="Social media profile optimization">
 
                     </div>
@@ -1245,7 +2346,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1261,7 +2361,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Social Media.png"
+                        <img src="../assets/images/my-Social Media.png"
                             alt="Social media community management">
 
                     </div>
@@ -1335,7 +2435,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1414,7 +2513,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Social Media.png"
+                        <img src="../assets/images/my-Social Media.png"
                             alt="Paid social media advertising">
 
                     </div>
@@ -1424,7 +2523,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1440,7 +2538,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Analytics & Reporting.png"
+                        <img src="../assets/images/my-Analytics & Reporting.png"
                             alt="Social media analytics and reporting">
 
                     </div>
@@ -1529,7 +2627,6 @@
         </section>
 
 
-
         <!-- ==========================================
             CROSS PLATFORM STRATEGY
         =========================================== -->
@@ -1588,7 +2685,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1692,7 +2788,6 @@
         </section>
 
 
-
         <!-- ==========================================
             CONNECTED MARKETING
         =========================================== -->
@@ -1729,7 +2824,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1796,7 +2890,6 @@
     </main>
 
 
-
     <!-- ==========================================
         FOOTER
     =========================================== -->
@@ -1821,7 +2914,7 @@
 
                     <div class="social-links">
 
-                        <a href="#"
+                        <a href="https://www.facebook.com/profile.php?id=61591149445952"
                             aria-label="Facebook">
 
                             <i class="fa-brands fa-facebook-f"></i>
@@ -1829,7 +2922,7 @@
                         </a>
 
 
-                        <a href="#"
+                        <a href="https://www.instagram.com/pulseanalyticsgroupllc/"
                             aria-label="Instagram">
 
                             <i class="fa-brands fa-instagram"></i>
@@ -1855,7 +2948,6 @@
                     </div>
 
                 </div>
-
 
 
                 <!-- SERVICES -->
@@ -1916,7 +3008,6 @@
                 </div>
 
 
-
                 <!-- RESOURCES -->
 
                 <div>
@@ -1963,7 +3054,6 @@
                 </div>
 
 
-
                 <!-- CONTACT -->
 
                 <div>
@@ -1982,12 +3072,12 @@
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
-                            info@pulseanalyticsgroup.com
+                            pulseanalyticsgroupllc@gmail.com
                         </li>
 
                         <li>
                             <i class="fa-solid fa-phone"></i>
-                            (814) 555-1234
+                            (814) 737-7650
                         </li>
 
                         <li>
@@ -2002,7 +3092,6 @@
                 </div>
 
             </div>
-
 
 
             <!-- FOOTER BOTTOM -->

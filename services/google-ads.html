@@ -71,7 +71,333 @@
     <link rel="stylesheet"
         href="../styles.css">
 
-</head>
+
+        <!-- ==========================================
+            ORGANIZATION SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://www.pulseanalyticsgroup.com/#organization",
+            "name": "Pulse Analytics Group LLC",
+            "alternateName": "Pulse Analytics Group",
+            "description": "Pulse Analytics Group LLC is a full-service digital marketing agency specializing in search engine optimization, Google Ads management, website design and development, analytics, AI-powered marketing solutions, local SEO, accessibility, branding, and business growth strategies.",
+            "logo": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "slogan": "Data. Insight. Growth.",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "telephone": "+1-814-737-7650",
+            "founder": {
+                "@type": "Person",
+                "name": "Andrew Kosinski"
+            },
+            "sameAs": [
+                "https://www.facebook.com/profile.php?id=61591149445952",
+                "https://www.instagram.com/pulseanalyticsgroupllc/",
+                "https://www.tiktok.com/@pulseanalyticsgroup"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            PROFESSIONAL SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "@id": "https://www.pulseanalyticsgroup.com/#professional-service",
+            "name": "Pulse Analytics Group LLC",
+            "image": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "priceRange": "$150 - $3500",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "84 East High Street",
+                "addressLocality": "Union City",
+                "addressRegion": "PA",
+                "postalCode": "16438",
+                "addressCountry": "US"
+            },
+            "telephone": "+1-814-737-7650",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBSITE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://www.pulseanalyticsgroup.com/#website",
+            "url": "https://www.pulseanalyticsgroup.com",
+            "name": "Pulse Analytics Group LLC",
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            GOOGLE ADS SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "@id": "https://www.pulseanalyticsgroup.com/services/google-ads.html#service",
+            "name": "Google Ads Management",
+            "serviceType": "Google Ads Management",
+            "provider": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "description": "Professional Google Ads management covering campaign strategy, search intent, keyword and negative keyword management, ad messaging, Smart Bidding, conversion tracking, landing-page relevance, reporting, and ongoing optimization.",
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBPAGE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://www.pulseanalyticsgroup.com/services/google-ads.html#webpage",
+            "url": "https://www.pulseanalyticsgroup.com/services/google-ads.html",
+            "name": "Google Ads Management | Pulse Analytics Group LLC",
+            "description": "Professional Google Ads management backed by certified expertise, campaign strategy, conversion measurement, optimization, and performance reporting.",
+            "isPartOf": {
+                "@id": "https://www.pulseanalyticsgroup.com/#website"
+            },
+            "about": {
+                "@id": "https://www.pulseanalyticsgroup.com/services/google-ads.html#service"
+            },
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            BREADCRUMB SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "@id": "https://www.pulseanalyticsgroup.com/services/google-ads.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.pulseanalyticsgroup.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Services",
+                    "item": "https://www.pulseanalyticsgroup.com/services.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Google Ads Management",
+                    "item": "https://www.pulseanalyticsgroup.com/services/google-ads.html"
+                }
+            ]
+        }
+        </script>
+
+
+        <style>
+            .ads-auction-model {
+                margin: 3rem auto 0;
+                padding: 2rem;
+                max-width: 1050px;
+                border: 1px solid rgba(10, 46, 111, 0.12);
+                border-radius: 12px;
+                background: #fff;
+                box-sizing: border-box;
+            }
+
+            .auction-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                margin-top: 1.75rem;
+            }
+
+            .auction-factor {
+                position: relative;
+                padding: 1.5rem 1.25rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 10px;
+                background: #f8fafc;
+            }
+
+            .auction-factor i {
+                display: block;
+                margin: 0.5rem 0 0.75rem;
+                font-size: 1.35rem;
+            }
+
+            .auction-factor h4 {
+                margin-bottom: 0.5rem;
+            }
+
+            .auction-factor p {
+                margin-bottom: 0;
+                font-size: 0.95rem;
+            }
+
+            .auction-number {
+                position: absolute;
+                top: 0.9rem;
+                right: 1rem;
+                font-size: 0.78rem;
+                font-weight: 700;
+                opacity: 0.55;
+            }
+
+            .research-source {
+                margin-top: 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .automation-flow {
+                display: grid;
+                justify-items: center;
+                gap: 0.7rem;
+                max-width: 340px;
+                margin: auto;
+                padding: 1.5rem;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 12px;
+                background: #f8fafc;
+            }
+
+            .flow-node {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding: 1rem;
+                border-radius: 8px;
+                background: #fff;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                box-sizing: border-box;
+            }
+
+            .flow-node i {
+                width: 28px;
+                text-align: center;
+            }
+
+            .flow-node span {
+                font-weight: 600;
+            }
+
+            .flow-arrow {
+                opacity: 0.55;
+            }
+
+            .ads-strategy-path {
+                display: flex;
+                align-items: stretch;
+                justify-content: center;
+                gap: 0.75rem;
+                margin-top: 2.5rem;
+            }
+
+            .strategy-step {
+                flex: 1;
+                min-width: 130px;
+                padding: 1.2rem 0.9rem;
+                text-align: center;
+                border: 1px solid rgba(10, 46, 111, 0.10);
+                border-radius: 10px;
+                background: #fff;
+            }
+
+            .strategy-step span {
+                display: block;
+                margin-bottom: 0.45rem;
+                font-size: 0.8rem;
+                font-weight: 700;
+                opacity: 0.55;
+            }
+
+            .strategy-step strong,
+            .strategy-step small {
+                display: block;
+            }
+
+            .strategy-step small {
+                margin-top: 0.45rem;
+                line-height: 1.4;
+            }
+
+            .ads-strategy-path > i {
+                align-self: center;
+                opacity: 0.45;
+            }
+
+            @media (max-width: 900px) {
+                .auction-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .ads-strategy-path {
+                    flex-wrap: wrap;
+                }
+
+                .ads-strategy-path > i {
+                    display: none;
+                }
+
+                .strategy-step {
+                    flex-basis: calc(50% - 0.75rem);
+                }
+            }
+
+            @media (max-width: 600px) {
+                .auction-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .ads-auction-model {
+                    padding: 1.25rem;
+                }
+
+                .strategy-step {
+                    flex-basis: 100%;
+                }
+            }
+        </style>
+
+    </head>
 
 
 <body>
@@ -92,7 +418,7 @@
                     <a href="../index.html"
                         class="logo">
 
-                        <img src="../assetts/images/transparent logo PA.jpeg"
+                        <img src="../assets/images/transparent logo PA.jpeg"
                             alt="Pulse Analytics Group LLC Logo">
 
                     </a>
@@ -135,7 +461,6 @@
                             </a>
 
                         </li>
-
 
 
                         <!-- SERVICES -->
@@ -212,7 +537,6 @@
                         </li>
 
 
-
                         <!-- SOLUTIONS -->
 
                         <li class="dropdown">
@@ -229,31 +553,31 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Solutions/lead-generation.html">
+                                    <a href="../solutions/lead-generation.html">
                                         Lead Generation
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/local-business-growth.html">
+                                    <a href="../solutions/local-business-growth.html">
                                         Local Business Growth
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/e-commerce.html">
+                                    <a href="../solutions/e-commerce.html">
                                         E-Commerce
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/startup-marketing.html">
+                                    <a href="../solutions/startup-marketing.html">
                                         Startup Marketing
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/enterprise-solutions.html">
+                                    <a href="../solutions/enterprise-solutions.html">
                                         Enterprise Solutions
                                     </a>
                                 </li>
@@ -261,7 +585,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- ABOUT -->
@@ -280,7 +603,7 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../about.html#company">
+                                    <a href="../about.html#our-company">
                                         Our Company
                                     </a>
                                 </li>
@@ -298,7 +621,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="../about.html#why-pulse">
+                                    <a href="../about.html#why-choose">
                                         Why Choose Pulse Analytics
                                     </a>
                                 </li>
@@ -308,12 +631,11 @@
                         </li>
 
 
-
                         <!-- RESOURCES -->
 
                         <li class="dropdown">
 
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
 
                                 Resources
 
@@ -325,25 +647,25 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Resources/blog.html">
+                                    <a href="../resources/blog.html">
                                         Blog
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/guides.html">
+                                    <a href="../resources/guides.html">
                                         Marketing Guides
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/free-resources.html">
+                                    <a href="../resources/free-resources.html">
                                         Free Resources
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/faq.html">
+                                    <a href="../resources/faq.html">
                                         FAQ
                                     </a>
                                 </li>
@@ -351,7 +673,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- CONTACT -->
@@ -373,7 +694,6 @@
         </div>
 
     </header>
-
 
 
     <!-- ==========================================
@@ -423,7 +743,7 @@
                         </a>
 
 
-                        <a href="../Resources/free-resources.html"
+                        <a href="../resources/free-resources.html"
                             class="btn-secondary">
 
                             Explore Free Resources
@@ -437,7 +757,7 @@
 
                 <div class="hero-image">
 
-                    <img src="../assetts/images/my-Google Ads.png"
+                    <img src="../assets/images/my-Google Ads.png"
                         alt="Google Ads Management">
 
                 </div>
@@ -445,7 +765,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -579,6 +898,529 @@
         </section>
 
 
+        <!-- ==========================================
+            WHY GOOGLE ADS MATTERS
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    WHY GOOGLE ADS MATTERS
+                </span>
+
+                <h2>
+                    Paid Search Is a Real-Time Competition for Relevance
+                </h2>
+
+                <p class="section-intro">
+                    Google Ads is not simply a system where the highest bidder wins.
+                    Every eligible search enters an auction in which Google evaluates
+                    factors including the bid, ad and landing-page quality, the expected
+                    impact of assets, Ad Rank thresholds, the context of the search,
+                    and the competitiveness of the auction.
+                    <a href="https://support.google.com/google-ads/answer/6366577?hl=en"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Google explains the Ads auction
+                    </a>.
+                </p>
+
+                <p class="section-intro">
+                    That has an important implication for advertisers: increasing a
+                    budget does not replace the need for relevance. Strong campaign
+                    management is about improving the relationship between the search,
+                    the advertisement, the landing experience, the conversion goal,
+                    and the amount the business is willing to invest.
+                </p>
+
+                <div class="ads-auction-model">
+
+                    <h3>
+                        What Influences a Google Ads Auction?
+                    </h3>
+
+                    <div class="auction-grid">
+
+                        <div class="auction-factor">
+                            <span class="auction-number">01</span>
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <h4>Bid</h4>
+                            <p>
+                                The advertiser's willingness to compete for an eligible
+                                opportunity.
+                            </p>
+                        </div>
+
+                        <div class="auction-factor">
+                            <span class="auction-number">02</span>
+                            <i class="fa-solid fa-ranking-star"></i>
+                            <h4>Ad &amp; Landing Quality</h4>
+                            <p>
+                                Relevance and usefulness of the ad and the destination
+                                experience.
+                            </p>
+                        </div>
+
+                        <div class="auction-factor">
+                            <span class="auction-number">03</span>
+                            <i class="fa-solid fa-puzzle-piece"></i>
+                            <h4>Ad Assets</h4>
+                            <p>
+                                Additional information that can make an advertisement
+                                more useful and actionable.
+                            </p>
+                        </div>
+
+                        <div class="auction-factor">
+                            <span class="auction-number">04</span>
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                            <h4>Search Context</h4>
+                            <p>
+                                Signals such as location, device, time, search terms,
+                                and other contextual information.
+                            </p>
+                        </div>
+
+                        <div class="auction-factor">
+                            <span class="auction-number">05</span>
+                            <i class="fa-solid fa-users"></i>
+                            <h4>Competition</h4>
+                            <p>
+                                Other advertisers competing for the same eligible
+                                search opportunity.
+                            </p>
+                        </div>
+
+                        <div class="auction-factor">
+                            <span class="auction-number">06</span>
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <h4>Ad Rank Thresholds</h4>
+                            <p>
+                                Minimum quality and relevance thresholds that influence
+                                whether an ad can appear in a position.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <p class="research-source">
+                        Source:
+                        <a href="https://support.google.com/google-ads/answer/6366577?hl=en"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Google Ads Help — How the Google Ads auction works
+                        </a>.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            SMART BIDDING & AI
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            GOOGLE AI &amp; SMART BIDDING
+                        </span>
+
+                        <h2>
+                            Automation Can Scale the Work. Strategy Still Determines What It Should Optimize.
+                        </h2>
+
+                        <p>
+                            Google Smart Bidding uses machine learning to optimize bids
+                            for conversions or conversion value at auction time. Google
+                            describes strategies including Maximize Conversions, Target
+                            CPA, Maximize Conversion Value, and Target ROAS as Smart
+                            Bidding strategies.
+                        </p>
+
+                        <p>
+                            That technology is powerful, but automation is only as useful
+                            as the goals, conversion data, campaign structure, and business
+                            context surrounding it. Pulse Analytics treats Google's
+                            automation as a tool within a larger strategy—not as a
+                            substitute for professional judgment.
+                        </p>
+
+                        <p>
+                            Google also recommends accurate conversion measurement as a
+                            foundation for Smart Bidding. That makes the connection between
+                            Google Ads and the Analytics &amp; Reporting service especially
+                            important.
+                        </p>
+
+                        <div class="service-buttons">
+
+                            <a href="analytics-reporting.html"
+                               class="btn-primary">
+                                Explore Analytics &amp; Reporting
+                            </a>
+
+                            <a href="ai-marketing.html"
+                               class="btn-secondary">
+                                Explore AI Marketing
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="service-image">
+
+                        <div class="automation-flow">
+
+                            <div class="flow-node">
+                                <i class="fa-solid fa-database"></i>
+                                <span>Conversion Data</span>
+                            </div>
+
+                            <div class="flow-arrow">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div class="flow-node">
+                                <i class="fa-solid fa-brain"></i>
+                                <span>Google AI</span>
+                            </div>
+
+                            <div class="flow-arrow">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div class="flow-node">
+                                <i class="fa-solid fa-gavel"></i>
+                                <span>Auction-Time Decision</span>
+                            </div>
+
+                            <div class="flow-arrow">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div class="flow-node">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Performance Feedback</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <p class="research-source">
+                    Source:
+                    <a href="https://support.google.com/google-ads/answer/11095984?hl=en"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Google Ads Help — Your guide to Smart Bidding
+                    </a>.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            CAMPAIGN ARCHITECTURE
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    CAMPAIGN ARCHITECTURE
+                </span>
+
+                <h2>
+                    Strategy Starts Before the First Impression
+                </h2>
+
+                <p class="section-intro">
+                    A strong Google Ads account begins with a clear definition of what
+                    the campaign is supposed to accomplish. From there, structure,
+                    targeting, keywords, messaging, budgets, conversion actions, and
+                    landing pages can be designed around the same objective.
+                </p>
+
+                <div class="ads-strategy-path">
+
+                    <div class="strategy-step">
+                        <span>01</span>
+                        <strong>Business Goal</strong>
+                        <small>What outcome matters?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div class="strategy-step">
+                        <span>02</span>
+                        <strong>Search Intent</strong>
+                        <small>Who is looking and why?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div class="strategy-step">
+                        <span>03</span>
+                        <strong>Campaign Structure</strong>
+                        <small>How should demand be organized?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div class="strategy-step">
+                        <span>04</span>
+                        <strong>Conversion</strong>
+                        <small>What action defines success?</small>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    <div class="strategy-step">
+                        <span>05</span>
+                        <strong>Optimization</strong>
+                        <small>What should improve next?</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            GOOGLE ADS + ANALYTICS
+        =========================================== -->
+
+        <section class="service-section">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-image">
+
+                        <img src="../assets/images/my-Analytics & Reporting.png"
+                             alt="Google Ads analytics and conversion reporting">
+
+                    </div>
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            ADVERTISING + MEASUREMENT
+                        </span>
+
+                        <h2>
+                            The Most Important Question Is What Happens After the Click
+                        </h2>
+
+                        <p>
+                            A click is an interaction, not a business result. A professional
+                            Google Ads program needs to understand what happens after a
+                            person reaches the website: whether they call, submit a form,
+                            purchase, book, request information, or take another action
+                            that matters to the business.
+                        </p>
+
+                        <p>
+                            Conversion measurement gives Google Ads the information it
+                            needs to evaluate performance and gives the business a clearer
+                            basis for deciding where advertising dollars should go next.
+                        </p>
+
+                        <div class="benefits-grid">
+
+                            <div class="benefit">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Google Ads Conversion Tracking</span>
+                            </div>
+
+                            <div class="benefit">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Google Tag Configuration</span>
+                            </div>
+
+                            <div class="benefit">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>GA4 Integration</span>
+                            </div>
+
+                            <div class="benefit">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Enhanced Conversions</span>
+                            </div>
+
+                            <div class="benefit">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Lead &amp; Sales Measurement</span>
+                            </div>
+
+                            <div class="benefit">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Performance Analysis</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            RESPONSIBLE ADVERTISING
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    RESPONSIBLE ADVERTISING
+                </span>
+
+                <h2>
+                    Good Campaign Management Includes Knowing When Not to Spend
+                </h2>
+
+                <p class="section-intro">
+                    Advertising should have a purpose. If targeting, measurement,
+                    landing-page relevance, or economics do not support the campaign's
+                    objective, the answer is not automatically to increase the budget.
+                </p>
+
+                <p class="section-intro">
+                    Pulse Analytics evaluates paid search in the context of the larger
+                    marketing system. That can mean refining a campaign, improving a
+                    landing page, strengthening conversion tracking, changing the
+                    objective, or determining that another channel is better suited
+                    to the business at a particular stage.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            GOOGLE ADS PROFESSIONAL CREDENTIAL
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            PROFESSIONAL CREDENTIALS
+                        </span>
+
+                        <h2>
+                            Platform Knowledge Matters When Advertising Real Money
+                        </h2>
+
+                        <p>
+                            Google Ads is a sophisticated advertising platform. Campaign
+                            management involves understanding account structure, search
+                            behavior, bidding, conversion measurement, policy, reporting,
+                            and optimization.
+                        </p>
+
+                        <p>
+                            Pulse Analytics brings formal Google Ads Search Professional
+                            certification together with broader marketing, analytics,
+                            website, and technical knowledge. The goal is not simply to
+                            operate the platform, but to understand how paid search fits
+                            into the business it is supporting.
+                        </p>
+
+                        <div class="credential-highlights">
+
+                            <div class="credential-highlight">
+                                <i class="fa-solid fa-certificate"></i>
+                                <span>Google Ads Search Professional Certification</span>
+                            </div>
+
+                            <div class="credential-highlight">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Conversion and performance measurement</span>
+                            </div>
+
+                            <div class="credential-highlight">
+                                <i class="fa-solid fa-code"></i>
+                                <span>Technical website and tracking knowledge</span>
+                            </div>
+
+                            <div class="credential-highlight">
+                                <i class="fa-solid fa-bullseye"></i>
+                                <span>Business-focused campaign strategy</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="service-image">
+
+                        <div class="credential-card">
+                            <div class="credential-icon">
+                                <i class="fa-brands fa-google"></i>
+                            </div>
+
+                            <span class="credential-label">
+                                PROFESSIONAL CREDENTIAL
+                            </span>
+
+                            <h3>
+                                Google Ads Search Professional
+                            </h3>
+
+                            <p>
+                                Google Ads Search Professional Certification
+                            </p>
+
+                            <div class="credential-divider"></div>
+
+                            <p class="credential-note">
+                                Specialized Google Ads Search training and demonstrated
+                                platform knowledge.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
 
         <!-- ==========================================
             WHY GOOGLE ADS MANAGEMENT
@@ -617,7 +1459,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -697,7 +1538,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Google Ads.png"
+                        <img src="../assets/images/my-Google Ads.png"
                             alt="Google Ads campaign strategy">
 
                     </div>
@@ -707,7 +1548,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -723,7 +1563,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-SEO.png"
+                        <img src="../assets/images/my-SEO.png"
                             alt="Google Ads keyword strategy">
 
                     </div>
@@ -806,7 +1646,6 @@
         </section>
 
 
-
         <!-- ==========================================
             AD CREATIVE
         =========================================== -->
@@ -885,7 +1724,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Google Ads.png"
+                        <img src="../assets/images/my-Google Ads.png"
                             alt="Google Ads advertising and messaging">
 
                     </div>
@@ -895,7 +1734,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -911,7 +1749,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Analytics & Reporting.png"
+                        <img src="../assets/images/my-Analytics & Reporting.png"
                             alt="Google Ads Smart Bidding and optimization">
 
                     </div>
@@ -930,10 +1768,11 @@
 
 
                         <p>
-                            Google's automated bidding systems can make
-                            thousands of auction-time decisions based on
-                            available signals and conversion data. But
-                            automation does not eliminate the need for
+                            Google's Smart Bidding systems use machine learning
+                            to optimize bids for conversions or conversion value at
+                            auction time. Google says these systems use contextual
+                            signals and query-level performance data to make those
+                            decisions. But automation does not eliminate the need for
                             professional oversight.
                         </p>
 
@@ -986,7 +1825,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1077,7 +1915,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Analytics & Reporting.png"
+                        <img src="../assets/images/my-Analytics & Reporting.png"
                             alt="Google Ads conversion tracking and analytics">
 
                     </div>
@@ -1087,7 +1925,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1103,7 +1940,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-web-design.png"
+                        <img src="../assets/images/my-web-design.png"
                             alt="Landing page optimization for Google Ads">
 
                     </div>
@@ -1177,7 +2014,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1257,7 +2093,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Analytics & Reporting.png"
+                        <img src="../assets/images/my-Analytics & Reporting.png"
                             alt="Google Ads performance reporting">
 
                     </div>
@@ -1267,7 +2103,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1326,7 +2161,6 @@
         </section>
 
 
-
         <!-- ==========================================
             FINAL CTA
         =========================================== -->
@@ -1343,7 +2177,7 @@
 
 
                     <h2>
-                        Put Your Google Ads Budget in Professional Hands
+                        Build a Google Ads Program Around Your Business Goals
                     </h2>
 
 
@@ -1361,7 +2195,7 @@
                         <a href="../contact.html"
                             class="btn-primary">
 
-                            Talk With Pulse Analytics
+                            Explore Google Ads Management
 
                         </a>
 
@@ -1382,7 +2216,6 @@
         </section>
 
     </main>
-
 
 
     <!-- ==========================================
@@ -1409,7 +2242,7 @@
 
                     <div class="social-links">
 
-                        <a href="#"
+                        <a href="https://www.facebook.com/profile.php?id=61591149445952"
                             aria-label="Facebook">
 
                             <i class="fa-brands fa-facebook-f"></i>
@@ -1417,7 +2250,7 @@
                         </a>
 
 
-                        <a href="#"
+                        <a href="https://www.instagram.com/pulseanalyticsgroupllc/"
                             aria-label="Instagram">
 
                             <i class="fa-brands fa-instagram"></i>
@@ -1443,7 +2276,6 @@
                     </div>
 
                 </div>
-
 
 
                 <!-- SERVICES -->
@@ -1504,7 +2336,6 @@
                 </div>
 
 
-
                 <!-- RESOURCES -->
 
                 <div>
@@ -1523,19 +2354,19 @@
                         </li>
 
                         <li>
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
                                 Blog
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/faq.html">
+                            <a href="../resources/faq.html">
                                 Frequently Asked Questions
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/free-resources.html">
+                            <a href="../resources/free-resources.html">
                                 Free Resources
                             </a>
                         </li>
@@ -1549,7 +2380,6 @@
                     </ul>
 
                 </div>
-
 
 
                 <!-- CONTACT -->
@@ -1570,12 +2400,12 @@
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
-                            info@pulseanalyticsgroup.com
+                            pulseanalyticsgroupllc@gmail.com
                         </li>
 
                         <li>
                             <i class="fa-solid fa-phone"></i>
-                            (814) 555-1234
+                            (814) 737-7650
                         </li>
 
                         <li>
@@ -1590,7 +2420,6 @@
                 </div>
 
             </div>
-
 
 
             <!-- FOOTER BOTTOM -->

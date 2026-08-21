@@ -71,7 +71,297 @@
     <link rel="stylesheet"
         href="../styles.css">
 
-</head>
+
+        <!-- ==========================================
+            ORGANIZATION SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"Organization",
+            "@id":"https://www.pulseanalyticsgroup.com/#organization",
+            "name":"Pulse Analytics Group LLC",
+            "alternateName":"Pulse Analytics Group",
+            "description":"Pulse Analytics Group LLC is a full-service digital marketing agency specializing in search engine optimization, local SEO, Google Ads management, website design and development, analytics, AI-powered marketing solutions, accessibility, branding, and business growth strategies.",
+            "logo":"https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "slogan":"Data. Insight. Growth.",
+            "email":"mailto:pulseanalyticsgroupllc@gmail.com",
+            "telephone":"+1-814-737-7650",
+            "founder":{"@type":"Person","name":"Andrew Kosinski"},
+            "sameAs":[
+                "https://www.facebook.com/profile.php?id=61591149445952",
+                "https://www.instagram.com/pulseanalyticsgroupllc/",
+                "https://www.tiktok.com/@pulseanalyticsgroup"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            PROFESSIONAL SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"ProfessionalService",
+            "@id":"https://www.pulseanalyticsgroup.com/#professional-service",
+            "name":"Pulse Analytics Group LLC",
+            "image":"https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "priceRange":"$150 - $3500",
+            "address":{
+                "@type":"PostalAddress",
+                "streetAddress":"84 East High Street",
+                "addressLocality":"Union City",
+                "addressRegion":"PA",
+                "postalCode":"16438",
+                "addressCountry":"US"
+            },
+            "telephone":"+1-814-737-7650",
+            "email":"mailto:pulseanalyticsgroupllc@gmail.com",
+            "areaServed":["Pennsylvania","New York","Ohio","United States"]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBSITE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"WebSite",
+            "@id":"https://www.pulseanalyticsgroup.com/#website",
+            "url":"https://www.pulseanalyticsgroup.com",
+            "name":"Pulse Analytics Group LLC",
+            "publisher":{"@id":"https://www.pulseanalyticsgroup.com/#organization"},
+            "inLanguage":"en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            LOCAL SEO SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"Service",
+            "@id":"https://www.pulseanalyticsgroup.com/services/local-seo.html#service",
+            "name":"Local SEO Services",
+            "serviceType":"Local Search Engine Optimization",
+            "provider":{"@id":"https://www.pulseanalyticsgroup.com/#organization"},
+            "description":"Strategic local SEO services covering Google Business Profile optimization, local search strategy, website optimization, business information accuracy, reviews and reputation, local content, structured data, and performance measurement.",
+            "areaServed":["Pennsylvania","New York","Ohio","United States"]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBPAGE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"WebPage",
+            "@id":"https://www.pulseanalyticsgroup.com/services/local-seo.html#webpage",
+            "url":"https://www.pulseanalyticsgroup.com/services/local-seo.html",
+            "name":"Local SEO Services | Pulse Analytics Group LLC",
+            "description":"Strategic local SEO designed to improve local search visibility through Google Business Profile optimization, website SEO, local content, reputation management, business information accuracy, and measurement.",
+            "isPartOf":{"@id":"https://www.pulseanalyticsgroup.com/#website"},
+            "about":{"@id":"https://www.pulseanalyticsgroup.com/services/local-seo.html#service"},
+            "publisher":{"@id":"https://www.pulseanalyticsgroup.com/#organization"},
+            "inLanguage":"en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            BREADCRUMB SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@type":"BreadcrumbList",
+            "@id":"https://www.pulseanalyticsgroup.com/services/local-seo.html#breadcrumb",
+            "itemListElement":[
+                {
+                    "@type":"ListItem",
+                    "position":1,
+                    "name":"Home",
+                    "item":"https://www.pulseanalyticsgroup.com/"
+                },
+                {
+                    "@type":"ListItem",
+                    "position":2,
+                    "name":"Services",
+                    "item":"https://www.pulseanalyticsgroup.com/services.html"
+                },
+                {
+                    "@type":"ListItem",
+                    "position":3,
+                    "name":"Local SEO",
+                    "item":"https://www.pulseanalyticsgroup.com/services/local-seo.html"
+                }
+            ]
+        }
+        </script>
+
+
+        <style>
+            .local-ranking-model,
+            .gbp-framework {
+                display:grid;
+                grid-template-columns:repeat(3,1fr);
+                gap:1rem;
+                max-width:1100px;
+                margin:2.5rem auto 0;
+            }
+
+            .ranking-factor,
+            .gbp-framework article {
+                position:relative;
+                padding:1.5rem;
+                border:1px solid rgba(10,46,111,.11);
+                border-radius:12px;
+                background:#fff;
+            }
+
+            .ranking-factor i,
+            .gbp-framework article i {
+                display:block;
+                margin:.25rem 0 .8rem;
+                font-size:1.35rem;
+            }
+
+            .ranking-factor p,
+            .gbp-framework article p {
+                margin-bottom:0;
+            }
+
+            .ranking-factor-number {
+                position:absolute;
+                top:1rem;
+                right:1rem;
+                font-size:.78rem;
+                font-weight:700;
+                opacity:.5;
+            }
+
+            .local-seo-workflow {
+                display:flex;
+                align-items:stretch;
+                justify-content:center;
+                gap:.65rem;
+                margin-top:2.5rem;
+            }
+
+            .workflow-step {
+                flex:1;
+                min-width:130px;
+                padding:1.1rem .8rem;
+                text-align:center;
+                border:1px solid rgba(10,46,111,.11);
+                border-radius:10px;
+                background:#fff;
+            }
+
+            .workflow-step span {
+                display:block;
+                font-size:.78rem;
+                font-weight:700;
+                opacity:.5;
+                margin-bottom:.45rem;
+            }
+
+            .workflow-step i {
+                display:block;
+                margin-bottom:.6rem;
+                font-size:1.2rem;
+            }
+
+            .workflow-step strong,
+            .workflow-step small {
+                display:block;
+            }
+
+            .workflow-step small {
+                margin-top:.45rem;
+                line-height:1.4;
+            }
+
+            .workflow-arrow {
+                display:flex;
+                align-items:center;
+                opacity:.45;
+            }
+
+            .local-ecosystem {
+                display:grid;
+                grid-template-columns:repeat(3,1fr);
+                gap:.8rem;
+                margin-top:2rem;
+            }
+
+            .ecosystem-node {
+                display:flex;
+                align-items:center;
+                gap:.7rem;
+                padding:.9rem;
+                border:1px solid rgba(10,46,111,.10);
+                border-radius:9px;
+                background:#fff;
+            }
+
+            .ecosystem-node.primary {
+                grid-column:1/-1;
+                justify-content:center;
+                font-weight:700;
+                background:#f8fafc;
+            }
+
+            .research-source {
+                margin-top:1.25rem;
+                font-size:.9rem;
+            }
+
+            @media (max-width:950px) {
+                .local-ranking-model,
+                .gbp-framework {
+                    grid-template-columns:repeat(2,1fr);
+                }
+
+                .local-seo-workflow {
+                    flex-wrap:wrap;
+                }
+
+                .workflow-arrow {
+                    display:none;
+                }
+
+                .workflow-step {
+                    flex-basis:calc(33.333% - .7rem);
+                }
+            }
+
+            @media (max-width:650px) {
+                .local-ranking-model,
+                .gbp-framework,
+                .local-ecosystem {
+                    grid-template-columns:1fr;
+                }
+
+                .ecosystem-node.primary {
+                    grid-column:auto;
+                }
+
+                .workflow-step {
+                    flex-basis:100%;
+                }
+            }
+        </style>
+
+    </head>
 
 
 <body>
@@ -92,7 +382,7 @@
                     <a href="../index.html"
                         class="logo">
 
-                        <img src="../assetts/images/transparent logo PA.jpeg"
+                        <img src="../assets/images/transparent logo PA.jpeg"
                             alt="Pulse Analytics Group LLC Logo">
 
                     </a>
@@ -135,7 +425,6 @@
                             </a>
 
                         </li>
-
 
 
                         <!-- SERVICES -->
@@ -212,7 +501,6 @@
                         </li>
 
 
-
                         <!-- SOLUTIONS -->
 
                         <li class="dropdown">
@@ -229,31 +517,31 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Solutions/lead-generation.html">
+                                    <a href="../solutions/lead-generation.html">
                                         Lead Generation
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/local-business-growth.html">
+                                    <a href="../solutions/local-business-growth.html">
                                         Local Business Growth
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/e-commerce.html">
+                                    <a href="../solutions/e-commerce.html">
                                         E-Commerce
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/startup-marketing.html">
+                                    <a href="../solutions/startup-marketing.html">
                                         Startup Marketing
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/enterprise-solutions.html">
+                                    <a href="../solutions/enterprise-solutions.html">
                                         Enterprise Solutions
                                     </a>
                                 </li>
@@ -261,7 +549,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- ABOUT -->
@@ -280,7 +567,7 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../about.html#company">
+                                    <a href="../about.html#our-company">
                                         Our Company
                                     </a>
                                 </li>
@@ -298,7 +585,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="../about.html#why-pulse">
+                                    <a href="../about.html#why-choose">
                                         Why Choose Pulse Analytics
                                     </a>
                                 </li>
@@ -308,12 +595,11 @@
                         </li>
 
 
-
                         <!-- RESOURCES -->
 
                         <li class="dropdown">
 
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
 
                                 Resources
 
@@ -325,25 +611,25 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Resources/blog.html">
+                                    <a href="../resources/blog.html">
                                         Blog
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/guides.html">
+                                    <a href="../resources/guides.html">
                                         Marketing Guides
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/free-resources.html">
+                                    <a href="../resources/free-resources.html">
                                         Free Resources
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/faq.html">
+                                    <a href="../resources/faq.html">
                                         FAQ
                                     </a>
                                 </li>
@@ -351,7 +637,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- CONTACT -->
@@ -373,7 +658,6 @@
         </div>
 
     </header>
-
 
 
     <!-- ==========================================
@@ -423,7 +707,7 @@
                         </a>
 
 
-                        <a href="../Resources/free-resources.html"
+                        <a href="../resources/free-resources.html"
                             class="btn-secondary">
 
                             Explore Free Resources
@@ -437,7 +721,7 @@
 
                 <div class="hero-image">
 
-                    <img src="../assetts/images/my-Local SEO.png"
+                    <img src="../assets/images/my-Local SEO.png"
                         alt="Local SEO strategy and search visibility">
 
                 </div>
@@ -445,7 +729,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -459,7 +742,7 @@
 
                 <div class="content-image">
 
-                    <img src="../assetts/images/my-Local SEO.png"
+                    <img src="../assets/images/my-Local SEO.png"
                         alt="Local business search optimization">
 
                 </div>
@@ -509,7 +792,6 @@
         </section>
 
 
-
         <!-- ==========================================
             LOCAL SEO STRATEGY
         =========================================== -->
@@ -541,6 +823,386 @@
         </section>
 
 
+        <!-- ==========================================
+            HOW LOCAL SEO ACTUALLY WORKS
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    HOW LOCAL SEO ACTUALLY WORKS
+                </span>
+
+                <h2>
+                    Local Search Is a System, Not a Single Optimization
+                </h2>
+
+                <p class="section-intro">
+                    Google states that local results are primarily determined by
+                    <strong>relevance, distance, and prominence</strong>. That means
+                    local SEO is not a matter of inserting a city name into a page
+                    or creating a Business Profile and waiting for rankings to appear.
+                    It is the process of making the business easier for search engines
+                    to understand, easier for customers to evaluate, and more
+                    consistently represented across the web.
+                    <a href="https://support.google.com/business/answer/7091?hl=en"
+                       target="_blank" rel="noopener noreferrer">
+                        Read Google's explanation of local ranking
+                    </a>.
+                </p>
+
+                <div class="local-ranking-model">
+
+                    <div class="ranking-factor">
+
+                        <span class="ranking-factor-number">01</span>
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                        <h3>Relevance</h3>
+
+                        <p>
+                            How well the business matches what the customer is searching
+                            for. Complete, detailed business information helps Google
+                            understand what the business does and which searches may be
+                            relevant.
+                        </p>
+
+                    </div>
+
+                    <div class="ranking-factor">
+
+                        <span class="ranking-factor-number">02</span>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <h3>Distance</h3>
+
+                        <p>
+                            How far the business is from the searcher or the location
+                            specified in the search. A business cannot simply optimize
+                            its way out of geography.
+                        </p>
+
+                    </div>
+
+                    <div class="ranking-factor">
+
+                        <span class="ranking-factor-number">03</span>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <h3>Prominence</h3>
+
+                        <p>
+                            How well-known a business is. Google notes that signals
+                            such as links from other websites and reviews can contribute
+                            to prominence.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <p class="research-source">
+                    Source:
+                    <a href="https://support.google.com/business/answer/7091?hl=en"
+                       target="_blank" rel="noopener noreferrer">
+                        Google Business Profile Help — Tips to improve your local ranking on Google
+                    </a>.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            LOCAL SEO WORKFLOW
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <div class="service-content">
+
+                    <span class="section-label">
+                        THE LOCAL SEO WORKFLOW
+                    </span>
+
+                    <h2>
+                        We Start With the Business, Then Build the Search Strategy
+                    </h2>
+
+                    <p>
+                        Effective local SEO begins with understanding the business:
+                        what it offers, where it operates, who it serves, how customers
+                        search for it, and how competitors are represented in those
+                        markets. From there, optimization becomes a coordinated process
+                        rather than a collection of isolated tactics.
+                    </p>
+
+                    <div class="local-seo-workflow">
+
+                        <div class="workflow-step">
+                            <span>01</span>
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                            <strong>Audit</strong>
+                            <small>Assess current local visibility, assets, competitors, and gaps.</small>
+                        </div>
+
+                        <div class="workflow-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                        <div class="workflow-step">
+                            <span>02</span>
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <strong>Map the Market</strong>
+                            <small>Define service areas, search intent, locations, and opportunities.</small>
+                        </div>
+
+                        <div class="workflow-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                        <div class="workflow-step">
+                            <span>03</span>
+                            <i class="fa-solid fa-building-circle-check"></i>
+                            <strong>Optimize</strong>
+                            <small>Improve the Business Profile, website, business data, and content.</small>
+                        </div>
+
+                        <div class="workflow-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                        <div class="workflow-step">
+                            <span>04</span>
+                            <i class="fa-solid fa-comments"></i>
+                            <strong>Build Reputation</strong>
+                            <small>Monitor reviews, customer feedback, and the business's broader presence.</small>
+                        </div>
+
+                        <div class="workflow-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                        <div class="workflow-step">
+                            <span>05</span>
+                            <i class="fa-solid fa-chart-column"></i>
+                            <strong>Measure</strong>
+                            <small>Track visibility, engagement, traffic, leads, and business outcomes.</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            GOOGLE BUSINESS PROFILE DEEP DIVE
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    GOOGLE BUSINESS PROFILE
+                </span>
+
+                <h2>
+                    Your Business Profile Is a Local Search Asset—Not a Shortcut
+                </h2>
+
+                <p class="section-intro">
+                    Google describes a Business Profile as the local storefront for
+                    businesses that appear in Google Search and Maps. It gives customers
+                    access to information such as location, contact details, hours,
+                    website, photos, and reviews. Google also combines information from
+                    the business, public web content, third parties, users, and other
+                    sources when building local search results.
+                    <a href="https://support.google.com/business/answer/16394780?hl=en"
+                       target="_blank" rel="noopener noreferrer">
+                        Learn about Google Business Profiles
+                    </a>
+                    and
+                    <a href="https://support.google.com/business/answer/2721884?hl=en"
+                       target="_blank" rel="noopener noreferrer">
+                        how Google sources local business information
+                    </a>.
+                </p>
+
+                <p class="section-intro">
+                    That is why profile management should begin with accuracy and
+                    compliance—not keyword stuffing. Google specifically instructs
+                    businesses to represent themselves accurately, use their real-world
+                    business name, maintain an accurate address or service area, and
+                    choose the fewest categories necessary to describe the core business.
+                    Violating those guidelines can create serious profile problems.
+                    <a href="https://support.google.com/business/answer/3038177?hl=en"
+                       target="_blank" rel="noopener noreferrer">
+                        Review Google's Business Profile guidelines
+                    </a>.
+                </p>
+
+                <div class="gbp-framework">
+
+                    <article>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <h3>Claim &amp; Verify</h3>
+                        <p>
+                            Establish ownership and make sure the business is represented
+                            by the people authorized to manage it.
+                        </p>
+                    </article>
+
+                    <article>
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <h3>Define the Location</h3>
+                        <p>
+                            Use an accurate physical location or properly configured
+                            service area that reflects how the business actually operates.
+                        </p>
+                    </article>
+
+                    <article>
+                        <i class="fa-solid fa-list-check"></i>
+                        <h3>Choose Categories</h3>
+                        <p>
+                            Select specific categories that describe what the business
+                            actually is rather than treating categories as a keyword list.
+                        </p>
+                    </article>
+
+                    <article>
+                        <i class="fa-solid fa-clock"></i>
+                        <h3>Maintain Information</h3>
+                        <p>
+                            Keep hours, services, contact information, attributes, and
+                            other customer-facing details accurate and current.
+                        </p>
+                    </article>
+
+                    <article>
+                        <i class="fa-solid fa-camera"></i>
+                        <h3>Strengthen the Profile</h3>
+                        <p>
+                            Use useful, representative photos, videos, services,
+                            products where eligible, and other profile features that
+                            help customers understand the business.
+                        </p>
+                    </article>
+
+                    <article>
+                        <i class="fa-solid fa-star"></i>
+                        <h3>Manage Reviews</h3>
+                        <p>
+                            Encourage authentic customer feedback, monitor reviews,
+                            and respond professionally to customer experiences.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            LOCAL SEO IS NOT JUST GBP
+        =========================================== -->
+
+        <section class="service-section">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            BEYOND THE BUSINESS PROFILE
+                        </span>
+
+                        <h2>
+                            Google Does Not Look at Your Business in Isolation
+                        </h2>
+
+                        <p>
+                            Google explains that business information can come from the
+                            business itself, publicly available web content, licensed
+                            third-party data, user contributions, and Google's own
+                            interactions with a local place or business.
+                            <a href="https://support.google.com/business/answer/2721884?hl=en"
+                               target="_blank" rel="noopener noreferrer">
+                                See Google's explanation of its information sources
+                            </a>.
+                        </p>
+
+                        <p>
+                            That makes the broader digital presence important. Your
+                            website, business information, reviews, links, directories,
+                            local content, and Business Profile should reinforce the
+                            same underlying facts about the company.
+                        </p>
+
+                        <p>
+                            Pulse Analytics evaluates those connections rather than
+                            treating local SEO as a single listing-management task.
+                        </p>
+
+                        <div class="local-ecosystem">
+
+                            <div class="ecosystem-node primary">
+                                <i class="fa-solid fa-building"></i>
+                                <span>Your Business</span>
+                            </div>
+
+                            <div class="ecosystem-node">
+                                <i class="fa-brands fa-google"></i>
+                                <span>Google Business Profile</span>
+                            </div>
+
+                            <div class="ecosystem-node">
+                                <i class="fa-solid fa-globe"></i>
+                                <span>Website</span>
+                            </div>
+
+                            <div class="ecosystem-node">
+                                <i class="fa-solid fa-star"></i>
+                                <span>Reviews</span>
+                            </div>
+
+                            <div class="ecosystem-node">
+                                <i class="fa-solid fa-link"></i>
+                                <span>Web &amp; Directories</span>
+                            </div>
+
+                            <div class="ecosystem-node">
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>Local Content</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
 
         <!-- ==========================================
             GOOGLE BUSINESS PROFILE
@@ -555,7 +1217,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Local SEO.png"
+                        <img src="../assets/images/my-Local SEO.png"
                             alt="Google Business Profile local SEO optimization">
 
                     </div>
@@ -632,7 +1294,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -714,7 +1375,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-SEO.png"
+                        <img src="../assets/images/my-SEO.png"
                             alt="Local keyword research and search strategy">
 
                     </div>
@@ -724,7 +1385,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -740,7 +1400,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-web-design.png"
+                        <img src="../assets/images/my-web-design.png"
                             alt="Website optimization for local search">
 
                     </div>
@@ -815,7 +1475,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -897,7 +1556,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Local SEO.png"
+                        <img src="../assets/images/my-Local SEO.png"
                             alt="Local business reviews and reputation management">
 
                     </div>
@@ -907,7 +1566,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -923,7 +1581,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Analytics & Reporting.png"
+                        <img src="../assets/images/my-Analytics & Reporting.png"
                             alt="Local business data and citation management">
 
                     </div>
@@ -999,7 +1657,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1082,7 +1739,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-SEO.png"
+                        <img src="../assets/images/my-SEO.png"
                             alt="Local SEO content strategy">
 
                     </div>
@@ -1093,6 +1750,80 @@
 
         </section>
 
+
+        <!-- ==========================================
+            LOCAL WEBSITE & STRUCTURED DATA
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    WEBSITE + LOCAL SEARCH
+                </span>
+
+                <h2>
+                    Your Website Helps Search Engines Understand the Business Behind the Listing
+                </h2>
+
+                <p class="section-intro">
+                    Local SEO extends into the website. Clear service pages, location
+                    information, internal linking, useful content, crawlable structure,
+                    and accurate business details give search engines additional context
+                    about the organization and the markets it serves.
+                </p>
+
+                <p class="section-intro">
+                    Where appropriate, we can also use structured data to help search
+                    engines understand entities and business information. Google's
+                    Search Central documentation identifies LocalBusiness structured
+                    data as a way to communicate information about a local business,
+                    while emphasizing that structured data does not guarantee a special
+                    search appearance.
+                    <a href="https://developers.google.com/search/docs/appearance/structured-data/local-business"
+                       target="_blank" rel="noopener noreferrer">
+                        Read Google's LocalBusiness structured data documentation
+                    </a>.
+                </p>
+
+                <div class="benefits-grid">
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Service &amp; Location Pages</span>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Local Business Information</span>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Internal Linking</span>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>LocalBusiness Structured Data</span>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Technical SEO</span>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Search Console Monitoring</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
         <!-- ==========================================
@@ -1108,7 +1839,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Analytics & Reporting.png"
+                        <img src="../assets/images/my-Analytics & Reporting.png"
                             alt="Local SEO analytics and reporting">
 
                     </div>
@@ -1197,7 +1928,6 @@
         </section>
 
 
-
         <!-- ==========================================
             WHO LOCAL SEO IS FOR
         =========================================== -->
@@ -1226,7 +1956,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1326,7 +2055,6 @@
         </section>
 
 
-
         <!-- ==========================================
             LOCAL SEO + OTHER SERVICES
         =========================================== -->
@@ -1380,7 +2108,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1439,7 +2166,6 @@
         </section>
 
     </main>
-
 
 
     <!-- ==========================================
@@ -1502,7 +2228,6 @@
                 </div>
 
 
-
                 <!-- SERVICES -->
 
                 <div>
@@ -1561,7 +2286,6 @@
                 </div>
 
 
-
                 <!-- RESOURCES -->
 
                 <div>
@@ -1580,19 +2304,19 @@
                         </li>
 
                         <li>
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
                                 Blog
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/faq.html">
+                            <a href="../resources/faq.html">
                                 Frequently Asked Questions
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/free-resources.html">
+                            <a href="../resources/free-resources.html">
                                 Free Resources
                             </a>
                         </li>
@@ -1606,7 +2330,6 @@
                     </ul>
 
                 </div>
-
 
 
                 <!-- CONTACT -->
@@ -1627,12 +2350,12 @@
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
-                            info@pulseanalyticsgroup.com
+                            pulseanalyticsgroupllc@gmail.com
                         </li>
 
                         <li>
                             <i class="fa-solid fa-phone"></i>
-                            (814) 555-1234
+                            (814) 737-7650
                         </li>
 
                         <li>
@@ -1647,7 +2370,6 @@
                 </div>
 
             </div>
-
 
 
             <!-- FOOTER BOTTOM -->
@@ -1669,7 +2391,6 @@
         </div>
 
     </footer>
-
 
 
 </body>

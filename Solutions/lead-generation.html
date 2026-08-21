@@ -71,6 +71,292 @@
     <link rel="stylesheet"
         href="../styles.css">
 
+
+    <!-- ==========================================
+        PAGE-SPECIFIC SCHEMA
+    =========================================== -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.pulseanalyticsgroup.com/solutions/lead-generation.html#service",
+      "name": "Lead Generation Solutions",
+      "serviceType": "Lead Generation",
+      "description": "Strategic lead generation solutions combining market research, competitive intelligence, audience analysis, acquisition strategy, conversion optimization, lead qualification, nurturing, analytics, and continuous optimization.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Pulse Analytics Group LLC",
+        "url": "https://www.pulseanalyticsgroup.com/"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://www.pulseanalyticsgroup.com/solutions/lead-generation.html#webpage",
+      "url": "https://www.pulseanalyticsgroup.com/solutions/lead-generation.html",
+      "name": "Lead Generation Solutions | Pulse Analytics Group LLC",
+      "description": "Build a stronger lead generation system through market intelligence, audience research, acquisition strategy, conversion optimization, measurement, and continuous improvement.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Pulse Analytics Group LLC",
+        "url": "https://www.pulseanalyticsgroup.com/"
+      },
+      "about": {
+        "@id": "https://www.pulseanalyticsgroup.com/solutions/lead-generation.html#service"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.pulseanalyticsgroup.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Solutions",
+          "item": "https://www.pulseanalyticsgroup.com/solutions.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Lead Generation",
+          "item": "https://www.pulseanalyticsgroup.com/solutions/lead-generation.html"
+        }
+      ]
+    }
+    </script>
+
+
+    <style>
+        /* ==========================================
+           LEAD GENERATION — PAGE-SPECIFIC VISUALS
+        =========================================== */
+
+        .research-panel {
+            margin-top: 2.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(10, 46, 111, .10);
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 12px 35px rgba(10, 46, 111, .06);
+        }
+
+        .research-panel-header {
+            max-width: 850px;
+            margin-bottom: 1.75rem;
+        }
+
+        .research-panel-header h3 {
+            margin-bottom: .45rem;
+        }
+
+        .research-panel-header p {
+            margin-bottom: 0;
+            opacity: .78;
+        }
+
+        .research-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .research-metric {
+            padding: 1.25rem;
+            border-radius: 10px;
+            background: #f7f9fc;
+            border: 1px solid rgba(10, 46, 111, .07);
+        }
+
+        .research-metric-value {
+            display: block;
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 800;
+            color: #0A2E6F;
+            margin-bottom: .55rem;
+        }
+
+        .research-metric-label {
+            display: block;
+            font-size: .82rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .research-source {
+            margin: 1.25rem 0 0;
+            font-size: .76rem;
+            line-height: 1.55;
+            opacity: .68;
+        }
+
+        .research-source a {
+            font-weight: 600;
+        }
+
+        .lead-economics {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: .75rem;
+            margin-top: 2rem;
+        }
+
+        .lead-economics-step {
+            position: relative;
+            padding: 1rem .7rem;
+            text-align: center;
+            border-radius: 10px;
+            background: #fff;
+            border: 1px solid rgba(10, 46, 111, .10);
+            box-shadow: 0 8px 22px rgba(10, 46, 111, .05);
+        }
+
+        .lead-economics-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -.72rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 800;
+            color: #1976D2;
+            z-index: 2;
+        }
+
+        .lead-economics-step strong {
+            display: block;
+            font-size: .78rem;
+            line-height: 1.35;
+        }
+
+        .lead-economics-step span {
+            display: block;
+            margin-top: .3rem;
+            font-size: .68rem;
+            line-height: 1.4;
+            opacity: .68;
+        }
+
+        .lead-system {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: .85rem;
+        }
+
+        .lead-system-step {
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid rgba(10, 46, 111, .10);
+        }
+
+        .lead-system-step strong {
+            font-size: .82rem;
+        }
+
+        .lead-system-step span {
+            margin-top: .3rem;
+            font-size: .68rem;
+            line-height: 1.4;
+            opacity: .68;
+        }
+
+        .lead-system-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1976D2;
+            font-weight: 800;
+            z-index: 2;
+        }
+
+        .closed-loop {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: .78rem;
+            font-weight: 700;
+            color: #1976D2;
+        }
+
+        .source-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem;
+            margin-top: 1.25rem;
+        }
+
+        .source-links a {
+            font-size: .76rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .research-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .lead-economics {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .lead-economics-step:nth-child(3)::after,
+            .lead-economics-step:nth-child(6)::after {
+                display: none;
+            }
+
+            .lead-system {
+                grid-template-columns: 1fr;
+            }
+
+            .lead-system-step:not(:last-child)::after {
+                content: "↓";
+                right: 50%;
+                top: auto;
+                bottom: -.8rem;
+                transform: translateX(50%);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .lead-economics {
+                grid-template-columns: 1fr;
+            }
+
+            .lead-economics-step::after {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <link rel="canonical"
+        href="https://www.pulseanalyticsgroup.com/solutions/lead-generation.html">
+
 </head>
 
 
@@ -92,7 +378,7 @@
                     <a href="../index.html"
                         class="logo">
 
-                        <img src="../assetts/images/transparent logo PA.jpeg"
+                        <img src="../assetts/images/transparent-logo-PA.jpeg"
                             alt="Pulse Analytics Group LLC Logo">
 
                     </a>
@@ -313,7 +599,7 @@
 
                         <li class="dropdown">
 
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
 
                                 Resources
 
@@ -325,25 +611,25 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Resources/blog.html">
+                                    <a href="../resources/blog.html">
                                         Blog
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/guides.html">
+                                    <a href="../resources/guides.html">
                                         Marketing Guides
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/free-resources.html">
+                                    <a href="../resources/free-resources.html">
                                         Free Resources
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/faq.html">
+                                    <a href="../resources/faq.html">
                                         FAQ
                                     </a>
                                 </li>
@@ -430,7 +716,7 @@
                         </a>
 
 
-                        <a href="../Resources/free-resources.html"
+                        <a href="../resources/free-resources.html"
                             class="btn-secondary">
 
                             Explore Free Resources
@@ -520,7 +806,7 @@
             MARKET INTELLIGENCE
         =========================================== -->
 
-        <section class="services-introduction">
+        <section class="services-introduction" id="market-intelligence">
 
             <div class="container">
 
@@ -552,6 +838,64 @@
                     Our research process is designed to uncover those
                     conditions before resources are committed to acquisition.
                 </p>
+                <div class="research-panel">
+
+                    <div class="research-panel-header">
+                        <span class="section-label">INDUSTRY SIGNALS</span>
+
+                        <h3>
+                            Lead Generation Is Becoming More Data-Driven—and More Demanding
+                        </h3>
+
+                        <p>
+                            Current marketing research shows a useful tension:
+                            lead volume can be growing while organizations still
+                            need better audience data, qualification, and measurement
+                            to turn acquisition activity into meaningful business outcomes.
+                        </p>
+                    </div>
+
+                    <div class="research-metrics">
+
+                        <div class="research-metric">
+                            <span class="research-metric-value">30%</span>
+                            <span class="research-metric-label">
+                                of marketers surveyed by HubSpot said generating leads
+                                remains a top marketing challenge.
+                            </span>
+                        </div>
+
+                        <div class="research-metric">
+                            <span class="research-metric-value">74.5%</span>
+                            <span class="research-metric-label">
+                                reported that lead volume increased over the previous
+                                12 months, combining significant and somewhat increased responses.
+                            </span>
+                        </div>
+
+                        <div class="research-metric">
+                            <span class="research-metric-value">93.8%</span>
+                            <span class="research-metric-label">
+                                reported that lead quality improved over the previous
+                                12 months.
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <p class="research-source">
+                        Source:
+                        <a href="https://blog.hubspot.com/marketing/hubspot-blog-marketing-industry-trends-report"
+                           target="_blank" rel="noopener noreferrer">
+                            HubSpot — 2026 State of Marketing
+                        </a>.
+                        Percentages are reported survey results; the 74.5% figure is
+                        calculated from HubSpot's published 24.5% significant-increase
+                        and 50% somewhat-increased responses.
+                    </p>
+
+                </div>
+
 
             </div>
 
@@ -744,7 +1088,7 @@
             AUDIENCE RESEARCH
         =========================================== -->
 
-        <section class="service-section alternate">
+        <section class="service-section alternate" id="audience-research">
 
             <div class="container">
 
@@ -979,7 +1323,7 @@
             CHANNEL STRATEGY
         =========================================== -->
 
-        <section class="service-section alternate">
+        <section class="service-section alternate" id="channel-strategy">
 
             <div class="container">
 
@@ -1070,7 +1414,7 @@
             OFFER & MESSAGE
         =========================================== -->
 
-        <section class="service-section">
+        <section class="service-section" id="offer-messaging">
 
             <div class="container">
 
@@ -1154,13 +1498,86 @@
 
         </section>
 
+        <!-- ==========================================
+            ACQUISITION ECONOMICS
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    ACQUISITION ECONOMICS
+                </span>
+
+                <h2>
+                    The Value of a Lead Depends on What Happens After Acquisition
+                </h2>
+
+                <p class="section-intro">
+                    Lead generation should be evaluated beyond the initial form
+                    submission or phone call. The economics become clearer when
+                    acquisition is connected to qualification, opportunity creation,
+                    customer conversion, and revenue.
+                </p>
+
+                <div class="lead-economics">
+
+                    <div class="lead-economics-step">
+                        <strong>Acquisition</strong>
+                        <span>Traffic, clicks, calls, referrals</span>
+                    </div>
+
+                    <div class="lead-economics-step">
+                        <strong>Lead</strong>
+                        <span>Initial conversion event</span>
+                    </div>
+
+                    <div class="lead-economics-step">
+                        <strong>Qualified Lead</strong>
+                        <span>Fit, intent, and readiness</span>
+                    </div>
+
+                    <div class="lead-economics-step">
+                        <strong>Opportunity</strong>
+                        <span>Sales-qualified potential</span>
+                    </div>
+
+                    <div class="lead-economics-step">
+                        <strong>Customer</strong>
+                        <span>Closed business</span>
+                    </div>
+
+                    <div class="lead-economics-step">
+                        <strong>Revenue</strong>
+                        <span>Business outcome</span>
+                    </div>
+
+                </div>
+
+                <div class="source-links">
+                    <a href="https://support.google.com/google-ads/answer/11459091"
+                       target="_blank" rel="noopener noreferrer">
+                        Google Ads: Qualified &amp; Converted Leads
+                    </a>
+
+                    <a href="https://support.google.com/google-ads/answer/15795510"
+                       target="_blank" rel="noopener noreferrer">
+                        Google Ads: Lead-to-Sale Journey Mapping
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
 
 
         <!-- ==========================================
             LANDING PAGES
         =========================================== -->
 
-        <section class="service-section alternate">
+        <section class="service-section alternate" id="conversion-experience">
 
             <div class="container">
 
@@ -1261,7 +1678,7 @@
             LEAD CAPTURE
         =========================================== -->
 
-        <section class="service-section">
+        <section class="service-section" id="lead-capture">
 
             <div class="container">
 
@@ -1351,7 +1768,7 @@
             LEAD QUALIFICATION
         =========================================== -->
 
-        <section class="service-section alternate">
+        <section class="service-section alternate" id="lead-qualification">
 
             <div class="container">
 
@@ -1441,7 +1858,7 @@
             LEAD NURTURING
         =========================================== -->
 
-        <section class="service-section">
+        <section class="service-section" id="lead-nurturing">
 
             <div class="container">
 
@@ -1601,11 +2018,23 @@
                         </p>
 
 
+
                         <p>
                             We develop paid acquisition strategies around
                             audience targeting, search intent, messaging,
                             creative, landing pages, conversion tracking,
                             budget, and performance.
+                        </p>
+
+                        <p class="research-source">
+                            Google recommends mapping the complete lead-to-sale
+                            journey and identifying the stages that signal a higher
+                            probability of conversion before optimizing campaigns
+                            toward those outcomes.
+                            <a href="https://support.google.com/google-ads/answer/15795510"
+                               target="_blank" rel="noopener noreferrer">
+                                Google Ads — Generate leads with Google Ads
+                            </a>.
                         </p>
 
 
@@ -1677,7 +2106,7 @@
             ANALYTICS
         =========================================== -->
 
-        <section class="service-section">
+        <section class="service-section" id="measurement-attribution">
 
             <div class="container">
 
@@ -1712,10 +2141,28 @@
                         </p>
 
 
+
                         <p>
                             We connect acquisition activity with conversion
                             measurement to help determine which channels and
                             campaigns are producing meaningful outcomes.
+                        </p>
+
+                        <p>
+                            This matters because modern lead-generation measurement
+                            increasingly needs to distinguish an initial lead from
+                            a qualified lead and, ultimately, a converted customer.
+                            Google Ads now supports explicit qualified-lead and
+                            converted-lead goals so campaign optimization can be
+                            connected to deeper stages of the sales journey.
+                        </p>
+
+                        <p class="research-source">
+                            Source:
+                            <a href="https://support.google.com/google-ads/answer/11459091"
+                               target="_blank" rel="noopener noreferrer">
+                                Google Ads Help — About qualified leads and converted leads
+                            </a>.
                         </p>
 
 
@@ -1801,45 +2248,25 @@
 
                 <div class="related-services">
 
-                    <a href="#">
-                        01 — Research
-                    </a>
+                    <a href="#market-intelligence">01 — Research</a>
 
-                    <a href="#">
-                        02 — Target
-                    </a>
+                    <a href="#audience-research">02 — Target</a>
 
-                    <a href="#">
-                        03 — Attract
-                    </a>
+                    <a href="#channel-strategy">03 — Attract</a>
 
-                    <a href="#">
-                        04 — Engage
-                    </a>
+                    <a href="#offer-messaging">04 — Engage</a>
 
-                    <a href="#">
-                        05 — Capture
-                    </a>
+                    <a href="#lead-capture">05 — Capture</a>
 
-                    <a href="#">
-                        06 — Qualify
-                    </a>
+                    <a href="#lead-qualification">06 — Qualify</a>
 
-                    <a href="#">
-                        07 — Nurture
-                    </a>
+                    <a href="#lead-nurturing">07 — Nurture</a>
 
-                    <a href="#">
-                        08 — Convert
-                    </a>
+                    <a href="#conversion-experience">08 — Convert</a>
 
-                    <a href="#">
-                        09 — Measure
-                    </a>
+                    <a href="#measurement-attribution">09 — Measure</a>
 
-                    <a href="#">
-                        10 — Optimize
-                    </a>
+                    <a href="#measurement-attribution">10 — Optimize</a>
 
                 </div>
 
@@ -1977,9 +2404,17 @@
                 </p>
 
 
+
                 <p class="section-intro">
                     That is why we collaborate with the people responsible for
                     sales and customer relationships throughout the process.
+                </p>
+
+                <p class="section-intro">
+                    The goal is not to replace sales judgment with automation.
+                    It is to connect the knowledge of the people closest to the
+                    customer with better market information, measurement, and
+                    acquisition infrastructure.
                 </p>
 
             </div>
@@ -2402,19 +2837,19 @@
                         </li>
 
                         <li>
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
                                 Blog
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/faq.html">
+                            <a href="../resources/faq.html">
                                 Frequently Asked Questions
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/free-resources.html">
+                            <a href="../resources/free-resources.html">
                                 Free Resources
                             </a>
                         </li>

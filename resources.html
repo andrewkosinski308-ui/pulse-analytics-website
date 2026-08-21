@@ -51,7 +51,7 @@
             content="https://www.pulseanalyticsgroup.com/resources.html">
 
         <meta property="og:image"
-            content="https://www.pulseanalyticsgroup.com/assetts/images/resources/resource-center-hero.png">
+            content="https://www.pulseanalyticsgroup.com/assets/images/resources/resource-center-hero.png">
 
         <!-- ==========================================
             TWITTER CARD
@@ -71,7 +71,7 @@
         =========================================== -->
 
         <link rel="icon"
-            href="assetts/images/favicon.ico">
+            href="assets/images/favicon.ico">
 
         <!-- ==========================================
             GOOGLE FONTS
@@ -99,7 +99,183 @@
         =========================================== -->
 
         <link rel="stylesheet"
-            href="../styles.css">
+            href="styles.css">
+
+
+        <!-- ==========================================
+            ORGANIZATION SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://www.pulseanalyticsgroup.com/#organization",
+            "name": "Pulse Analytics Group LLC",
+            "alternateName": "Pulse Analytics Group",
+            "description": "Pulse Analytics Group LLC is a full-service digital marketing agency specializing in search engine optimization (SEO), Google Ads management, website design and development, analytics, AI-powered marketing solutions, local SEO, accessibility, and business growth strategies.",
+            "logo": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "slogan": "Data. Insight. Growth.",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "telephone": "+1-814-737-7650",
+            "founder": {
+                "@type": "Person",
+                "name": "Andrew Kosinski"
+            },
+            "sameAs": [
+                "https://www.facebook.com/profile.php?id=61591149445952",
+                "https://www.instagram.com/pulseanalyticsgroupllc/",
+                "https://www.tiktok.com/@pulseanalyticsgroup"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            PROFESSIONAL SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "@id": "https://www.pulseanalyticsgroup.com/#professional-service",
+            "name": "Pulse Analytics Group LLC",
+            "image": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "priceRange": "$150 - $3500",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "84 East High Street",
+                "addressLocality": "Union City",
+                "addressRegion": "PA",
+                "postalCode": "16438",
+                "addressCountry": "US"
+            },
+            "telephone": "+1-814-737-7650",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Customer Service",
+                "telephone": "+1-814-737-7650",
+                "email": "pulseanalyticsgroupllc@gmail.com",
+                "availableLanguage": "English"
+            },
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBSITE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://www.pulseanalyticsgroup.com/#website",
+            "url": "https://www.pulseanalyticsgroup.com",
+            "name": "Pulse Analytics Group LLC",
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            RESOURCE CENTER PAGE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "@id": "https://www.pulseanalyticsgroup.com/resources.html#collection",
+            "url": "https://www.pulseanalyticsgroup.com/resources.html",
+            "name": "Resource Center | Pulse Analytics Group LLC",
+            "description": "Explore the Pulse Analytics Group Resource Center featuring digital marketing articles, marketing guides, free resources, FAQs, and educational content designed to help businesses make better marketing decisions.",
+            "isPartOf": {
+                "@id": "https://www.pulseanalyticsgroup.com/#website"
+            },
+            "about": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            BREADCRUMB SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "@id": "https://www.pulseanalyticsgroup.com/resources.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.pulseanalyticsgroup.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Resources",
+                    "item": "https://www.pulseanalyticsgroup.com/resources.html"
+                }
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            RESOURCE SECTION ITEMLIST SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "@id": "https://www.pulseanalyticsgroup.com/resources.html#resource-sections",
+            "name": "Pulse Analytics Resource Center",
+            "description": "Primary resource categories available through the Pulse Analytics Group Resource Center.",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Blog",
+                    "url": "https://www.pulseanalyticsgroup.com/blog.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Marketing Guides",
+                    "url": "https://www.pulseanalyticsgroup.com/marketing-guides.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Free Resources",
+                    "url": "https://www.pulseanalyticsgroup.com/free-resources.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": "Frequently Asked Questions",
+                    "url": "https://www.pulseanalyticsgroup.com/faq.html"
+                }
+            ]
+        }
+        </script>
 
     </head>
 
@@ -119,7 +295,7 @@
 
                         <a href="index.html" class="logo">
 
-                            <img src="assetts/images/transparent logo PA.jpeg"
+                            <img src="assets/images/transparent-logo-pa.jpeg"
                                 alt="Pulse Analytics Group LLC Logo">
 
                         </a>
@@ -200,13 +376,13 @@
 
                                     <li><a href="solutions/lead-generation.html">Lead Generation</a></li>
 
-                                    <li><a href="solutions/local-business.html">Local Business Growth</a></li>
+                                    <li><a href="solutions/local-business-growth.html">Local Business Growth</a></li>
 
-                                    <li><a href="solutions/ecommerce.html">E-Commerce</a></li>
+                                    <li><a href="solutions/e-commerce.html">E-Commerce</a></li>
 
-                                    <li><a href="solutions/startups.html">Startup Marketing</a></li>
+                                    <li><a href="solutions/startup-marketing.html">Startup Marketing</a></li>
 
-                                    <li><a href="solutions/enterprise.html">Enterprise Solutions</a></li>
+                                    <li><a href="solutions/enterprise-solutions.html">Enterprise Solutions</a></li>
 
                                 </ul>
 
@@ -226,13 +402,13 @@
 
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="about.html">Our Company</a></li>
+                                    <li><a href="about.html#our-company">Our Company</a></li>
 
-                                    <li><a href="#">Mission &amp; Values</a></li>
+                                    <li><a href="about.html#mission-values">Mission &amp; Values</a></li>
 
-                                    <li><a href="#">Our Process</a></li>
+                                    <li><a href="about.html#our-process">Our Process</a></li>
 
-                                    <li><a href="#">Why Choose Pulse Analytics</a></li>
+                                    <li><a href="about.html#why-choose">Why Choose Pulse Analytics</a></li>
 
                                 </ul>
 
@@ -282,49 +458,88 @@
         </header>
 
         <main>
-                        <!-- ==========================================
-                FEATURED RESOURCE CENTER
-            ========================================== -->
 
-            <section class="featured-resources">
+            <!-- ==========================================
+                RESOURCE CENTER HERO
+            =========================================== -->
+
+            <section class="resources-hero">
+
+                <div class="container">
+
+                    <p class="section-label">
+                        PULSE ANALYTICS RESOURCE CENTER
+                    </p>
+
+                    <h1>
+                        Learn. Apply. Make Better Marketing Decisions.
+                    </h1>
+
+                    <p class="hero-introduction">
+                        Digital marketing is easier to navigate when you have reliable
+                        information, practical guidance, and a clear understanding of why
+                        something matters. The Pulse Analytics Resource Center brings those
+                        pieces together in one place.
+                    </p>
+
+                    <p class="hero-introduction">
+                        Explore industry insights, comprehensive marketing guides, practical
+                        tools, and straightforward answers to common questions. Start with
+                        what you need today, then continue when you're ready to go deeper.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="#resource-library" class="btn-primary">
+                            Explore the Resource Center
+                        </a>
+
+                        <a href="contact.html" class="btn-secondary">
+                            Talk With Pulse Analytics
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                RESOURCE PATH
+            =========================================== -->
+
+            <section class="resource-path" id="resource-library">
 
                 <div class="container">
 
                     <div class="section-heading">
 
                         <span class="section-label">
-
-                            FEATURED RESOURCES
-
+                            RESOURCE LIBRARY
                         </span>
 
                         <h2>
-
                             Choose Where You'd Like to Begin
-
                         </h2>
 
                         <p class="section-intro">
-
-                            Whether you're looking to expand your marketing knowledge,
-                            download practical tools, or find answers to common questions,
-                            our Resource Center provides professionally developed content
-                            designed to help businesses make smarter decisions and achieve
-                            measurable growth.
-
+                            Every resource serves a different purpose. Read current
+                            perspectives, build your knowledge, put ideas into practice,
+                            or find a direct answer to a question. The choice is yours.
                         </p>
 
                     </div>
 
-                    <!-- ==========================================
-                        BLOG
-                    =========================================== -->
 
-                    <div class="resource-feature">
+                    <!-- BLOG -->
+
+                    <article class="resource-feature" id="blog">
 
                         <div class="resource-image">
 
-                            <img src="assetts/images/Pulse Analytics Blog Featured Image.png"
+                            <img
+                                src="assets/images/Pulse Analytics Blog Featured Image.png"
                                 alt="Pulse Analytics Group Blog">
 
                         </div>
@@ -332,253 +547,415 @@
                         <div class="resource-content">
 
                             <span class="section-label">
-
-                                LATEST INSIGHTS
-
+                                BLOG
                             </span>
 
                             <h3>
-
-                                Stay Informed with Industry News and Expert Perspectives
-
+                                Stay Current With Industry News, Trends &amp; Expert Perspectives
                             </h3>
 
                             <p>
+                                Digital marketing changes continuously. Search platforms
+                                introduce new features, advertising systems evolve, customer
+                                behavior shifts, and emerging technologies change what is
+                                possible. Our blog is designed to help businesses understand
+                                those changes without having to sort through the noise.
+                            </p>
 
-                                The digital marketing landscape changes every day. Our blog
-                                delivers timely articles covering search engine
-                                optimization, Google Ads, analytics, artificial
-                                intelligence, website development, accessibility, and the
-                                latest industry trends to help businesses stay informed and
-                                competitive.
-
+                            <p>
+                                Explore articles covering search engine optimization,
+                                Google Ads, analytics, artificial intelligence, website
+                                development, accessibility, digital strategy, and important
+                                developments across the industry.
                             </p>
 
                             <ul class="resource-list">
 
-                                <li><i class="fa-solid fa-check"></i> SEO & Search Trends</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    SEO &amp; Search Trends
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Google Ads Updates</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Google Ads Updates
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Analytics & Reporting</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Analytics &amp; Measurement
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Artificial Intelligence</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Artificial Intelligence
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Website Development</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Websites &amp; Technology
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Company News</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Industry Perspectives
+                                </li>
 
                             </ul>
 
-                            <a href="blog.html"
-                            class="btn-primary">
-
-                                Read Our Blog
-
+                            <a href="blog.html" class="btn-primary">
+                                Read the Blog
                             </a>
 
                         </div>
 
-                    </div>
+                    </article>
 
-                    <!-- ==========================================
-                        MARKETING GUIDES
-                    =========================================== -->
 
-                    <div class="resource-feature reverse">
+                    <!-- MARKETING GUIDES -->
+
+                    <article class="resource-feature reverse" id="marketing-guides">
 
                         <div class="resource-content">
 
                             <span class="section-label">
-
                                 MARKETING GUIDES
-
                             </span>
 
                             <h3>
-
-                                Learn Digital Marketing Through Comprehensive Educational Guides
-
+                                Build Your Understanding With Comprehensive Marketing Guides
                             </h3>
 
                             <p>
+                                Some marketing questions cannot be answered in a paragraph.
+                                Our guides are designed for deeper learning, taking complex
+                                subjects and organizing them into practical, understandable
+                                frameworks.
+                            </p>
 
-                                Our Marketing Guides explain complex digital marketing
-                                topics through step-by-step instruction, practical
-                                examples, and actionable recommendations. Whether you're a
-                                beginner or an experienced professional, these guides are
-                                designed to help you build confidence and expand your
-                                expertise.
-
+                            <p>
+                                Use these guides to understand how a strategy works, why it
+                                matters, what the major considerations are, and how the
+                                concepts can be applied to a real business environment.
                             </p>
 
                             <ul class="resource-list">
 
-                                <li><i class="fa-solid fa-check"></i> Search Engine Optimization</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Search Engine Optimization
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Local SEO</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Local SEO
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Google Ads</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Google Ads
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Website Development</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Website Development
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Analytics</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Analytics &amp; Reporting
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> AI Marketing</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    AI Marketing
+                                </li>
 
                             </ul>
 
-                            <a href="marketing-guides.html"
-                            class="btn-primary">
-
+                            <a href="marketing-guides.html" class="btn-primary">
                                 Explore Marketing Guides
-
                             </a>
 
                         </div>
 
                         <div class="resource-image">
 
-                            <img src="assetts/images/Marketing and Reporting Featured Image.png"
-                                alt="Marketing Guides">
+                            <img
+                                src="assets/images/Marketing and Reporting Featured Image.png"
+                                alt="Pulse Analytics marketing guides">
 
                         </div>
 
-                    </div>
+                    </article>
 
-                    <!-- ==========================================
-                        FREE RESOURCES
-                    =========================================== -->
 
-                    <div class="resource-feature">
+                    <!-- FREE RESOURCES -->
+
+                    <article class="resource-feature" id="free-resources">
 
                         <div class="resource-image">
 
-                            <img src="assetts/images/Pulse Analytics Pricing Featured Image.png"
-                                alt="Free Marketing Resources">
+                            <img
+                                src="assets/images/Pulse Analytics Pricing Featured Image.png"
+                                alt="Pulse Analytics free marketing resources">
 
                         </div>
 
                         <div class="resource-content">
 
                             <span class="section-label">
-
                                 FREE RESOURCES
-
                             </span>
 
                             <h3>
-
-                                Practical Tools Designed to Help Your Business Grow
-
+                                Put Knowledge Into Practice With Practical Tools
                             </h3>
 
                             <p>
+                                Understanding a concept is one thing. Applying it to your
+                                business is another. Our free resources are designed to
+                                bridge that gap with practical materials you can use in
+                                planning, evaluating, organizing, and improving your
+                                marketing.
+                            </p>
 
-                                Knowledge becomes even more valuable when it's put into
-                                action. Download practical templates, checklists,
-                                worksheets, planning documents, and other free resources
-                                designed to simplify marketing and improve business
-                                performance.
-
+                            <p>
+                                Download checklists, worksheets, templates, planning
+                                documents, and other tools designed to make complex
+                                marketing work more manageable and actionable.
                             </p>
 
                             <ul class="resource-list">
 
-                                <li><i class="fa-solid fa-check"></i> Website Checklists</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Website Checklists
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> SEO Worksheets</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    SEO Worksheets
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Marketing Templates</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Marketing Templates
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Planning Documents</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Planning Documents
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Accessibility Resources</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Accessibility Resources
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Business Tools</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Business Tools
+                                </li>
 
                             </ul>
 
-                            <a href="free-resources.html"
-                            class="btn-primary">
-
-                                Download Free Resources
-
+                            <a href="free-resources.html" class="btn-primary">
+                                Browse Free Resources
                             </a>
 
                         </div>
 
-                    </div>
+                    </article>
 
-                    <!-- ==========================================
-                        FAQ
-                    =========================================== -->
 
-                    <div class="resource-feature reverse">
+                    <!-- FAQ -->
+
+                    <article class="resource-feature reverse" id="faq">
 
                         <div class="resource-content">
 
                             <span class="section-label">
-
                                 FREQUENTLY ASKED QUESTIONS
-
                             </span>
 
                             <h3>
-
-                                Find Answers to Common Questions
-
+                                Find Clear Answers Before You Make a Decision
                             </h3>
 
                             <p>
+                                Good decisions start with good information. Our FAQ
+                                provides straightforward answers to common questions about
+                                digital marketing, SEO, Google Ads, website development,
+                                analytics, and working with Pulse Analytics Group.
+                            </p>
 
-                                Whether you're researching digital marketing or learning
-                                about our services, our Frequently Asked Questions provide
-                                clear, straightforward answers to the questions businesses
-                                ask most often.
-
+                            <p>
+                                If you're researching a service, evaluating an approach,
+                                or simply trying to understand where to begin, the FAQ is
+                                a useful place to find clarity before taking the next step.
                             </p>
 
                             <ul class="resource-list">
 
-                                <li><i class="fa-solid fa-check"></i> Digital Marketing</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Digital Marketing
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Search Engine Optimization</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Search Engine Optimization
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Google Ads</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Google Ads
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Website Development</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Website Development
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Analytics</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Analytics
+                                </li>
 
-                                <li><i class="fa-solid fa-check"></i> Working With Pulse Analytics Group</li>
+                                <li>
+                                    <i class="fa-solid fa-check"></i>
+                                    Working With Pulse Analytics Group
+                                </li>
 
                             </ul>
 
-                            <a href="faq.html"
-                            class="btn-primary">
-
-                                Browse FAQs
-
+                            <a href="faq.html" class="btn-primary">
+                                Browse Frequently Asked Questions
                             </a>
 
                         </div>
 
                         <div class="resource-image">
 
-                            <img src="assetts/images/Why Choose Pulse image.png"
-                                alt="Frequently Asked Questions">
+                            <img
+                                src="assets/images/Why Choose Pulse image.png"
+                                alt="Pulse Analytics frequently asked questions">
 
                         </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                HOW TO USE THE RESOURCE CENTER
+            =========================================== -->
+
+            <section class="learning-journey">
+
+                <div class="container">
+
+                    <div class="section-heading">
+
+                        <span class="section-label">
+                            A CLEAR PATH FORWARD
+                        </span>
+
+                        <h2>
+                            Learn What You Need. Apply What Matters. Go Deeper When You're Ready.
+                        </h2>
+
+                        <p class="section-intro">
+                            You do not need to read everything to benefit from the Resource
+                            Center. Start with the format that matches your question and
+                            follow the path that makes sense for you.
+                        </p>
+
+                    </div>
+
+                    <div class="journey-grid">
+
+                        <article class="journey-card">
+
+                            <i class="fa-solid fa-newspaper"></i>
+
+                            <h3>
+                                Explore
+                            </h3>
+
+                            <p>
+                                Start with the <a href="blog.html">Blog</a> when you want
+                                current perspectives, industry developments, and practical
+                                insight into what is changing in digital marketing.
+                            </p>
+
+                        </article>
+
+
+                        <article class="journey-card">
+
+                            <i class="fa-solid fa-book-open-reader"></i>
+
+                            <h3>
+                                Learn
+                            </h3>
+
+                            <p>
+                                Move to the <a href="marketing-guides.html">Marketing Guides</a>
+                                when you want a deeper explanation of a subject and a more
+                                structured understanding of how it works.
+                            </p>
+
+                        </article>
+
+
+                        <article class="journey-card">
+
+                            <i class="fa-solid fa-download"></i>
+
+                            <h3>
+                                Apply
+                            </h3>
+
+                            <p>
+                                Use <a href="free-resources.html">Free Resources</a> when
+                                you're ready to put the information into practice with
+                                practical tools, worksheets, templates, and checklists.
+                            </p>
+
+                        </article>
+
+
+                        <article class="journey-card">
+
+                            <i class="fa-solid fa-circle-question"></i>
+
+                            <h3>
+                                Clarify
+                            </h3>
+
+                            <p>
+                                Visit the <a href="faq.html">FAQ</a> when you have a specific
+                                question and want a direct answer before deciding what to
+                                do next.
+                            </p>
+
+                        </article>
 
                     </div>
 
                 </div>
 
             </section>
-                        <!-- ==========================================
-                WHY WE SHARE WHAT WE KNOW
-            ========================================== -->
+
+
+            <!-- ==========================================
+                KNOWLEDGE PHILOSOPHY
+            =========================================== -->
 
             <section class="knowledge-philosophy">
 
@@ -588,61 +965,47 @@
 
                         <div class="resource-image">
 
-                            <img src="assetts/images/Our Mission.jpg"
-                                alt="Knowledge sharing and digital marketing education">
+                            <img
+                                src="assets/images/Our Mission.jpg"
+                                alt="Pulse Analytics commitment to knowledge sharing">
 
                         </div>
 
                         <div class="resource-content">
 
                             <span class="section-label">
-
                                 OUR PHILOSOPHY
-
                             </span>
 
                             <h2>
-
                                 Why We Share What We Know
-
                             </h2>
 
                             <blockquote>
-
-                                "Knowledge becomes more valuable when it is shared."
-
+                                Knowledge becomes more valuable when it is shared.
                             </blockquote>
 
                             <p>
-
-                                At Pulse Analytics Group, education is not simply a
-                                marketing strategy—it is part of our organizational
-                                philosophy. We believe businesses deserve to understand the
-                                technologies, strategies, and recommendations that support
-                                their growth. By sharing knowledge openly, we help business
-                                owners make informed decisions with greater confidence.
-
+                                At Pulse Analytics Group, education is part of how we
+                                approach digital marketing. Businesses should be able to
+                                understand the technologies, strategies, and recommendations
+                                that affect their growth—not simply be told what to do.
                             </p>
 
                             <p>
-
-                                Our commitment to education reflects our belief in inbound
-                                marketing, transparency, and long-term partnerships. Rather
-                                than focusing solely on selling services, we strive to
-                                provide practical information that creates value whether
-                                someone becomes a client today, tomorrow, or simply leaves
-                                with a better understanding of digital marketing.
-
+                                We believe informed businesses make better decisions. That
+                                is why we aim to explain the reasoning behind the work,
+                                provide useful information openly, and create resources that
+                                have value whether someone works with us today, later, or
+                                simply leaves with a better understanding of digital
+                                marketing.
                             </p>
 
                             <p>
-
-                                Every article, guide, downloadable resource, and frequently
-                                asked question contributes to a growing library of
-                                educational content designed to help organizations build
-                                stronger websites, smarter marketing strategies, and more
-                                sustainable business growth.
-
+                                The Resource Center is an extension of that philosophy. It
+                                is designed to become a growing knowledge base built around
+                                accuracy, practical usefulness, transparency, and meaningful
+                                business value.
                             </p>
 
                         </div>
@@ -653,9 +1016,10 @@
 
             </section>
 
+
             <!-- ==========================================
                 CONTINUOUS LEARNING
-            ========================================== -->
+            =========================================== -->
 
             <section class="continuous-learning">
 
@@ -664,25 +1028,17 @@
                     <div class="section-heading">
 
                         <span class="section-label">
-
                             CONTINUOUS LEARNING
-
                         </span>
 
                         <h2>
-
                             The Digital Landscape Never Stops Evolving—Neither Do We
-
                         </h2>
 
                         <p class="section-intro">
-
-                            Technology changes rapidly, and successful organizations adapt
-                            by continuously learning, testing, and improving. Our Resource
-                            Center is designed to grow alongside the digital marketing
-                            industry, providing current information, practical insights,
-                            and valuable educational content for years to come.
-
+                            Search engines change. Advertising platforms change. Technology
+                            advances. Customer expectations shift. Strong marketing requires
+                            a willingness to keep learning and adapting.
                         </p>
 
                     </div>
@@ -694,77 +1050,62 @@
                             <i class="fa-solid fa-newspaper"></i>
 
                             <h3>
-
                                 Industry News
-
                             </h3>
 
                             <p>
-
-                                Stay informed about emerging technologies, search engine
-                                updates, artificial intelligence, and digital marketing
-                                trends.
-
+                                Follow important developments across search, advertising,
+                                artificial intelligence, technology, and digital marketing.
                             </p>
 
                         </article>
+
 
                         <article class="learning-card">
 
                             <i class="fa-solid fa-book-open"></i>
 
                             <h3>
-
                                 Educational Content
-
                             </h3>
 
                             <p>
-
-                                Expand your knowledge through practical guides,
-                                step-by-step tutorials, and comprehensive marketing
+                                Build your understanding through practical guides,
+                                explanations, tutorials, and structured educational
                                 resources.
-
                             </p>
 
                         </article>
+
 
                         <article class="learning-card">
 
                             <i class="fa-solid fa-download"></i>
 
                             <h3>
-
                                 Practical Downloads
-
                             </h3>
 
                             <p>
-
-                                Access worksheets, templates, checklists, and planning
-                                tools designed to simplify marketing and business
-                                development.
-
+                                Turn information into action with worksheets, templates,
+                                checklists, and planning tools.
                             </p>
 
                         </article>
+
 
                         <article class="learning-card">
 
                             <i class="fa-solid fa-chart-line"></i>
 
                             <h3>
-
                                 Professional Insights
-
                             </h3>
 
                             <p>
-
-                                Discover strategies, best practices, and data-driven
-                                recommendations developed from ongoing research and
-                                professional experience.
-
+                                Explore strategic thinking, best practices, research, and
+                                data-informed perspectives developed through ongoing study
+                                and practical experience.
                             </p>
 
                         </article>
@@ -775,9 +1116,10 @@
 
             </section>
 
+
             <!-- ==========================================
-                RESOURCE CENTER COMMITMENT
-            ========================================== -->
+                RESOURCE COMMITMENT
+            =========================================== -->
 
             <section class="resource-commitment">
 
@@ -786,15 +1128,11 @@
                     <div class="section-heading">
 
                         <span class="section-label">
-
                             OUR COMMITMENT
-
                         </span>
 
                         <h2>
-
                             A Resource Center Designed to Grow With You
-
                         </h2>
 
                     </div>
@@ -802,25 +1140,18 @@
                     <div class="commitment-content">
 
                         <p>
-
-                            The Pulse Analytics Group Resource Center is continually
-                            expanding to meet the changing needs of businesses and
-                            marketing professionals. As our organization grows, so will our
-                            collection of articles, educational guides, downloadable
-                            resources, research publications, templates, case studies, and
-                            practical learning materials.
-
+                            The Resource Center will continue to expand as new questions,
+                            technologies, strategies, and business challenges emerge. Our
+                            goal is to build a durable library of articles, guides, tools,
+                            research, templates, case studies, and educational material
+                            that remains useful as the digital environment changes.
                         </p>
 
                         <p>
-
-                            Our goal is to build a trusted knowledge center where
-                            organizations can confidently learn, explore new ideas, and
-                            discover practical solutions that contribute to long-term
-                            business success. Every new resource is created with the same
-                            commitment to accuracy, transparency, and measurable value that
-                            defines our company.
-
+                            Every resource should have a purpose. It should help someone
+                            understand a problem, evaluate an opportunity, make a decision,
+                            or take a more informed next step. That standard is more
+                            important to us than simply publishing more content.
                         </p>
 
                     </div>
@@ -828,24 +1159,40 @@
                     <div class="future-resources">
 
                         <h3>
-
-                            Coming Soon
-
+                            Future Resources
                         </h3>
 
                         <div class="future-grid">
 
-                            <div><i class="fa-solid fa-file-pdf"></i> White Papers</div>
+                            <div>
+                                <i class="fa-solid fa-file-pdf"></i>
+                                White Papers
+                            </div>
 
-                            <div><i class="fa-solid fa-magnifying-glass-chart"></i> Industry Research</div>
+                            <div>
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                Industry Research
+                            </div>
 
-                            <div><i class="fa-solid fa-video"></i> Video Tutorials</div>
+                            <div>
+                                <i class="fa-solid fa-video"></i>
+                                Video Tutorials
+                            </div>
 
-                            <div><i class="fa-solid fa-laptop-code"></i> Interactive Learning</div>
+                            <div>
+                                <i class="fa-solid fa-laptop-code"></i>
+                                Interactive Learning
+                            </div>
 
-                            <div><i class="fa-solid fa-calculator"></i> Marketing Calculators</div>
+                            <div>
+                                <i class="fa-solid fa-calculator"></i>
+                                Marketing Calculators
+                            </div>
 
-                            <div><i class="fa-solid fa-briefcase"></i> Business Templates</div>
+                            <div>
+                                <i class="fa-solid fa-briefcase"></i>
+                                Business Templates
+                            </div>
 
                         </div>
 
@@ -854,147 +1201,11 @@
                 </div>
 
             </section>
-                        <!-- ==========================================
-                YOUR LEARNING JOURNEY STARTS HERE
-            ========================================== -->
 
-            <section class="learning-journey">
 
-                <div class="container">
-
-                    <div class="section-heading">
-
-                        <span class="section-label">
-
-                            KEEP LEARNING
-
-                        </span>
-
-                        <h2>
-
-                            Your Learning Journey Starts Here
-
-                        </h2>
-
-                        <p class="section-intro">
-
-                            Every successful business is built on informed decisions,
-                            continuous improvement, and a willingness to learn. Whether
-                            you're taking your first steps into digital marketing or
-                            expanding an established strategy, our Resource Center is here
-                            to support your growth with practical knowledge, professional
-                            guidance, and educational resources you can trust.
-
-                        </p>
-
-                    </div>
-
-                    <div class="journey-grid">
-
-                        <article class="journey-card">
-
-                            <i class="fa-solid fa-book-open-reader"></i>
-
-                            <h3>
-
-                                Learn
-
-                            </h3>
-
-                            <p>
-
-                                Explore professionally written articles, comprehensive
-                                marketing guides, and educational resources designed to
-                                strengthen your understanding of today's digital marketing
-                                landscape.
-
-                            </p>
-
-                        </article>
-
-                        <article class="journey-card">
-
-                            <i class="fa-solid fa-lightbulb"></i>
-
-                            <h3>
-
-                                Apply
-
-                            </h3>
-
-                            <p>
-
-                                Put your knowledge into action using practical templates,
-                                downloadable resources, worksheets, and planning tools
-                                created to help businesses implement effective marketing
-                                strategies.
-
-                            </p>
-
-                        </article>
-
-                        <article class="journey-card">
-
-                            <i class="fa-solid fa-chart-line"></i>
-
-                            <h3>
-
-                                Grow
-
-                            </h3>
-
-                            <p>
-
-                                Continue building your business with confidence through
-                                ongoing education, measurable insights, strategic thinking,
-                                and a commitment to continuous improvement.
-
-                            </p>
-
-                        </article>
-
-                    </div>
-
-                    <div class="learning-quote">
-
-                        <blockquote>
-
-                            "The most successful organizations never stop learning.
-                            They never stop adapting.
-                            They never stop growing."
-
-                        </blockquote>
-
-                    </div>
-
-                    <div class="resource-highlight">
-
-                        <h3>
-
-                            Knowledge Shared Today.
-                            Growth Achieved Tomorrow.
-
-                        </h3>
-
-                        <p>
-
-                            Pulse Analytics Group believes education creates stronger
-                            businesses, stronger partnerships, and stronger communities.
-                            Our Resource Center will continue to grow with new articles,
-                            guides, downloadable tools, research, and educational content
-                            designed to help organizations succeed in an ever-changing
-                            digital world.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-                        <!-- ==========================================
-                CONTINUE YOUR LEARNING JOURNEY
-            ========================================== -->
+            <!-- ==========================================
+                FINAL CTA
+            =========================================== -->
 
             <section class="resources-cta">
 
@@ -1003,143 +1214,99 @@
                     <div class="section-heading">
 
                         <span class="section-label">
-
-                            CONTINUE YOUR JOURNEY
-
+                            WHEREVER YOU ARE STARTING
                         </span>
 
                         <h2>
-
-                            Wherever You Are in Your Marketing Journey, We're Here to Help
-
+                            Better Information Creates Better Decisions
                         </h2>
 
                         <p class="section-intro">
-
-                            Knowledge is only valuable when it's put into action. Whether
-                            you're looking to expand your understanding of digital
-                            marketing, download practical business resources, or partner
-                            with a team committed to measurable growth, Pulse Analytics
-                            Group is ready to help you take the next step.
-
+                            Use the Resource Center to learn independently, explore an idea,
+                            research a problem, or prepare for a conversation. If you reach
+                            a point where you want a partner to help put the strategy into
+                            action, Pulse Analytics Group is here.
                         </p>
 
                     </div>
 
                     <div class="cta-grid">
 
-                        <!-- Blog -->
-
                         <article class="cta-card">
 
                             <i class="fa-solid fa-newspaper"></i>
 
                             <h3>
-
                                 Read the Blog
-
                             </h3>
 
                             <p>
-
-                                Stay informed with industry news, digital marketing
-                                insights, SEO updates, analytics strategies, and company
-                                announcements.
-
+                                Keep up with digital marketing developments, industry
+                                perspectives, SEO, analytics, technology, and more.
                             </p>
 
-                            <a href="blog.html"
-                            class="btn-primary">
-
+                            <a href="blog.html" class="btn-primary">
                                 Visit the Blog
-
                             </a>
 
                         </article>
 
-                        <!-- Marketing Guides -->
 
                         <article class="cta-card">
 
                             <i class="fa-solid fa-book-open"></i>
 
                             <h3>
-
-                                Marketing Guides
-
+                                Explore Marketing Guides
                             </h3>
 
                             <p>
-
-                                Build your expertise through comprehensive educational
-                                guides covering digital marketing, SEO, Google Ads,
-                                websites, accessibility, analytics, and AI.
-
+                                Go deeper into the strategies and technologies that shape
+                                modern digital marketing.
                             </p>
 
-                            <a href="marketing-guides.html"
-                            class="btn-primary">
-
+                            <a href="marketing-guides.html" class="btn-primary">
                                 Explore Guides
-
                             </a>
 
                         </article>
 
-                        <!-- Free Resources -->
 
                         <article class="cta-card">
 
                             <i class="fa-solid fa-download"></i>
 
                             <h3>
-
-                                Free Resources
-
+                                Browse Free Resources
                             </h3>
 
                             <p>
-
-                                Download practical templates, worksheets, planning
-                                documents, checklists, and business tools designed to help
-                                you work smarter.
-
+                                Put what you learn into practice with practical tools,
+                                templates, worksheets, and checklists.
                             </p>
 
-                            <a href="free-resources.html"
-                            class="btn-primary">
-
+                            <a href="free-resources.html" class="btn-primary">
                                 Browse Resources
-
                             </a>
 
                         </article>
 
-                        <!-- FAQ -->
 
                         <article class="cta-card">
 
                             <i class="fa-solid fa-circle-question"></i>
 
                             <h3>
-
-                                Frequently Asked Questions
-
+                                Find an Answer
                             </h3>
 
                             <p>
-
-                                Find answers to the questions business owners ask most
-                                often about digital marketing, websites, SEO, Google Ads,
-                                analytics, and working with Pulse Analytics Group.
-
+                                Get straightforward answers to common questions about
+                                marketing, technology, and working with Pulse Analytics.
                             </p>
 
-                            <a href="faq.html"
-                            class="btn-primary">
-
+                            <a href="faq.html" class="btn-primary">
                                 View FAQs
-
                             </a>
 
                         </article>
@@ -1148,40 +1315,19 @@
 
                     <div class="resource-closing">
 
-                        <blockquote>
-
-                            "The best investment a business can make is investing in
-                            knowledge. Every lesson learned today creates opportunities for
-                            greater success tomorrow."
-
-                        </blockquote>
-
                         <p>
-
-                            At Pulse Analytics Group, our commitment to education extends
-                            far beyond our services. We believe informed businesses make
-                            stronger decisions, develop better strategies, and build more
-                            meaningful relationships with their customers. That's why our
-                            Resource Center will continue to grow with new articles,
-                            educational guides, downloadable resources, and practical tools
-                            designed to support your long-term success.
-
+                            And when you're ready to move from learning to action, you can
+                            decide what comes next.
                         </p>
 
                         <div class="resource-buttons">
 
-                            <a href="contact.html"
-                            class="btn-primary">
-
-                                Contact Our Team
-
+                            <a href="contact.html" class="btn-primary">
+                                Start a Conversation
                             </a>
 
-                            <a href="services.html"
-                            class="btn-secondary">
-
+                            <a href="services.html" class="btn-secondary">
                                 Explore Our Services
-
                             </a>
 
                         </div>
@@ -1191,9 +1337,8 @@
                 </div>
 
             </section>
-            <!-- ==========================================
-                FOOTER
-            =========================================== -->
+
+        </main>
 
             <footer id="footer">
 
@@ -1205,7 +1350,7 @@
 
                         <div class="footer-column">
 
-                            <img src="assetts/images/logo/PulseAnalyticsTransparLogo.png"
+                            <img src="assets/images/logo/PulseAnalyticsTransparLogo.png"
                                 alt="Pulse Analytics Group LLC Logo"
                                 class="footer-logo">
 
@@ -1221,13 +1366,13 @@
 
                             <div class="social-icons">
 
-                                <a href="#" aria-label="Facebook">
+                                <a href="https://www.facebook.com/profile.php?id=61591149445952" aria-label="Facebook">
 
                                     <i class="fa-brands fa-facebook-f"></i>
 
                                 </a>
 
-                                <a href="#" aria-label="Instagram">
+                                <a href="https://www.instagram.com/pulseanalyticsgroupllc/" aria-label="Instagram">
 
                                     <i class="fa-brands fa-instagram"></i>
 
@@ -1321,9 +1466,9 @@
 
                                     <i class="fa-solid fa-envelope"></i>
 
-                                    <a href="mailto:info@pulseanalyticsgroup.com">
+                                    <a href="mailto:pulseanalyticsgroupllc@gmail.com">
 
-                                        info@pulseanalyticsgroup.com
+                                        pulseanalyticsgroupllc@gmail.com
 
                                     </a>
 
@@ -1333,9 +1478,9 @@
 
                                     <i class="fa-solid fa-phone"></i>
 
-                                    <a href="tel:+18145551234">
+                                    <a href="tel:+18147377650">
 
-                                        (814) 555-1234
+                                        (814) 737-7650
 
                                     </a>
 
@@ -1390,106 +1535,6 @@
             <i class="fa-solid fa-arrow-up"></i>
 
         </button>
-
-        <!-- ==========================================
-            WEBPAGE SCHEMA
-        =========================================== -->
-
-        <script type="application/ld+json">
-        {
-        "@context":"https://schema.org",
-        "@type":"WebPage",
-        "@id":"https://www.pulseanalyticsgroup.com/resources.html",
-        "url":"https://www.pulseanalyticsgroup.com/resources.html",
-        "name":"Resource Center | Pulse Analytics Group LLC",
-        "description":"Explore the Pulse Analytics Group Resource Center featuring digital marketing articles, marketing guides, free resources, FAQs, and educational content designed to help businesses grow through knowledge and strategic insight.",
-        "isPartOf":{
-            "@id":"https://www.pulseanalyticsgroup.com/#website"
-        },
-        "about":{
-            "@id":"https://www.pulseanalyticsgroup.com/#organization"
-        },
-        "primaryImageOfPage":"https://www.pulseanalyticsgroup.com/assetts/images/resources/resource-center-hero.png",
-        "inLanguage":"en-US"
-        }
-        </script>
-
-        <!-- ==========================================
-            COLLECTION PAGE SCHEMA
-        =========================================== -->
-
-        <script type="application/ld+json">
-        {
-        "@context":"https://schema.org",
-        "@type":"CollectionPage",
-        "@id":"https://www.pulseanalyticsgroup.com/resources.html#collection",
-        "name":"Pulse Analytics Group Resource Center",
-        "description":"A collection of educational resources including blog articles, marketing guides, downloadable resources, and frequently asked questions.",
-        "url":"https://www.pulseanalyticsgroup.com/resources.html",
-        "isPartOf":{
-            "@id":"https://www.pulseanalyticsgroup.com/#website"
-        }
-        }
-        </script>
-
-        <!-- ==========================================
-            PROFESSIONAL SERVICE SCHEMA
-        =========================================== -->
-
-        <script type="application/ld+json">
-        {
-        "@context":"https://schema.org",
-        "@type":"ProfessionalService",
-        "@id":"https://www.pulseanalyticsgroup.com/#business",
-        "name":"Pulse Analytics Group LLC",
-        "url":"https://www.pulseanalyticsgroup.com",
-        "telephone":"+1-814-737-7650",
-        "email":"pulseanalyticsgroupllc@gmail.com",
-        "priceRange":"$150-$3500",
-        "address":{
-            "@type":"PostalAddress",
-            "streetAddress":"84 East High Street",
-            "addressLocality":"Union City",
-            "addressRegion":"PA",
-            "postalCode":"16438",
-            "addressCountry":"US"
-        },
-        "areaServed":[
-            "Pennsylvania",
-            "New York",
-            "Ohio",
-            "United States"
-        ],
-        "provider":{
-            "@id":"https://www.pulseanalyticsgroup.com/#organization"
-        }
-        }
-        </script>
-
-        <!-- ==========================================
-            BREADCRUMB SCHEMA
-        =========================================== -->
-
-        <script type="application/ld+json">
-        {
-        "@context":"https://schema.org",
-        "@type":"BreadcrumbList",
-        "itemListElement":[
-            {
-            "@type":"ListItem",
-            "position":1,
-            "name":"Home",
-            "item":"https://www.pulseanalyticsgroup.com"
-            },
-            {
-            "@type":"ListItem",
-            "position":2,
-            "name":"Resources",
-            "item":"https://www.pulseanalyticsgroup.com/resources.html"
-            }
-        ]
-        }
-        </script>
 
         <!-- ==========================================
             JAVASCRIPT

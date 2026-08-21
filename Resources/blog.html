@@ -6,15 +6,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Pulse Analytics Group LLC | Digital Marketing, SEO & Website Development</title>
+        <title>Pulse Insights | Digital Marketing Blog | Pulse Analytics Group LLC</title>
 
         <meta name="description"
-            content="Pulse Analytics Group LLC helps businesses grow through strategic digital marketing, search engine optimization, website development, Google Ads management, analytics, AI-powered marketing solutions, and data-driven business strategies.">
+            content="Pulse Insights provides research-driven articles, digital marketing strategy, SEO, analytics, AI, Google Ads, website development, and practical business insights from Pulse Analytics Group LLC.">
 
         <meta name="keywords"
             content="Digital Marketing, SEO, Search Engine Optimization, Website Development, Google Ads, Analytics, AI Marketing, Social Media Marketing, Local SEO">
 
         <meta name="author" content="Pulse Analytics Group LLC">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://www.pulseanalyticsgroup.com/blog.html">
 
         <!-- Open Graph -->
 
@@ -45,7 +47,31 @@
 
         <!-- Stylesheet -->
 
-        <link rel="stylesheet" href="../styles.css">
+        <link rel="stylesheet" href="styles.css">
+
+    
+        <style>
+            /* ==========================================
+               PULSE INSIGHTS — CONTENT PRESENTATION LAYER
+               Backend-ready: rendering is driven by blog.js
+            =========================================== */
+            .blog-toolbar { align-items: stretch; }
+            .search-box { display:flex; align-items:center; }
+            .search-box input { min-width: 0; }
+            .blog-filters { display:flex; gap:.75rem; flex-wrap:wrap; }
+            .blog-toolbar select { min-height:46px; }
+            .blog-results-meta { margin-top:1rem; font-size:.8rem; opacity:.7; }
+            .blog-grid.is-loading { opacity:.45; pointer-events:none; }
+            .blog-empty { grid-column:1/-1; padding:3rem 1.5rem; text-align:center; border:1px dashed rgba(10,46,111,.18); border-radius:12px; }
+            .blog-empty h3 { margin-bottom:.5rem; }
+            .blog-empty p { margin:0; opacity:.7; }
+            .post-author { margin-top:.65rem; font-size:.75rem; opacity:.7; }
+            .featured-post-link { color:inherit; text-decoration:none; }
+            .featured-post-link:hover { text-decoration:none; }
+            .load-more[hidden] { display:none; }
+            .category-card.is-active { outline:2px solid #1976D2; outline-offset:2px; }
+            .blog-toolbar button { border:0; cursor:pointer; }
+        </style>
 
     </head>
 
@@ -147,13 +173,13 @@
 
                                     <li><a href="solutions/lead-generation.html">Lead Generation</a></li>
 
-                                    <li><a href="solutions/local-business.html">Local Business Growth</a></li>
+                                    <li><a href="solutions/local-business-growth.html">Local Business Growth</a></li>
 
-                                    <li><a href="solutions/ecommerce.html">E-Commerce</a></li>
+                                    <li><a href="solutions/e-commerce.html">E-Commerce</a></li>
 
-                                    <li><a href="solutions/startups.html">Startup Marketing</a></li>
+                                    <li><a href="solutions/startup-marketing.html">Startup Marketing</a></li>
 
-                                    <li><a href="solutions/enterprise.html">Enterprise Solutions</a></li>
+                                    <li><a href="solutions/enterprise-solutions.html">Enterprise Solutions</a></li>
 
                                 </ul>
 
@@ -201,9 +227,9 @@
 
                                     <li><a href="blog.html">Blog</a></li>
 
-                                    <li><a href="#">Marketing Guides</a></li>
+                                    <li><a href="resources/marketing-guides.html">Marketing Guides</a></li>
 
-                                    <li><a href="#">Free Resources</a></li>
+                                    <li><a href="resources/free-resources.html">Free Resources</a></li>
 
                                     <li><a href="faq.html">FAQ</a></li>
 
@@ -293,7 +319,7 @@
 
                             </div>
 
-                            <div class="blog-stats">
+                            <div id="blog-stats" class="blog-stats">
 
                                 <div class="stat-box">
 
@@ -393,7 +419,7 @@
 
                     </div>
 
-                    <div class="featured-post">
+                    <div id="featured-post" class="featured-post">
 
                         <div class="featured-post-image">
 
@@ -533,10 +559,12 @@
 
                         <div class="search-box">
 
-                            <input type="search"
-                                placeholder="Search articles...">
+                            <input id="blog-search" type="search"
+                                placeholder="Search articles..."
+                                autocomplete="off"
+                                aria-label="Search articles">
 
-                            <button aria-label="Search">
+                            <button id="blog-search-button" type="button" aria-label="Search articles">
 
                                 <i class="fa-solid fa-magnifying-glass"></i>
 
@@ -546,26 +574,26 @@
 
                         <div class="blog-filters">
 
-                            <select>
+                            <select id="blog-category" aria-label="Filter by category">
 
-                                <option>All Categories</option>
-                                <option>SEO</option>
-                                <option>Google Ads</option>
-                                <option>Analytics</option>
-                                <option>AI Marketing</option>
-                                <option>Website Development</option>
-                                <option>Accessibility</option>
-                                <option>Business Strategy</option>
+                                <option value="all">All Categories</option>
+                                <option value="SEO">SEO</option>
+                                <option value="Google Ads">Google Ads</option>
+                                <option value="Analytics">Analytics</option>
+                                <option value="AI Marketing">AI Marketing</option>
+                                <option value="Website Development">Website Development</option>
+                                <option value="Accessibility">Accessibility</option>
+                                <option value="Business Strategy">Business Strategy</option>
 
                             </select>
 
-                            <select>
+                            <select id="blog-sort" aria-label="Sort articles">
 
-                                <option>Newest First</option>
-                                <option>Oldest First</option>
-                                <option>A-Z</option>
-                                <option>Z-A</option>
-                                <option>Most Popular</option>
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="az">A-Z</option>
+                                <option value="za">Z-A</option>
+                                <option value="popular">Most Popular</option>
 
                             </select>
 
@@ -573,11 +601,13 @@
 
                     </div>
 
+                    <p id="blog-results-meta" class="blog-results-meta" aria-live="polite"></p>
+
                     <!-- ==========================================
                         BLOG GRID
                     =========================================== -->
 
-                    <div class="blog-grid">
+                    <div id="blog-grid" class="blog-grid">
 
                         <!-- Blog Card -->
 
@@ -654,7 +684,7 @@
 
                     <div class="load-more">
 
-                        <button class="btn-primary">
+                        <button id="load-more" class="btn-primary" type="button">
 
                             Load More Articles
 
@@ -669,7 +699,7 @@
                 BROWSE BY CATEGORY
                 ========================================== -->
 
-            <section id="blog-categories" class="blog-categories">
+            <section id="browse-categories" class="blog-categories">
 
                 <div class="container">
 
@@ -705,7 +735,7 @@
                             SEO
                         =========================================== -->
 
-                        <a href="blog/category/seo.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="seo">
 
                             <i class="fa-solid fa-magnifying-glass-chart"></i>
 
@@ -728,7 +758,7 @@
                             LOCAL SEO
                         =========================================== -->
 
-                        <a href="blog/category/local-seo.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="local-seo">
 
                             <i class="fa-solid fa-location-dot"></i>
 
@@ -751,7 +781,7 @@
                             GOOGLE ADS
                         =========================================== -->
 
-                        <a href="blog/category/google-ads.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="google-ads">
 
                             <i class="fa-brands fa-google"></i>
 
@@ -774,7 +804,7 @@
                             WEBSITE DEVELOPMENT
                         =========================================== -->
 
-                        <a href="blog/category/web-development.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="web-development">
 
                             <i class="fa-solid fa-code"></i>
 
@@ -797,7 +827,7 @@
                             ANALYTICS
                         =========================================== -->
 
-                        <a href="blog/category/analytics.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="analytics">
 
                             <i class="fa-solid fa-chart-line"></i>
 
@@ -820,7 +850,7 @@
                             SOCIAL MEDIA
                         =========================================== -->
 
-                        <a href="blog/category/social-media.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="social-media">
 
                             <i class="fa-solid fa-share-nodes"></i>
 
@@ -843,7 +873,7 @@
                             AI MARKETING
                         =========================================== -->
 
-                        <a href="blog/category/ai-marketing.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="ai-marketing">
 
                             <i class="fa-solid fa-robot"></i>
 
@@ -866,7 +896,7 @@
                             ACCESSIBILITY
                         =========================================== -->
 
-                        <a href="blog/category/accessibility.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="accessibility">
 
                             <i class="fa-solid fa-universal-access"></i>
 
@@ -889,7 +919,7 @@
                             BRAND STRATEGY
                         =========================================== -->
 
-                        <a href="blog/category/branding.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="branding">
 
                             <i class="fa-solid fa-lightbulb"></i>
 
@@ -912,7 +942,7 @@
                             PULSE NEWS
                         =========================================== -->
 
-                        <a href="blog/category/pulse-news.html" class="category-card">
+                        <a href="#latest-articles" class="category-card" data-category="pulse-news">
 
                             <i class="fa-solid fa-bullhorn"></i>
 
@@ -1731,6 +1761,7 @@
             JAVASCRIPT
         ========================================== -->
 
+        <script src="blog.js" defer></script>
         <script src="main.js"></script>
  
 

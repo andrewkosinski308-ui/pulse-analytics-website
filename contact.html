@@ -46,6 +46,164 @@
 
         <link rel="stylesheet" href="styles.css">
 
+
+        <!-- ==========================================
+            ORGANIZATION SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://www.pulseanalyticsgroup.com/#organization",
+            "name": "Pulse Analytics Group LLC",
+            "alternateName": "Pulse Analytics Group",
+            "description": "Pulse Analytics Group LLC is a full-service digital marketing agency specializing in search engine optimization (SEO), Google Ads management, website design and development, analytics, AI-powered marketing solutions, local SEO, accessibility, and business growth strategies.",
+            "logo": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "slogan": "Data. Insight. Growth.",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "telephone": "+1-814-737-7650",
+            "founder": {
+                "@type": "Person",
+                "name": "Andrew Kosinski"
+            },
+            "sameAs": [
+                "https://www.facebook.com/profile.php?id=61591149445952",
+                "https://www.instagram.com/pulseanalyticsgroupllc/",
+                "https://www.tiktok.com/@pulseanalyticsgroup"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            PROFESSIONAL SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "@id": "https://www.pulseanalyticsgroup.com/#professional-service",
+            "name": "Pulse Analytics Group LLC",
+            "image": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "priceRange": "$150 - $3500",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "84 East High Street",
+                "addressLocality": "Union City",
+                "addressRegion": "PA",
+                "postalCode": "16438",
+                "addressCountry": "US"
+            },
+            "telephone": "+1-814-737-7650",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Customer Service",
+                "telephone": "+1-814-737-7650",
+                "email": "pulseanalyticsgroupllc@gmail.com",
+                "availableLanguage": "English"
+            },
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBSITE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://www.pulseanalyticsgroup.com/#website",
+            "url": "https://www.pulseanalyticsgroup.com",
+            "name": "Pulse Analytics Group LLC",
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            CONTACT PAGE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "@id": "https://www.pulseanalyticsgroup.com/contact.html#webpage",
+            "url": "https://www.pulseanalyticsgroup.com/contact.html",
+            "name": "Contact Pulse Analytics Group LLC | Start a Conversation",
+            "description": "Contact Pulse Analytics Group LLC to discuss digital marketing, SEO, website development, Google Ads, analytics, AI marketing, lead generation, and business growth opportunities.",
+            "isPartOf": {
+                "@id": "https://www.pulseanalyticsgroup.com/#website"
+            },
+            "about": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            BREADCRUMB SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "@id": "https://www.pulseanalyticsgroup.com/contact.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.pulseanalyticsgroup.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Contact",
+                    "item": "https://www.pulseanalyticsgroup.com/contact.html"
+                }
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            CONTACT POINT SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ContactPoint",
+            "@id": "https://www.pulseanalyticsgroup.com/contact.html#contact",
+            "telephone": "+1-814-737-7650",
+            "email": "pulseanalyticsgroupllc@gmail.com",
+            "contactType": "Customer Service",
+            "availableLanguage": "English",
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
     </head>
 
     <body>
@@ -141,13 +299,13 @@
 
                                             <li><a href="solutions/lead-generation.html">Lead Generation</a></li>
 
-                                            <li><a href="solutions/local-business.html">Local Business Growth</a></li>
+                                            <li><a href="solutions/local-business-growth.html">Local Business Growth</a></li>
 
-                                            <li><a href="solutions/ecommerce.html">E-Commerce</a></li>
+                                            <li><a href="solutions/e-commerce.html">E-Commerce</a></li>
 
-                                            <li><a href="solutions/startups.html">Startup Marketing</a></li>
+                                            <li><a href="solutions/startup-marketing.html">Startup Marketing</a></li>
 
-                                            <li><a href="solutions/enterprise.html">Enterprise Solutions</a></li>
+                                            <li><a href="solutions/enterprise-solutions.html">Enterprise Solutions</a></li>
 
                                         </ul>
 
@@ -167,13 +325,13 @@
 
                                         <ul class="dropdown-menu">
 
-                                            <li><a href="about.html">Our Company</a></li>
+                                            <li><a href="about.html#our-company">Our Company</a></li>
 
-                                            <li><a href="#">Mission &amp; Values</a></li>
+                                            <li><a href="about.html#mission-values">Mission &amp; Values</a></li>
 
-                                            <li><a href="#">Our Process</a></li>
+                                            <li><a href="about.html#our-process">Our Process</a></li>
 
-                                            <li><a href="#">Why Choose Pulse Analytics</a></li>
+                                            <li><a href="about.html#why-choose">Why Choose Pulse Analytics</a></li>
 
                                         </ul>
 
@@ -183,7 +341,7 @@
 
                                     <li class="dropdown">
 
-                                        <a href="blog.html">
+                                        <a href="resources.html">
 
                                             Resources
 
@@ -193,7 +351,7 @@
 
                                         <ul class="dropdown-menu">
 
-                                            <li><a href="blog.html">Blog</a></li>
+                                            <li><a href="resources/blog.html">Blog</a></li>
 
                                             <li><a href="#">Marketing Guides</a></li>
 
@@ -218,72 +376,675 @@
 
         </header>
 
-        <Main>
+        <main>
 
-            <section class="contact-section">
-                <h2>Contact Us</h2>
+            <!-- ==========================================
+                CONTACT HERO
+            =========================================== -->
 
-                    <p class="section-subtext">Ready to improve your online presence? Reach out to schedule a free consultation and let’s talk about how Pulse Analytics Group can help your business grow.</p>
+            <section class="contact-hero">
 
-                <div class="grid">
+                <div class="container">
 
-                    <div class="card highlight">
-                        <h3>Book a Free Consultation</h3>
-                            <p>
-                            Tell us about your business, your goals, and what you want to improve. We’ll help identify opportunities to strengthen your website, visibility, and marketing strategy.
-                            </p>
-                    </div>
+                    <p class="section-label">
+                        LET'S BUILD WHAT COMES NEXT
+                    </p>
 
-                    <div class="card">
-                        <h3>What We Can Discuss</h3>
-                            <p>
-                                We can review your current website, local search presence, marketing challenges, customer goals, and the next steps that would make the biggest impact.
-                            </p>
-                    </div>
+                    <h1>
+                        Let's Talk About Your Business
+                    </h1>
 
-                    <div class="card">
-                        <h3>Email Us</h3>
-                            <p>
-                                Have a question or want to start a project? Send us a message and we’ll get back to you as soon as possible.
-                            </p>
-                            <p><strong>Email:</strong><a href="mailto:andrewkosinski@seopulse.org">andrewkosinski@seopulse.org</a></p>
-                    </div>
+                    <p class="hero-introduction">
+                        Whether you're trying to generate more leads, improve your website,
+                        increase search visibility, launch a new business, or build a more
+                        effective marketing system, the first step is understanding where
+                        you are and where you want to go.
+                    </p>
 
-                    <div class="card">
-                        <h3>Start With a Free Audit</h3>
-                            <p>A free audit is a simple way to understand where your digital presence stands today and what improvements could help your business attract more customers.</p>
+                    <p class="hero-introduction">
+                        Tell us what you're working toward. We'll listen, ask the right
+                        questions, and help identify where the greatest opportunities may
+                        exist.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="#contact-form" class="btn-primary">
+                            Start a Conversation
+                        </a>
+
+                        <a href="services.html" class="btn-secondary">
+                            Explore Our Services
+                        </a>
+
                     </div>
 
                 </div>
-                <section class="video-section">
-                    <h2>Watch How We Help Businesses Grow</h2>
 
-                    <p class="section-subtext">Learn how strategy, visibility, and analytics can work together to improve your digital presence.</p>
-
-                    <div class="video-wrapper">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/MYE6T_gd7H0?si=VfyZepm6KMZZEtLH"
-                            title="YouTube video player"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </section>
             </section>
-            <form class="contact-form">
-                <label for="name">Name</label>
-                    <input type="text" id="name" name="name">
 
-                <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
 
-                <label for="message">Message</label>
-                    <textarea id="message" name="message"></textarea>
+            <!-- ==========================================
+                CONTACT OPTIONS
+            =========================================== -->
 
-                    <button type="submit" class="cta-button">Send Message</button>
-            </form>
+            <section class="contact-options">
+
+                <div class="container">
+
+                    <p class="section-label">
+                        GET STARTED
+                    </p>
+
+                    <h2>
+                        Choose the Best Way to Start
+                    </h2>
+
+                    <p class="section-introduction">
+                        There is no complicated process to get started. Choose the option
+                        that makes the most sense for where you are today.
+                    </p>
+
+                    <div class="grid">
+
+                        <article class="card highlight">
+
+                            <i class="fa-solid fa-comments"></i>
+
+                            <h3>
+                                Start a Conversation
+                            </h3>
+
+                            <p>
+                                Tell us about your business, your goals, and what you want
+                                to improve. We'll help identify opportunities and determine
+                                what the next step should be.
+                            </p>
+
+                            <a href="#contact-form" class="text-link">
+                                Tell Us About Your Business
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+
+                        </article>
+
+
+                        <article class="card">
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            <h3>
+                                Email Us
+                            </h3>
+
+                            <p>
+                                Have a question, want to discuss a project, or simply want
+                                to introduce yourself? Send us a message directly.
+                            </p>
+
+                            <a href="mailto:pulseanalyticsgroupllc@gmail.com" class="text-link">
+                                pulseanalyticsgroupllc@gmail.com
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+
+                        </article>
+
+
+                        <article class="card">
+
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                            <h3>
+                                Request a Free Audit
+                            </h3>
+
+                            <p>
+                                Not sure where to start? A Pulse Performance Audit™ can
+                                help identify opportunities across your website, search
+                                visibility, analytics, and digital presence.
+                            </p>
+
+                            <a href="free-website-audit.html" class="text-link">
+                                Request Your Free Audit
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                CONSULTATION
+            =========================================== -->
+
+            <section class="consultation">
+
+                <div class="container">
+
+                    <p class="section-label">
+                        START WITH A CONVERSATION
+                    </p>
+
+                    <h2>
+                        Tell Us What You're Trying to Accomplish
+                    </h2>
+
+                    <p class="section-introduction">
+                        You don't need to know exactly which service you need before
+                        contacting us. That's part of the conversation. We can look at the
+                        bigger picture and determine which opportunities deserve attention.
+                    </p>
+
+                    <div class="features-grid">
+
+                        <article class="feature-card">
+
+                            <i class="fa-solid fa-globe"></i>
+
+                            <h3>
+                                Your Digital Presence
+                            </h3>
+
+                            <p>
+                                We can discuss your website, search visibility, local
+                                presence, social channels, online reputation, and the
+                                experience customers have when they find your business.
+                            </p>
+
+                        </article>
+
+
+                        <article class="feature-card">
+
+                            <i class="fa-solid fa-bullseye"></i>
+
+                            <h3>
+                                Your Growth Goals
+                            </h3>
+
+                            <p>
+                                Whether the goal is more leads, more customers, stronger
+                                visibility, higher conversions, or a better foundation for
+                                growth, we want to understand what success means to you.
+                            </p>
+
+                        </article>
+
+
+                        <article class="feature-card">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                            <h3>
+                                Your Marketing Performance
+                            </h3>
+
+                            <p>
+                                We can look at the channels you're using, the information
+                                you're measuring, and whether your marketing is producing
+                                the insight needed to make better decisions.
+                            </p>
+
+                        </article>
+
+
+                        <article class="feature-card">
+
+                            <i class="fa-solid fa-microchip"></i>
+
+                            <h3>
+                                Your Next Opportunity
+                            </h3>
+
+                            <p>
+                                We can explore where technology, automation, artificial
+                                intelligence, or a stronger digital strategy could create
+                                meaningful value for the business.
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                CONTACT FORM
+            =========================================== -->
+
+            <section class="contact-form-section" id="contact-form">
+
+                <div class="container">
+
+                    <div class="form-introduction">
+
+                        <p class="section-label">
+                            TELL US ABOUT YOUR BUSINESS
+                        </p>
+
+                        <h2>
+                            Start the Conversation
+                        </h2>
+
+                        <p>
+                            Give us a little information about your business and what you're
+                            looking to accomplish. The more context you provide, the better
+                            we can understand where to begin.
+                        </p>
+
+                        <p>
+                            We don't expect you to have all the answers. If you're not sure
+                            what you need, tell us what isn't working or what you would like
+                            to improve. We'll take it from there.
+                        </p>
+
+                    </div>
+
+                    <form class="contact-form">
+
+                        <div class="form-grid">
+
+                            <div class="form-field">
+
+                                <label for="name">
+                                    Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    autocomplete="name"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="business">
+                                    Business Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="business"
+                                    name="business"
+                                    autocomplete="organization">
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="email">
+                                    Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    autocomplete="email"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="phone">
+                                    Phone
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    autocomplete="tel">
+
+                            </div>
+
+
+                            <div class="form-field full-width">
+
+                                <label for="website">
+                                    Website
+                                </label>
+
+                                <input
+                                    type="url"
+                                    id="website"
+                                    name="website"
+                                    placeholder="https://">
+
+                            </div>
+
+
+                            <div class="form-field full-width">
+
+                                <label>
+                                    What are you interested in?
+                                </label>
+
+                                <div class="checkbox-grid">
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="seo">
+                                        <span>SEO</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="local-seo">
+                                        <span>Local SEO</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="google-ads">
+                                        <span>Google Ads</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="web-design">
+                                        <span>Website Design &amp; Development</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="analytics">
+                                        <span>Analytics &amp; Reporting</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="social-media">
+                                        <span>Social Media</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="ai-marketing">
+                                        <span>AI Marketing</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="branding">
+                                        <span>Branding</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="lead-generation">
+                                        <span>Lead Generation</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="ecommerce">
+                                        <span>E-Commerce</span>
+                                    </label>
+
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="interest" value="other">
+                                        <span>Other</span>
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-field full-width">
+
+                                <label for="message">
+                                    Tell Us About Your Goals or Challenges
+                                </label>
+
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="7"
+                                    required></textarea>
+
+                            </div>
+
+
+                            <div class="form-field full-width">
+
+                                <label for="referral">
+                                    How Did You Hear About Us?
+                                </label>
+
+                                <select id="referral" name="referral">
+
+                                    <option value="">
+                                        Select an option
+                                    </option>
+
+                                    <option value="search">
+                                        Search Engine
+                                    </option>
+
+                                    <option value="social">
+                                        Social Media
+                                    </option>
+
+                                    <option value="referral">
+                                        Referral
+                                    </option>
+
+                                    <option value="event">
+                                        Event or Networking
+                                    </option>
+
+                                    <option value="existing-client">
+                                        Existing Client
+                                    </option>
+
+                                    <option value="other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="cta-button">
+                            Send Message
+                        </button>
+
+                        <p class="form-note">
+                            No pressure. No obligation. Just a conversation about your
+                            business and what comes next.
+                        </p>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                WHAT HAPPENS NEXT
+            =========================================== -->
+
+            <section class="next-steps">
+
+                <div class="container">
+
+                    <p class="section-label">
+                        WHAT HAPPENS NEXT?
+                    </p>
+
+                    <h2>
+                        A Simple Process From First Contact to Next Steps
+                    </h2>
+
+                    <p class="section-introduction">
+                        Reaching out should feel straightforward. Here's what you can
+                        expect after you contact Pulse Analytics.
+                    </p>
+
+                    <div class="framework-grid">
+
+                        <article class="framework-step">
+
+                            <span class="step-number">
+                                01
+                            </span>
+
+                            <h3>
+                                We Learn
+                            </h3>
+
+                            <p>
+                                We'll review what you've shared and learn about your
+                                business, goals, challenges, and current marketing
+                                environment.
+                            </p>
+
+                        </article>
+
+
+                        <article class="framework-step">
+
+                            <span class="step-number">
+                                02
+                            </span>
+
+                            <h3>
+                                We Connect
+                            </h3>
+
+                            <p>
+                                We'll have a conversation about where things stand, what
+                                you're trying to accomplish, and what matters most to you.
+                            </p>
+
+                        </article>
+
+
+                        <article class="framework-step">
+
+                            <span class="step-number">
+                                03
+                            </span>
+
+                            <h3>
+                                We Identify Opportunities
+                            </h3>
+
+                            <p>
+                                We'll look for areas where your website, marketing,
+                                technology, or digital strategy may have room to improve.
+                            </p>
+
+                        </article>
+
+
+                        <article class="framework-step">
+
+                            <span class="step-number">
+                                04
+                            </span>
+
+                            <h3>
+                                We Recommend a Path Forward
+                            </h3>
+
+                            <p>
+                                If there's a good fit, we'll explain what we recommend,
+                                why it matters, and what the next steps could look like.
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                FREE AUDIT
+            =========================================== -->
+
+            <section class="audit-cta">
+
+                <div class="container">
+
+                    <p class="section-label">
+                        NOT SURE WHERE TO START?
+                    </p>
+
+                    <h2>
+                        Start With a Pulse Performance Audit™
+                    </h2>
+
+                    <p>
+                        Your digital presence may already contain opportunities you're
+                        not seeing. A Pulse Performance Audit™ can help identify areas
+                        involving website performance, SEO, local visibility, conversion
+                        opportunities, analytics, technical issues, and digital marketing
+                        performance.
+                    </p>
+
+                    <a href="free-website-audit.html" class="btn-primary">
+                        Request Your Free Audit
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==========================================
+                FINAL CTA
+            =========================================== -->
+
+            <section class="final-cta">
+
+                <div class="container">
+
+                    <p class="section-label">
+                        READY TO BUILD WHAT COMES NEXT?
+                    </p>
+
+                    <h2>
+                        Your Next Step Can Start With a Conversation
+                    </h2>
+
+                    <p class="cta-description">
+                        You don't need a complete marketing plan before you reach out.
+                        You just need a goal, a challenge, or a question. Let's start there.
+                    </p>
+
+                    <div class="cta-buttons">
+
+                        <a href="#contact-form" class="btn-primary">
+                            Start a Conversation
+                        </a>
+
+                        <a href="about.html" class="btn-secondary">
+                            Learn About Pulse Analytics
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
             <footer id="footer">
 
                 <div class="container">
@@ -310,13 +1071,13 @@
 
                             <div class="social-icons">
 
-                                <a href="#" aria-label="Facebook">
+                                <a href="https://www.facebook.com/profile.php?id=61591149445952" aria-label="Facebook">
 
                                     <i class="fa-brands fa-facebook-f"></i>
 
                                 </a>
 
-                                <a href="#" aria-label="Instagram">
+                                <a href="https://www.instagram.com/pulseanalyticsgroupllc/" aria-label="Instagram">
 
                                     <i class="fa-brands fa-instagram"></i>
 
@@ -374,7 +1135,7 @@
 
                                     <li><a href="about.html">About Us</a></li>
 
-                                    <li><a href="blog.html">Blog</a></li>
+                                    <li><a href="resources/blog.html">Blog</a></li>
 
                                     <li><a href="faq.html">Frequently Asked Questions</a></li>
 
@@ -410,9 +1171,9 @@
 
                                         <i class="fa-solid fa-envelope"></i>
 
-                                        <a href="mailto:info@pulseanalyticsgroup.com">
+                                        <a href="mailto:pulseanalyticsgroupllc@gmail.com">
 
-                                            info@pulseanalyticsgroup.com
+                                            pulseanalyticsgroupllc@gmail.com
 
                                         </a>
 
@@ -422,9 +1183,9 @@
 
                                         <i class="fa-solid fa-phone"></i>
 
-                                        <a href="tel:+18145551234">
+                                        <a href="tel:+18147377650">
 
-                                            (814) 555-1234
+                                            (814) 737-7650
 
                                         </a>
 

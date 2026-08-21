@@ -71,7 +71,254 @@
     <link rel="stylesheet"
         href="../styles.css">
 
-</head>
+
+        <!-- ==========================================
+            ORGANIZATION SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://www.pulseanalyticsgroup.com/#organization",
+            "name": "Pulse Analytics Group LLC",
+            "alternateName": "Pulse Analytics Group",
+            "description": "Pulse Analytics Group LLC is a full-service digital marketing agency specializing in search engine optimization, Google Ads management, website design and development, analytics, AI-powered marketing solutions, local SEO, accessibility, branding, and business growth strategies.",
+            "logo": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "slogan": "Data. Insight. Growth.",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "telephone": "+1-814-737-7650",
+            "founder": {
+                "@type": "Person",
+                "name": "Andrew Kosinski"
+            },
+            "sameAs": [
+                "https://www.facebook.com/profile.php?id=61591149445952",
+                "https://www.instagram.com/pulseanalyticsgroupllc/",
+                "https://www.tiktok.com/@pulseanalyticsgroup"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            PROFESSIONAL SERVICE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "@id": "https://www.pulseanalyticsgroup.com/#professional-service",
+            "name": "Pulse Analytics Group LLC",
+            "image": "https://www.pulseanalyticsgroup.com/assets/images/logo/PulseAnalyticsTransparentLogo.png",
+            "priceRange": "$150 - $3500",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "84 East High Street",
+                "addressLocality": "Union City",
+                "addressRegion": "PA",
+                "postalCode": "16438",
+                "addressCountry": "US"
+            },
+            "telephone": "+1-814-737-7650",
+            "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBSITE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://www.pulseanalyticsgroup.com/#website",
+            "url": "https://www.pulseanalyticsgroup.com",
+            "name": "Pulse Analytics Group LLC",
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            SERVICE PAGE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "@id": "https://www.pulseanalyticsgroup.com/services/branding.html#service",
+            "name": "Brand Strategy & Development",
+            "serviceType": "Brand Strategy and Development",
+            "provider": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "description": "Strategic brand development covering business discovery, market positioning, audience strategy, brand messaging, visual identity, customer experience, brand consistency, and brand activation.",
+            "areaServed": [
+                "Pennsylvania",
+                "New York",
+                "Ohio",
+                "United States"
+            ]
+        }
+        </script>
+
+        <!-- ==========================================
+            WEBPAGE SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://www.pulseanalyticsgroup.com/services/branding.html#webpage",
+            "url": "https://www.pulseanalyticsgroup.com/services/branding.html",
+            "name": "Brand Strategy & Development | Pulse Analytics Group LLC",
+            "description": "Strategic brand strategy and development covering positioning, audience understanding, messaging, visual identity, customer experience, and brand activation.",
+            "isPartOf": {
+                "@id": "https://www.pulseanalyticsgroup.com/#website"
+            },
+            "about": {
+                "@id": "https://www.pulseanalyticsgroup.com/services/branding.html#service"
+            },
+            "publisher": {
+                "@id": "https://www.pulseanalyticsgroup.com/#organization"
+            },
+            "inLanguage": "en-US"
+        }
+        </script>
+
+        <!-- ==========================================
+            BREADCRUMB SCHEMA
+        ========================================== -->
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "@id": "https://www.pulseanalyticsgroup.com/services/branding.html#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.pulseanalyticsgroup.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Services",
+                    "item": "https://www.pulseanalyticsgroup.com/services.html"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Brand Strategy",
+                    "item": "https://www.pulseanalyticsgroup.com/services/branding.html"
+                }
+            ]
+        }
+        </script>
+
+
+        <style>
+            .brand-research-chart {
+                max-width: 980px;
+                margin: 3rem auto 0;
+                padding: 2rem;
+                border: 1px solid rgba(10, 46, 111, 0.12);
+                border-radius: 12px;
+                background: #fff;
+                box-sizing: border-box;
+            }
+
+            .brand-research-chart h3 {
+                margin-bottom: 0.75rem;
+            }
+
+            .brand-research-chart > p {
+                margin-bottom: 1.75rem;
+            }
+
+            .research-bars {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .research-bar {
+                display: grid;
+                grid-template-columns: minmax(170px, 1.2fr) minmax(180px, 4fr) 60px;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .research-bar > span {
+                font-weight: 500;
+            }
+
+            .bar-track {
+                height: 12px;
+                overflow: hidden;
+                border-radius: 999px;
+                background: #e8edf3;
+            }
+
+            .bar-fill {
+                height: 100%;
+                border-radius: 999px;
+                background: #1976D2;
+            }
+
+            .research-bar strong {
+                text-align: right;
+            }
+
+            .research-source {
+                margin-top: 1.75rem;
+                font-size: 0.9rem;
+            }
+
+            .research-source a,
+            .brand-research-chart a {
+                font-weight: 600;
+            }
+
+            @media (max-width: 700px) {
+                .brand-research-chart {
+                    padding: 1.25rem;
+                }
+
+                .research-bar {
+                    grid-template-columns: 1fr 48px;
+                    gap: 0.5rem 0.75rem;
+                }
+
+                .research-bar > span {
+                    grid-column: 1 / -1;
+                }
+
+                .research-bar .bar-track {
+                    grid-column: 1;
+                }
+
+                .research-bar strong {
+                    grid-column: 2;
+                    grid-row: 2;
+                }
+            }
+        </style>
+
+    </head>
 
 
 <body>
@@ -92,7 +339,7 @@
                     <a href="../index.html"
                         class="logo">
 
-                        <img src="../assetts/images/transparent logo PA.jpeg"
+                        <img src="../assets/images/transparent logo PA.jpeg"
                             alt="Pulse Analytics Group LLC Logo">
 
                     </a>
@@ -135,7 +382,6 @@
                             </a>
 
                         </li>
-
 
 
                         <!-- SERVICES -->
@@ -212,7 +458,6 @@
                         </li>
 
 
-
                         <!-- SOLUTIONS -->
 
                         <li class="dropdown">
@@ -229,31 +474,31 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Solutions/lead-generation.html">
+                                    <a href="../solutions/lead-generation.html">
                                         Lead Generation
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/local-business-growth.html">
+                                    <a href="../solutions/local-business-growth.html">
                                         Local Business Growth
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/e-commerce.html">
+                                    <a href="../solutions/e-commerce.html">
                                         E-Commerce
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/startup-marketing.html">
+                                    <a href="../solutions/startup-marketing.html">
                                         Startup Marketing
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Solutions/enterprise-solutions.html">
+                                    <a href="../solutions/enterprise-solutions.html">
                                         Enterprise Solutions
                                     </a>
                                 </li>
@@ -261,7 +506,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- ABOUT -->
@@ -280,7 +524,7 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../about.html#company">
+                                    <a href="../about.html#our-company">
                                         Our Company
                                     </a>
                                 </li>
@@ -298,7 +542,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="../about.html#why-pulse">
+                                    <a href="../about.html#why-choose">
                                         Why Choose Pulse Analytics
                                     </a>
                                 </li>
@@ -308,12 +552,11 @@
                         </li>
 
 
-
                         <!-- RESOURCES -->
 
                         <li class="dropdown">
 
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
 
                                 Resources
 
@@ -325,25 +568,25 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <a href="../Resources/blog.html">
+                                    <a href="../resources/blog.html">
                                         Blog
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/guides.html">
+                                    <a href="../resources/guides.html">
                                         Marketing Guides
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/free-resources.html">
+                                    <a href="../resources/free-resources.html">
                                         Free Resources
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="../Resources/faq.html">
+                                    <a href="../resources/faq.html">
                                         FAQ
                                     </a>
                                 </li>
@@ -351,7 +594,6 @@
                             </ul>
 
                         </li>
-
 
 
                         <!-- CONTACT -->
@@ -373,7 +615,6 @@
         </div>
 
     </header>
-
 
 
     <!-- ==========================================
@@ -425,12 +666,12 @@
                         <a href="../contact.html"
                             class="btn-primary">
 
-                            Start a Brand Strategy
+                            Explore a Brand Strategy
 
                         </a>
 
 
-                        <a href="../Resources/free-resources.html"
+                        <a href="../resources/free-resources.html"
                             class="btn-secondary">
 
                             Explore Free Resources
@@ -444,7 +685,7 @@
 
                 <div class="hero-image">
 
-                    <img src="../assetts/images/my-Branding.png"
+                    <img src="../assets/images/my-Branding.png"
                         alt="Brand strategy and development">
 
                 </div>
@@ -452,7 +693,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -468,7 +708,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Strategic brand development">
 
                     </div>
@@ -513,8 +753,548 @@
 
             </div>
 
+
         </section>
 
+
+        <!-- ==========================================
+            WHY BRAND STRATEGY MATTERS
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    WHY BRAND STRATEGY MATTERS
+                </span>
+
+                <h2>
+                    Trust, Relevance, and Differentiation Influence the Decisions People Make
+                </h2>
+
+                <p class="section-intro">
+                    Branding is not simply an exercise in making a business look
+                    professional. It helps establish the meaning, expectations, and
+                    confidence that surround the business before a customer ever speaks
+                    with someone on the team.
+                </p>
+
+                <p class="section-intro">
+                    Current research reinforces that connection. In Edelman's 2025
+                    Trust Barometer Special Report on brands, 88% of respondents said
+                    that trusting a brand was important or a deal breaker when deciding
+                    which brands to buy or use. Trust ranked alongside quality and value
+                    as a top purchase consideration.
+                    <a href="https://www.edelman.com/sites/g/files/aatuss191/files/2025-06/2025%20Edelman%20Trust%20Barometer%20Special%20Report%20Brand%20Trust%2C%20From%20We%20to%20Me_FINAL_0.pdf"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        View the Edelman research
+                    </a>.
+                </p>
+
+                <p class="section-intro">
+                    McKinsey research has likewise found that brand relevance and
+                    trust become especially important as consumers face greater choice.
+                    Its analysis of strong brands found that the 40 strongest brands
+                    generated almost twice the total shareholder return of the MSCI
+                    World index over the 20-year period ending in 2019.
+                    <a href="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-future-of-brand-strategy-its-time-to-go-electric"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Read McKinsey's brand strategy research
+                    </a>.
+                </p>
+
+                <!-- RESEARCH CHART -->
+
+                <div class="brand-research-chart">
+
+                    <h3>
+                        What Consumers Say Matters When Choosing Brands
+                    </h3>
+
+                    <p>
+                        Global 15-market average. Percent saying each attribute is
+                        important or a deal breaker when deciding which brands to buy
+                        or use.
+                    </p>
+
+                    <div class="research-bars">
+
+                        <div class="research-bar">
+                            <span>Trust the brand</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:88%;"></div>
+                            </div>
+                            <strong>88%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>Best quality</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:88%;"></div>
+                            </div>
+                            <strong>88%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>Good value</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:88%;"></div>
+                            </div>
+                            <strong>88%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>High-quality customer service</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:85%;"></div>
+                            </div>
+                            <strong>85%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>Good reputation</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:85%;"></div>
+                            </div>
+                            <strong>85%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>Convenient to find, buy, and use</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:84%;"></div>
+                            </div>
+                            <strong>84%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>I love it</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:82%;"></div>
+                            </div>
+                            <strong>82%</strong>
+                        </div>
+
+                        <div class="research-bar">
+                            <span>Trust the company that owns it</span>
+                            <div class="bar-track">
+                                <div class="bar-fill" style="width:80%;"></div>
+                            </div>
+                            <strong>80%</strong>
+                        </div>
+
+                    </div>
+
+                    <p class="research-source">
+                        Source:
+                        <a href="https://www.edelman.com/sites/g/files/aatuss191/files/2025-06/2025%20Edelman%20Trust%20Barometer%20Special%20Report%20Brand%20Trust%2C%20From%20We%20to%20Me_FINAL_0.pdf"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            2025 Edelman Trust Barometer Special Report: Brand Trust, From We to Me
+                        </a>.
+                        Global 15-market average; 15,042 respondents.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            BRAND EXPERIENCE
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            BRAND EXPERIENCE
+                        </span>
+
+                        <h2>
+                            Your Brand Is the Experience People Have With Your Business
+                        </h2>
+
+                        <p>
+                            Customers do not experience a brand only when they see a
+                            logo. They experience it when they find a business in
+                            search, visit its website, see an advertisement, read a
+                            social post, speak with a salesperson, receive an email,
+                            purchase a product, or ask for help.
+                        </p>
+
+                        <p>
+                            Every one of those interactions can reinforce the same
+                            expectations—or create a different impression. Strong brand
+                            strategy creates a coherent foundation that helps those
+                            experiences feel connected.
+                        </p>
+
+                        <p>
+                            This is why branding belongs alongside marketing, customer
+                            experience, website development, content, and analytics
+                            rather than existing as an isolated creative exercise.
+                        </p>
+
+                    </div>
+
+                    <div class="service-image">
+
+                        <img src="../assets/images/my-Branding.png"
+                             alt="Brand experience across customer touchpoints">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            BRAND STRATEGY VS VISUAL IDENTITY
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    STRATEGY BEFORE EXPRESSION
+                </span>
+
+                <h2>
+                    Brand Strategy and Visual Identity Are Connected, But They Are Not the Same Thing
+                </h2>
+
+                <p class="section-intro">
+                    A logo, color palette, typography system, and imagery can make a
+                    business recognizable. They cannot, by themselves, determine what
+                    the business should stand for, who it serves, or why customers
+                    should choose it.
+                </p>
+
+                <div class="features-grid">
+
+                    <article class="feature-card">
+
+                        <i class="fa-solid fa-compass"></i>
+
+                        <h3>
+                            Brand Strategy
+                        </h3>
+
+                        <p>
+                            Defines the business's position, audience, value proposition,
+                            differentiation, promise, personality, and strategic direction.
+                        </p>
+
+                    </article>
+
+                    <article class="feature-card">
+
+                        <i class="fa-solid fa-pen-nib"></i>
+
+                        <h3>
+                            Brand Identity
+                        </h3>
+
+                        <p>
+                            Translates that strategy into visual and verbal systems that
+                            make the brand recognizable, consistent, and easier to understand.
+                        </p>
+
+                    </article>
+
+                    <article class="feature-card">
+
+                        <i class="fa-solid fa-arrows-to-circle"></i>
+
+                        <h3>
+                            Brand Activation
+                        </h3>
+
+                        <p>
+                            Carries the strategy into websites, search, advertising,
+                            social media, content, customer experience, and other
+                            customer-facing touchpoints.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            WHEN BRAND STRATEGY MATTERS
+        =========================================== -->
+
+        <section class="service-section">
+
+            <div class="container">
+
+                <div class="service-content">
+
+                    <span class="section-label">
+                        WHEN BRAND STRATEGY MATTERS
+                    </span>
+
+                    <h2>
+                        Brand Strategy Can Become Especially Important at Moments of Change
+                    </h2>
+
+                    <p>
+                        A brand does not have to be broken before it deserves attention.
+                        Sometimes the business has simply outgrown the way it presents
+                        itself.
+                    </p>
+
+                    <div class="benefits-grid">
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Launching a new business</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Repositioning an established company</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Entering a new market</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Expanding products or services</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Struggling to differentiate</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Inconsistent marketing communication</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>A website that no longer reflects the business</span>
+                        </div>
+
+                        <div class="benefit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Preparing the business for growth</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            PULSE BRAND DEVELOPMENT FRAMEWORK
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    THE PULSE BRAND DEVELOPMENT FRAMEWORK™
+                </span>
+
+                <h2>
+                    A Strategic Process From Discovery to Activation
+                </h2>
+
+                <p class="section-intro">
+                    Brand development works best when strategy is built before
+                    expression and when the finished brand is designed to function
+                    across the real customer journey.
+                </p>
+
+                <div class="framework-grid">
+
+                    <article class="framework-step">
+                        <span class="step-number">01</span>
+                        <h3>Discover</h3>
+                        <p>
+                            Understand the business, its history, objectives, customers,
+                            competitive environment, strengths, challenges, and vision.
+                        </p>
+                    </article>
+
+                    <article class="framework-step">
+                        <span class="step-number">02</span>
+                        <h3>Position</h3>
+                        <p>
+                            Define where the brand belongs in the market and how it can
+                            communicate meaningful differentiation.
+                        </p>
+                    </article>
+
+                    <article class="framework-step">
+                        <span class="step-number">03</span>
+                        <h3>Understand</h3>
+                        <p>
+                            Identify the people the business serves, including their needs,
+                            expectations, motivations, and decision drivers.
+                        </p>
+                    </article>
+
+                    <article class="framework-step">
+                        <span class="step-number">04</span>
+                        <h3>Communicate</h3>
+                        <p>
+                            Develop the value proposition, brand voice, messaging,
+                            positioning statements, and communication standards.
+                        </p>
+                    </article>
+
+                    <article class="framework-step">
+                        <span class="step-number">05</span>
+                        <h3>Express</h3>
+                        <p>
+                            Translate strategy into a visual identity that reinforces
+                            the position and creates recognizable consistency.
+                        </p>
+                    </article>
+
+                    <article class="framework-step">
+                        <span class="step-number">06</span>
+                        <h3>Activate</h3>
+                        <p>
+                            Carry the brand into marketing, digital experiences,
+                            customer touchpoints, and the systems used to measure performance.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            BRAND MEASUREMENT
+        =========================================== -->
+
+        <section class="service-section alternate">
+
+            <div class="container">
+
+                <div class="service-grid">
+
+                    <div class="service-image">
+
+                        <img src="../assets/images/my-Branding.png"
+                             alt="Brand performance measurement and analytics">
+
+                    </div>
+
+                    <div class="service-content">
+
+                        <span class="section-label">
+                            BRAND MEASUREMENT
+                        </span>
+
+                        <h2>
+                            A Brand Can Be Strategic Without Being Untouchable
+                        </h2>
+
+                        <p>
+                            Brand perception is complex, and no single metric can fully
+                            describe it. That does not mean brand strategy should exist
+                            outside measurement.
+                        </p>
+
+                        <p>
+                            Depending on the business and objectives, Pulse Analytics can
+                            examine indicators such as branded search activity, direct
+                            traffic, engagement, conversion behavior, campaign response,
+                            customer feedback, repeat activity, and other signals that
+                            help reveal how the market is responding.
+                        </p>
+
+                        <p>
+                            The goal is not to reduce a brand to a number. It is to use
+                            evidence to understand what is working, what is changing,
+                            and where the strategy may need to evolve.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+            INBOUND MARKETING
+        =========================================== -->
+
+        <section class="services-introduction">
+
+            <div class="container">
+
+                <span class="section-label">
+                    INBOUND MARKETING PRINCIPLES
+                </span>
+
+                <h2>
+                    Build a Brand People Want to Find
+                </h2>
+
+                <p class="section-intro">
+                    Traditional marketing often begins with the question:
+                    <strong>
+                        "How do we get someone's attention?"
+                    </strong>
+                </p>
+
+                <p class="section-intro">
+                    Inbound marketing asks a different question:
+                    <strong>
+                        "How do we become valuable enough that the right people want to engage with us?"
+                    </strong>
+                </p>
+
+                <p class="section-intro">
+                    Brand strategy plays a central role because relevance, clarity,
+                    expertise, trust, and customer experience influence whether people
+                    continue the relationship after the first interaction.
+                </p>
+
+            </div>
+
+        </section>
 
 
         <!-- ==========================================
@@ -559,7 +1339,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -640,7 +1419,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Brand discovery and research">
 
                     </div>
@@ -650,7 +1429,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -666,7 +1444,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Brand positioning strategy">
 
                     </div>
@@ -740,7 +1518,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -821,7 +1598,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Customer audience strategy">
 
                     </div>
@@ -831,7 +1608,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -847,7 +1623,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Brand messaging strategy">
 
                     </div>
@@ -921,7 +1697,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1005,7 +1780,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Brand visual identity development">
 
                     </div>
@@ -1015,7 +1790,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1064,7 +1838,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1133,7 +1906,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Inbound marketing attract stage">
 
                     </div>
@@ -1143,7 +1916,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1159,7 +1931,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Inbound marketing engage stage">
 
                     </div>
@@ -1204,7 +1976,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1279,7 +2050,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Inbound marketing delight stage">
 
                     </div>
@@ -1289,7 +2060,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1305,7 +2075,7 @@
 
                     <div class="service-image">
 
-                        <img src="../assetts/images/my-Branding.png"
+                        <img src="../assets/images/my-Branding.png"
                             alt="Consistent brand experience">
 
                     </div>
@@ -1342,6 +2112,20 @@
                             We help establish the strategic and visual
                             standards necessary to create a more consistent
                             experience across the customer journey.
+
+                            <br><br>
+
+                            Consistency matters because trust is influenced by the
+                            cumulative experience people have with a brand. NielsenIQ
+                            describes branding as a strategic asset that can communicate
+                            value, trustworthiness, and differentiation, while its
+                            research emphasizes the importance of consistency across
+                            customer touchpoints.
+                            <a href="https://nielseniq.com/global/en/info/branding/"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Explore NielsenIQ's branding research
+                            </a>.
                         </p>
 
 
@@ -1376,7 +2160,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1422,7 +2205,6 @@
             </div>
 
         </section>
-
 
 
         <!-- ==========================================
@@ -1538,7 +2320,6 @@
         </section>
 
 
-
         <!-- ==========================================
             CONNECTED SERVICES
         =========================================== -->
@@ -1608,7 +2389,6 @@
         </section>
 
 
-
         <!-- ==========================================
             FINAL CTA
         =========================================== -->
@@ -1625,7 +2405,7 @@
 
 
                     <h2>
-                        Your Brand Is Already Telling a Story. Let's Make Sure It's the Right One.
+                        Your Brand Is Already Telling a Story. Let's Make It Clear, Consistent, and Meaningful.
                     </h2>
 
 
@@ -1652,7 +2432,7 @@
                         <a href="../contact.html"
                             class="btn-primary">
 
-                            Start a Brand Strategy
+                            Explore a Brand Strategy
 
                         </a>
 
@@ -1673,7 +2453,6 @@
         </section>
 
     </main>
-
 
 
     <!-- ==========================================
@@ -1700,7 +2479,7 @@
 
                     <div class="social-links">
 
-                        <a href="#"
+                        <a href="https://www.facebook.com/profile.php?id=61591149445952"
                             aria-label="Facebook">
 
                             <i class="fa-brands fa-facebook-f"></i>
@@ -1708,7 +2487,7 @@
                         </a>
 
 
-                        <a href="#"
+                        <a href="https://www.instagram.com/pulseanalyticsgroupllc/"
                             aria-label="Instagram">
 
                             <i class="fa-brands fa-instagram"></i>
@@ -1734,7 +2513,6 @@
                     </div>
 
                 </div>
-
 
 
                 <!-- SERVICES -->
@@ -1801,7 +2579,6 @@
                 </div>
 
 
-
                 <!-- RESOURCES -->
 
                 <div>
@@ -1820,19 +2597,19 @@
                         </li>
 
                         <li>
-                            <a href="../Resources/blog.html">
+                            <a href="../resources/blog.html">
                                 Blog
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/faq.html">
+                            <a href="../resources/faq.html">
                                 Frequently Asked Questions
                             </a>
                         </li>
 
                         <li>
-                            <a href="../Resources/free-resources.html">
+                            <a href="../resources/free-resources.html">
                                 Free Resources
                             </a>
                         </li>
@@ -1846,7 +2623,6 @@
                     </ul>
 
                 </div>
-
 
 
                 <!-- CONTACT -->
@@ -1867,12 +2643,12 @@
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
-                            info@pulseanalyticsgroup.com
+                            pulseanalyticsgroupllc@gmail.com
                         </li>
 
                         <li>
                             <i class="fa-solid fa-phone"></i>
-                            (814) 555-1234
+                            (814) 737-7650
                         </li>
 
                         <li>
@@ -1887,7 +2663,6 @@
                 </div>
 
             </div>
-
 
 
             <!-- FOOTER BOTTOM -->
