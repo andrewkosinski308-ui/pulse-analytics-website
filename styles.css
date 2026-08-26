@@ -19017,3 +19017,846 @@ SOCIAL PLATFORM BAR WIDTHS
         grid-template-columns: 1fr;
     }
 }
+/* ===================================================
+   SOLUTIONS — ENTERPRISE SOLUTIONS
+   Page-specific extensions to the global design system
+=================================================== */
+
+/* ===================================================
+   ENTERPRISE — HERO
+=================================================== */
+
+.enterprise-hero {
+    padding: calc(var(--header-height) + var(--space-7)) 0 var(--space-7);
+    background:
+        radial-gradient(circle at 85% 20%, rgba(51,161,255,.10), transparent 32%),
+        linear-gradient(180deg, var(--light) 0%, var(--off-white) 100%);
+    border-bottom: 1px solid var(--border);
+}
+
+.enterprise-hero .container {
+    max-width: 1080px;
+    text-align: center;
+}
+
+.enterprise-hero .eyebrow,
+.enterprise-section .label {
+    display: inline-block;
+    margin-bottom: var(--space-2);
+    color: var(--secondary);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.enterprise-hero h1 {
+    max-width: 1050px;
+    margin: 0 auto;
+    color: var(--primary);
+    font-size: clamp(2.8rem, 5vw, 4.75rem);
+    font-weight: 400;
+    letter-spacing: -.035em;
+    line-height: 1.08;
+}
+
+.enterprise-hero .hero-lead {
+    max-width: 850px;
+    margin: var(--space-3) auto 0;
+    color: var(--text-light);
+    font-size: 1.12rem;
+    line-height: 1.85;
+}
+
+.enterprise-hero .hero-system {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 980px;
+    margin: var(--space-5) auto 0;
+}
+
+.enterprise-hero .hero-system > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    padding: 1.25rem;
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        border-color var(--transition);
+}
+
+.enterprise-hero .hero-system > div:hover {
+    transform: translateY(-5px);
+    border-color: rgba(25,118,210,.20);
+    box-shadow: var(--shadow-md);
+}
+
+.enterprise-hero .hero-system i {
+    margin-bottom: .7rem;
+    color: var(--secondary);
+    font-size: 1.45rem;
+}
+
+.enterprise-hero .hero-system span {
+    color: var(--primary);
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+/* ===================================================
+   ENTERPRISE — SHARED SECTIONS
+=================================================== */
+
+.enterprise-section {
+    padding: var(--space-7) 0;
+    background: var(--light);
+}
+
+.enterprise-section.alt {
+    background: var(--off-white);
+}
+
+.enterprise-section .container {
+    max-width: var(--container);
+}
+
+.enterprise-section > .container > h2 {
+    max-width: 950px;
+    margin-bottom: 1.25rem;
+    color: var(--primary);
+    font-size: clamp(2.2rem, 4vw, 3.35rem);
+    font-weight: 500;
+    letter-spacing: -.025em;
+    line-height: 1.12;
+}
+
+.enterprise-section .intro {
+    max-width: 900px;
+    margin-bottom: 0;
+    color: var(--text-light);
+    font-size: 1rem;
+    line-height: 1.85;
+}
+
+.enterprise-section .label {
+    margin-bottom: 1rem;
+}
+
+.enterprise-section .research-note {
+    max-width: 900px;
+    margin: var(--space-3) 0 0;
+    color: var(--text-light);
+    font-size: .78rem;
+    line-height: 1.65;
+}
+
+.enterprise-section .research-note a {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.enterprise-section .research-note a:hover {
+    color: var(--primary);
+}
+
+/* ===================================================
+   ENTERPRISE — COMPLEXITY CHAIN
+=================================================== */
+
+.complexity-chain {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: .65rem;
+    margin-top: var(--space-5);
+}
+
+.complexity-chain > div {
+    min-height: 110px;
+    padding: 1.25rem;
+    color: var(--primary);
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.enterprise-section.alt .complexity-chain > div {
+    background: var(--light);
+}
+
+.complexity-chain small {
+    display: block;
+    margin-top: .45rem;
+    color: var(--text-light);
+    font-size: .68rem;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+.complexity-chain > i {
+    color: var(--secondary);
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* ===================================================
+   ENTERPRISE — ECOSYSTEM
+=================================================== */
+
+.enterprise-section .ecosystem {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: var(--space-5);
+    padding: var(--space-5);
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.enterprise-section.alt .ecosystem {
+    background: var(--white, var(--light));
+}
+
+.enterprise-section .ecosystem-core {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    padding: 1.5rem;
+    color: var(--text-white);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.enterprise-section .ecosystem-core i {
+    margin-bottom: .65rem;
+    font-size: 1.6rem;
+}
+
+.enterprise-section .ecosystem-core strong {
+    color: var(--text-white);
+    font-size: .82rem;
+    letter-spacing: .08em;
+    line-height: 1.45;
+}
+
+.enterprise-section .ecosystem-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    padding: .85rem 1rem;
+    color: var(--primary);
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: none;
+    font-size: .8rem;
+    font-weight: 600;
+    text-align: center;
+    transition:
+        transform var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+.enterprise-section .ecosystem-node:hover {
+    transform: translateY(-3px);
+    border-color: rgba(25,118,210,.22);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===================================================
+   ENTERPRISE — SHARED CARD GRID
+=================================================== */
+
+.enterprise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+}
+
+.enterprise-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 100%;
+    padding: var(--card-padding);
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        border-color var(--transition);
+}
+
+.enterprise-section.alt .enterprise-card {
+    background: var(--white, var(--light));
+}
+
+.enterprise-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(25,118,210,.20);
+    box-shadow: var(--shadow-md);
+}
+
+.enterprise-card > i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1rem;
+    color: var(--secondary);
+    background: rgba(25,118,210,.10);
+    border-radius: var(--radius-sm);
+    font-size: 1.15rem;
+}
+
+.enterprise-card h3 {
+    margin-bottom: .65rem;
+    color: var(--primary);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.enterprise-card p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: .82rem;
+    line-height: 1.7;
+}
+
+/* ===================================================
+   ENTERPRISE — RESEARCH CHART
+=================================================== */
+
+.research-chart {
+    margin-top: var(--space-5);
+    padding: var(--space-5);
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.enterprise-section.alt .research-chart {
+    background: var(--white, var(--light));
+}
+
+.chart-heading {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    margin-bottom: var(--space-4);
+}
+
+.chart-heading strong {
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.chart-heading span {
+    color: var(--text-light);
+    font-size: .72rem;
+}
+
+.bar-chart {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    gap: var(--space-4);
+    min-height: 250px;
+    padding: 1rem 1rem 0;
+}
+
+.bar-item {
+    display: grid;
+    grid-template-rows: auto 180px auto;
+    align-items: end;
+    justify-items: center;
+    gap: .55rem;
+}
+
+.bar-value {
+    color: var(--primary);
+    font-size: .9rem;
+    font-weight: 800;
+}
+
+.bar-track {
+    display: flex;
+    align-items: flex-end;
+    width: min(90px, 100%);
+    height: 180px;
+    overflow: hidden;
+    background: var(--surface);
+    border-radius: 12px 12px 6px 6px;
+}
+
+.bar-fill {
+    width: 100%;
+    min-height: 8px;
+    background: linear-gradient(180deg, var(--accent), var(--secondary));
+    border-radius: 10px 10px 0 0;
+}
+
+.bar-item > strong {
+    color: var(--text);
+    font-size: .76rem;
+}
+
+.chart-source {
+    margin: var(--space-3) 0 0;
+    color: var(--text-light);
+    font-size: .7rem;
+    line-height: 1.55;
+}
+
+/* ===================================================
+   ENTERPRISE — TWO COLUMN SECTIONS
+=================================================== */
+
+.enterprise-two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, .8fr);
+    align-items: start;
+    gap: var(--space-6);
+}
+
+.enterprise-two-col > div:first-child h2 {
+    max-width: 760px;
+}
+
+/* ===================================================
+   ENTERPRISE — STRATEGIC FRAMEWORK
+=================================================== */
+
+.framework {
+    display: grid;
+    gap: .85rem;
+}
+
+.framework-step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+}
+
+.enterprise-section.alt .framework-step {
+    background: var(--white, var(--light));
+}
+
+.framework-step > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    color: var(--text-white);
+    background: var(--primary);
+    border-radius: 50%;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.framework-step strong {
+    display: block;
+    color: var(--primary);
+    font-size: .9rem;
+}
+
+.framework-step small {
+    display: block;
+    margin-top: .2rem;
+    color: var(--text-light);
+    font-size: .68rem;
+    line-height: 1.5;
+}
+
+/* ===================================================
+   ENTERPRISE — CAPABILITY MATRIX
+=================================================== */
+
+.capability-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: var(--space-5);
+}
+
+.matrix-item {
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+    padding: 1.35rem 1.5rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.enterprise-section.alt .matrix-item {
+    background: var(--light);
+}
+
+.matrix-item strong {
+    color: var(--primary);
+    font-size: .88rem;
+}
+
+.matrix-item span {
+    color: var(--text-light);
+    font-size: .76rem;
+    line-height: 1.6;
+}
+
+/* ===================================================
+   ENTERPRISE — DATA FLOW
+=================================================== */
+
+.data-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .65rem;
+    min-height: 100%;
+    padding: var(--space-4);
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.enterprise-section.alt .data-flow {
+    background: var(--light);
+}
+
+.data-flow > div {
+    padding: .7rem .85rem;
+    color: var(--primary);
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.enterprise-section.alt .data-flow > div {
+    background: var(--off-white);
+}
+
+.data-flow > i {
+    flex: 0 0 auto;
+    color: var(--secondary);
+    font-size: .75rem;
+}
+
+/* ===================================================
+   ENTERPRISE — AI READINESS
+=================================================== */
+
+.ai-readiness {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+}
+
+.ai-readiness > div {
+    padding: var(--card-padding);
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.ai-readiness strong {
+    display: block;
+    margin-bottom: .55rem;
+    color: var(--primary);
+    font-size: .95rem;
+}
+
+.ai-readiness span {
+    display: block;
+    color: var(--text-light);
+    font-size: .76rem;
+    line-height: 1.65;
+}
+
+/* ===================================================
+   ENTERPRISE — GOVERNANCE
+=================================================== */
+
+.governance-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: var(--space-5);
+}
+
+.governance-grid > div {
+    padding: 1.5rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.enterprise-section.alt .governance-grid > div {
+    background: var(--light);
+}
+
+.governance-grid i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: var(--secondary);
+    background: rgba(25,118,210,.10);
+    border-radius: var(--radius-sm);
+}
+
+.governance-grid strong {
+    display: block;
+    margin-bottom: .4rem;
+    color: var(--primary);
+    font-size: .85rem;
+}
+
+.governance-grid span {
+    display: block;
+    color: var(--text-light);
+    font-size: .7rem;
+    line-height: 1.55;
+}
+
+/* ===================================================
+   ENTERPRISE — ENGAGEMENT MODEL
+=================================================== */
+
+.engagement {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: .75rem;
+    margin-top: var(--space-5);
+}
+
+.engagement > div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 110px;
+    padding: 1rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.enterprise-section.alt .engagement > div {
+    background: var(--light);
+}
+
+.engagement span {
+    margin-bottom: .35rem;
+    color: var(--secondary);
+    font-size: .7rem;
+    font-weight: 800;
+}
+
+.engagement strong {
+    color: var(--primary);
+    font-size: .78rem;
+}
+
+/* ===================================================
+   ENTERPRISE — CTA
+=================================================== */
+
+.enterprise-cta {
+    padding: var(--space-8) 0;
+    background: linear-gradient(135deg, var(--primary), var(--dark));
+    text-align: center;
+}
+
+.enterprise-cta .container {
+    max-width: 900px;
+}
+
+.enterprise-cta h2 {
+    margin-bottom: 1rem;
+    color: var(--text-white);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 500;
+    letter-spacing: -.025em;
+}
+
+.enterprise-cta p {
+    max-width: 760px;
+    margin: 0 auto;
+    color: rgba(255,255,255,.82);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.enterprise-cta .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    margin-top: var(--space-4);
+    padding: 1rem 2rem;
+    color: var(--primary);
+    background: var(--light);
+    border: 2px solid var(--light);
+    border-radius: var(--button-radius);
+    font-weight: 700;
+    line-height: 1.2;
+    transition:
+        transform var(--transition),
+        background-color var(--transition),
+        color var(--transition),
+        box-shadow var(--transition);
+}
+
+.enterprise-cta .btn:hover {
+    color: var(--text-white);
+    background: var(--secondary);
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0,0,0,.18);
+}
+
+/* ===================================================
+   ENTERPRISE — RESPONSIVE
+=================================================== */
+
+@media (max-width: 1100px) {
+
+    .enterprise-hero .hero-system,
+    .complexity-chain {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .enterprise-grid,
+    .governance-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .engagement {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+
+    .enterprise-two-col {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+    }
+
+    .capability-matrix,
+    .ai-readiness {
+        grid-template-columns: 1fr;
+    }
+
+    .enterprise-section .ecosystem {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .enterprise-section .ecosystem-core {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        order: -1;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .enterprise-hero {
+        padding-top: calc(var(--header-height) + var(--space-5));
+    }
+
+    .enterprise-hero h1 {
+        font-size: clamp(2.35rem, 10vw, 3.4rem);
+    }
+
+    .enterprise-hero .hero-lead {
+        font-size: 1rem;
+    }
+
+    .enterprise-hero .hero-system,
+    .complexity-chain,
+    .enterprise-grid,
+    .governance-grid,
+    .engagement {
+        grid-template-columns: 1fr;
+    }
+
+    .complexity-chain > i {
+        transform: rotate(90deg);
+    }
+
+    .bar-chart {
+        gap: 1rem;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .research-chart {
+        padding: var(--space-3);
+    }
+
+    .enterprise-section .ecosystem {
+        grid-template-columns: 1fr;
+        padding: var(--space-3);
+    }
+
+    .enterprise-section .ecosystem-core {
+        grid-column: auto;
+    }
+
+    .data-flow {
+        justify-content: flex-start;
+    }
+
+    .data-flow > i {
+        transform: rotate(90deg);
+    }
+}
