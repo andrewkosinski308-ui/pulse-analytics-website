@@ -36,234 +36,204 @@
                   ]
                 }
         </script>
-        <style>
-                .guides-hero{padding:7rem 0 4.5rem;background:linear-gradient(135deg,#f7f9fc 0%,#fff 72%);border-bottom:1px solid rgba(10,46,111,.08)}
-                .guides-hero-inner{max-width:900px}
-                .guides-hero h1{margin:.6rem 0 1rem;font-size:clamp(2.5rem,5vw,4.8rem);line-height:1.03}
-                .guides-hero p{max-width:800px}
-                .guide-search{position:relative;max-width:760px;margin-top:2rem}
-                .guide-search input{width:100%;min-height:58px;padding:0 3rem 0 1.2rem;border:1px solid rgba(10,46,111,.14);border-radius:10px;font:inherit;box-shadow:0 10px 30px rgba(10,46,111,.06)}
-                .guide-search i{position:absolute;right:1.1rem;top:50%;transform:translateY(-50%);color:#1976D2}
-                .guide-filters{display:flex;flex-wrap:wrap;gap:.55rem;margin:2rem 0 3.5rem}
-                .guide-filter{border:1px solid rgba(10,46,111,.12);background:#fff;border-radius:999px;padding:.55rem .9rem;font:inherit;font-size:.75rem;font-weight:700;cursor:pointer}
-                .guide-filter.is-active,.guide-filter:hover{color:#1976D2;border-color:#1976D2;background:#f7fbff}
-                .guide-section{margin-bottom:5rem;scroll-margin-top:110px}
-                .guide-section-head{max-width:820px;margin-bottom:1.7rem}
-                .guide-section-head h2{margin:.45rem 0 .55rem}
-                .guide-section-head p{opacity:.7}
-                .guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem}
-                .guide-card{display:flex;flex-direction:column;padding:1.5rem;border:1px solid rgba(10,46,111,.09);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(10,46,111,.045);min-height:280px}
-                .guide-card:hover{box-shadow:0 16px 38px rgba(10,46,111,.08)}
-                .guide-type{font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1976D2}
-                .guide-card h3{margin:.7rem 0 .6rem;font-size:1.15rem}
-                .guide-card p{font-size:.81rem;line-height:1.65;opacity:.72}
-                .guide-card-footer{margin-top:auto;padding-top:1rem;display:flex;gap:1rem;flex-wrap:wrap}
-                .guide-card-footer a{font-size:.76rem;font-weight:750;text-decoration:none}
-                .feature-guide{display:grid;grid-template-columns:1.2fr .8fr;gap:2rem;padding:2rem;border:1px solid rgba(10,46,111,.08);border-radius:14px;background:linear-gradient(120deg,#f7f9fc,#fff)}
-                .feature-guide h2{margin:.5rem 0 .7rem}
-                .feature-guide p{line-height:1.7}
-                .feature-visual{display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,rgba(25,118,210,.08),rgba(10,46,111,.03));min-height:230px}
-                .feature-visual i{font-size:4rem;color:#1976D2;opacity:.7}
-                .guide-note{margin-top:1.5rem;padding:1rem 1.1rem;border-left:3px solid #1976D2;background:#f7f9fc;font-size:.75rem;line-height:1.65}
-                .no-guides{display:none;padding:2rem;border:1px dashed rgba(10,46,111,.15);border-radius:10px;text-align:center;opacity:.7}
-                .no-guides.is-visible{display:block}
-                .guides-cta{padding:4.5rem 0;background:linear-gradient(135deg,#f7f9fc,#fff);border-top:1px solid rgba(10,46,111,.08)}
-                @media(max-width:1000px){.guide-grid{grid-template-columns:repeat(2,1fr)}.feature-guide{grid-template-columns:1fr}}
-                @media(max-width:700px){.guides-hero{padding:5.5rem 0 3.5rem}.guide-grid{grid-template-columns:1fr}}
-        </style>
-    </head>
-    <body>
+</head>
+    <body class="guides-page">
         <header>
             <div class="container">
+
                 <!-- ===========================
                     BRANDING
                 ============================ -->
+
                 <div class="header-brand">
+
                     <div class="header-logo">
-                        <a href="index.html" class="logo">
-                            <img src="assetts/images/transparent logo PA.jpeg"
+
+                        <a href="../index.html" class="logo">
+
+                            <img src="../assetts/images/transparent-logo-PA.jpeg"
                                 alt="Pulse Analytics Group LLC Logo">
+
                         </a>
+
                     </div>
+
                     <div class="header-branding">
-                        <h1>
-                            Pulse Analytics Group LLC
-                        </h1>
-                        <p>
-                            Strategic Digital Marketing &amp; Growth Solutions
-                        </p>
+
+                        <h1>Pulse Analytics Group LLC</h1>
+
+                        <p>Strategic Digital Marketing &amp; Growth Solutions</p>
+
                     </div>
+
                 </div>
+
                 <!-- ===========================
                     NAVIGATION
                 ============================ -->
+
                 <div class="header-nav">
+
                     <nav id="primary-navigation">
+
                         <ul class="nav-links">
-                            <li>
-                                <a href="index.html">
-                                    Home
-                                </a>
-                            </li>
+
+                            <li><a href="../index.html">Home</a></li>
+
                             <!-- SERVICES -->
+
                             <li class="dropdown">
-                                <a href="services.html">
+
+                                <a href="../services.html">
+
                                     Services
-                                    <i class="fa-solid fa-chevron-down">
-                                    </i>
+
+                                    <i class="fa-solid fa-chevron-down"></i>
+
                                 </a>
+
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="services/seo.html">
-                                            Search Engine Optimization
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/local-seo.html">
-                                            Local SEO
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/google-ads.html">
-                                            Google Ads Management
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/web-design.html">
-                                            Website Design &amp; Development
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/analytics-reporting.html">
-                                            Analytics &amp; Reporting
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/social-media.html">
-                                            Social Media Marketing
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/ai-marketing.html">
-                                            AI Marketing Solutions
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services/branding.html">
-                                            Brand Strategy
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="services.html">
-                                            View All Services
-                                        </a>
-                                    </li>
+
+                                    <li><a href="../services/seo.html">Search Engine Optimization</a></li>
+
+                                    <li><a href="../services/local-seo.html">Local SEO</a></li>
+
+                                    <li><a href="../services/google-ads.html">Google Ads Management</a></li>
+
+                                    <li><a href="../services/web-design.html">Website Design &amp; Development</a></li>
+
+                                    <li><a href="../services/analytics-reporting.html">Analytics &amp; Reporting</a></li>
+
+                                    <li><a href="../services/social-media.html">Social Media Marketing</a></li>
+
+                                    <li><a href="../services/ai-marketing.html">AI Marketing Solutions</a></li>
+
+                                    <li><a href="../services/branding.html">Brand Strategy</a></li>
+
+                                    <li><a href="../services.html">View All Services</a></li>
+
                                 </ul>
+
                             </li>
+
                             <!-- SOLUTIONS -->
+
                             <li class="dropdown">
-                                <a href="solutions.html">
+
+                                <a href="../solutions.html">
+
                                     Solutions
-                                    <i class="fa-solid fa-chevron-down">
-                                    </i>
+
+                                    <i class="fa-solid fa-chevron-down"></i>
+
                                 </a>
+
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="solutions/lead-generation.html">
-                                            Lead Generation
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="solutions/local-business.html">
-                                            Local Business Growth
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="solutions/ecommerce.html">
-                                            E-Commerce
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="solutions/startups.html">
-                                            Startup Marketing
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="solutions/enterprise.html">
-                                            Enterprise Solutions
-                                        </a>
-                                    </li>
+
+                                    <li><a href="../solutions/lead-generation.html">Lead Generation</a></li>
+
+                                    <li><a href="../solutions/local-business.html">Local Business Growth</a></li>
+
+                                    <li><a href="../solutions/ecommerce.html">E-Commerce</a></li>
+
+                                    <li><a href="../solutions/startups.html">Startup Marketing</a></li>
+
+                                    <li><a href="../solutions/enterprise.html">Enterprise Solutions</a></li>
+
                                 </ul>
+
                             </li>
-                            <!-- ABOUT -->
-                            <li class="dropdown">
-                                <a href="about.html">
-                                    About
-                                    <i class="fa-solid fa-chevron-down">
-                                    </i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="about.html">
-                                            Our Company
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Mission &amp; Values
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Our Process
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Why Choose Pulse Analytics
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- RESOURCES -->
-                            <li class="dropdown">
-                                <a href="blog.html">
-                                    Resources
-                                    <i class="fa-solid fa-chevron-down">
-                                    </i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="blog.html">
-                                            Blog
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Marketing Guides
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Free Resources
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="faq.html">
-                                            FAQ
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+
+                            <!-- PRICING -->
+
                             <li>
-                                <a href="contact.html">
-                                    Contact
-                                </a>
+
+                                <a href="../pricing.html">Pricing</a>
+
                             </li>
+
+                            <!-- ABOUT -->
+
+                            <li class="dropdown">
+
+                                <a href="../about.html">
+
+                                    About
+
+                                    <i class="fa-solid fa-chevron-down"></i>
+
+                                </a>
+
+                                <ul class="dropdown-menu">
+
+                                    <li><a href="../about.html">Our Company</a></li>
+
+                                    <li><a href="#">Mission &amp; Values</a></li>
+
+                                    <li><a href="#">Our Process</a></li>
+
+                                    <li><a href="#">Why Choose Pulse Analytics</a></li>
+
+                                </ul>
+
+                            </li>
+
+                            <!-- RESOURCES -->
+
+                            <li class="dropdown">
+
+                                <a href="../resources.html">
+
+                                    Resources
+
+                                    <i class="fa-solid fa-chevron-down"></i>
+
+                                </a>
+
+                                <ul class="dropdown-menu">
+
+                                    <li><a href="../blog.html">Blog</a></li>
+
+                                    <li><a href="guides.html">Marketing Guides</a></li>
+
+                                    <li><a href="free-resources.html">Free Resources</a></li>
+
+                                    <li><a href="../faq.html">FAQ</a></li>
+
+                                </ul>
+
+                            </li>
+
+                            <li>
+
+                                <a href="../contact.html">Contact</a>
+
+                            </li>
+
                         </ul>
+
                     </nav>
+
                 </div>
+
+                <!-- ===========================
+                    SHOPPING CART
+                ============================ -->
+
+                <div class="header-cart">
+
+                    <a href="../cart/cart.html" aria-label="View Cart">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        <span id="cartCount">0</span>
+
+                    </a>
+
+                </div>
+
             </div>
+
         </header>
         <main>
             <section class="guides-hero">
@@ -289,7 +259,7 @@
                     </div>
                 </div>
             </section>
-            <section class="services-introduction">
+            <section class="guides-content section">
                 <div class="container">
                     <div class="guide-filters" aria-label="Guide categories">
                         <button class="guide-filter is-active" data-filter="all">
@@ -329,7 +299,7 @@
                                     system. This foundational guide explains how those pieces interact and where
                                     businesses commonly lose effectiveness when they are treated separately.
                                 </p>
-                                <a class="btn-primary" href="#">
+                                <a class="primary-button" href="#">
                                     Read the Guide →
                                 </a>
                                 <div class="guide-note">
@@ -724,7 +694,7 @@
                                     Understand the role of CRM, marketing automation, customer data, lead management, and reporting in a connected marketing system.
                                 </p>
                                 <div class="guide-card-footer">
-                                    <a href="../Resources/free-resources.html#hubspot-resources">
+                                    <a href="free-resources.html#hubspot-resources">
                                         HubSpot Resources →
                                     </a>
                                     <a href="#">
@@ -743,7 +713,7 @@
                                     Understand how crawling tools can expose technical and structural issues that are difficult to identify through visual inspection alone.
                                 </p>
                                 <div class="guide-card-footer">
-                                    <a href="../Resources/free-resources.html#recommended-technology">
+                                    <a href="free-resources.html#recommended-technology">
                                         Recommended Tools →
                                     </a>
                                     <a href="#">
@@ -822,7 +792,7 @@
                             </article>
                         </div>
                     </section>
-                    <div id="no-guides" class="no-guides">
+                    <div id="no-guides" class="no-guides" role="status" aria-live="polite">
                         No guides matched your search. Try a broader term or another category.
                     </div>
                 </div>
@@ -838,182 +808,210 @@
                     <p class="section-intro">
                         Use the guides to understand the system, explore the free resources for practical tools, or ask Pulse Analytics about a specific business problem.
                     </p>
-                    <a class="btn-primary" href="../Resources/free-resources.html">
+                    <a class="primary-button" href="free-resources.html">
                         Explore Free Resources →
                     </a>
-                    <a class="btn-secondary" href="../contact.html">
+                    <a class="secondary-button" href="../contact.html">
                         Start a Conversation →
                     </a>
                 </div>
             </section>
         </main>
+
         <footer id="footer">
+
             <div class="container">
+
                 <div class="footer-grid">
+
                     <!-- Company Information -->
+
                     <div class="footer-column">
-                        <img src="assetts/images/logo/PulseAnalyticsTransparLogo.png"
-                                alt="Pulse Analytics Group LLC Logo"
-                                class="footer-logo">
-                        <h3>
-                            Pulse Analytics Group LLC
-                        </h3>
+
+                        <img src="../assetts/images/logo/PulseAnalyticsTransparLogo.png"
+                            alt="Pulse Analytics Group LLC Logo"
+                            class="footer-logo">
+
+                        <h3>Pulse Analytics Group LLC</h3>
+
                         <p>
+
                             Helping businesses grow through strategic digital
                             marketing, modern website development, data-driven
                             analytics, and innovative technology solutions.
+
                         </p>
+
                         <div class="social-icons">
+
                             <a href="#" aria-label="Facebook">
-                                <i class="fa-brands fa-facebook-f">
-                                </i>
+
+                                <i class="fa-brands fa-facebook-f"></i>
+
                             </a>
+
                             <a href="#" aria-label="Instagram">
-                                <i class="fa-brands fa-instagram">
-                                </i>
+
+                                <i class="fa-brands fa-instagram"></i>
+
                             </a>
+
                             <a href="#" aria-label="LinkedIn">
-                                <i class="fa-brands fa-linkedin-in">
-                                </i>
+
+                                <i class="fa-brands fa-linkedin-in"></i>
+
                             </a>
+
                             <a href="#" aria-label="YouTube">
-                                <i class="fa-brands fa-youtube">
-                                </i>
+
+                                <i class="fa-brands fa-youtube"></i>
+
                             </a>
+
                         </div>
+
                     </div>
+
                     <!-- Services -->
+
                     <div class="footer-column">
-                        <h3>
-                            Services
-                        </h3>
+
+                        <h3>Services</h3>
+
                         <ul>
-                            <li>
-                                <a href="services/seo.html">
-                                    Search Engine Optimization
-                                </a>
-                            </li>
-                            <li>
-                                <a href="services/local-seo.html">
-                                    Local SEO
-                                </a>
-                            </li>
-                            <li>
-                                <a href="services/google-ads.html">
-                                    Google Ads Management
-                                </a>
-                            </li>
-                            <li>
-                                <a href="services/web-design.html">
-                                    Website Development
-                                </a>
-                            </li>
-                            <li>
-                                <a href="services/social-media.html">
-                                    Social Media Marketing
-                                </a>
-                            </li>
-                            <li>
-                                <a href="services/analytics-reporting.html">
-                                    Analytics & Reporting
-                                </a>
-                            </li>
-                            <li>
-                                <a href="services/ai-marketing.html">
-                                    AI Marketing Solutions
-                                </a>
-                            </li>
+
+                            <li><a href="../services/seo.html">Search Engine Optimization</a></li>
+
+                            <li><a href="../services/local-seo.html">Local SEO</a></li>
+
+                            <li><a href="../services/google-ads.html">Google Ads Management</a></li>
+
+                            <li><a href="../services/web-design.html">Website Development</a></li>
+
+                            <li><a href="../services/social-media.html">Social Media Marketing</a></li>
+
+                            <li><a href="../services/analytics-reporting.html">Analytics &amp; Reporting</a></li>
+
+                            <li><a href="../services/ai-marketing.html">AI Marketing Solutions</a></li>
+
                         </ul>
+
                     </div>
+
                     <!-- Resources -->
+
                     <div class="footer-column">
-                        <h3>
-                            Resources
-                        </h3>
+
+                        <h3>Resources</h3>
+
                         <ul>
-                            <li>
-                                <a href="about.html">
-                                    About Us
-                                </a>
-                            </li>
-                            <li>
-                                <a href="blog.html">
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="faq.html">
-                                    Frequently Asked Questions
-                                </a>
-                            </li>
-                            <li>
-                                <a href="free-website-audit.html">
-                                    Pulse Performance Audit™
-                                </a>
-                            </li>
-                            <li>
-                                <a href="privacy-policy.html">
-                                    Privacy Policy
-                                </a>
-                            </li>
-                            <li>
-                                <a href="terms-of-service.html">
-                                    Terms of Service
-                                </a>
-                            </li>
-                            <li>
-                                <a href="sitemap.html">
-                                    Sitemap
-                                </a>
-                            </li>
+
+                            <li><a href="../about.html">About Us</a></li>
+
+                            <li><a href="../blog.html">Blog</a></li>
+
+                            <li><a href="../faq.html">Frequently Asked Questions</a></li>
+
+                            <li><a href="../free-website-audit.html">Pulse Performance Audit™</a></li>
+
+                            <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+
+                            <li><a href="../terms-of-service.html">Terms of Service</a></li>
+
+                            <li><a href="../sitemap.html">Sitemap</a></li>
+
                         </ul>
+
                     </div>
+
                     <!-- Contact -->
+
                     <div class="footer-column">
-                        <h3>
-                            Contact Us
-                        </h3>
+
+                        <h3>Contact Us</h3>
+
                         <ul class="contact-list">
+
                             <li>
-                                <i class="fa-solid fa-location-dot">
-                                </i>
+
+                                <i class="fa-solid fa-location-dot"></i>
+
                                 Union City, Pennsylvania
+
                             </li>
+
                             <li>
-                                <i class="fa-solid fa-envelope">
-                                </i>
+
+                                <i class="fa-solid fa-envelope"></i>
+
                                 <a href="mailto:info@pulseanalyticsgroup.com">
+
                                     info@pulseanalyticsgroup.com
+
                                 </a>
+
                             </li>
+
                             <li>
-                                <i class="fa-solid fa-phone">
-                                </i>
+
+                                <i class="fa-solid fa-phone"></i>
+
                                 <a href="tel:+18145551234">
+
                                     (814) 555-1234
+
                                 </a>
+
                             </li>
+
                             <li>
-                                <i class="fa-solid fa-clock">
-                                </i>
-                                Monday – Friday
-                                <br>
+
+                                <i class="fa-solid fa-clock"></i>
+
+                                Monday – Friday<br>
+
                                 9:00 AM – 5:00 PM
+
                             </li>
+
                         </ul>
+
                     </div>
+
                 </div>
+
+                <!-- ==========================
+                    BACK TO TOP BUTTON
+                =========================== -->
+
+                <button id="backToTop"
+                        aria-label="Back to Top">
+
+                    <i class="fa-solid fa-arrow-up"></i>
+
+                </button>
+
                 <hr>
+
                 <div class="footer-bottom">
+
                     <p>
+
                         &copy; 2026 Pulse Analytics Group LLC. All Rights Reserved.
+
                     </p>
+
                     <p>
+
                         Helping Businesses Grow Through Strategic Marketing,
                         Modern Technology, and Measurable Results.
+
                     </p>
+
                 </div>
+
             </div>
+
         </footer>
         <script>
                 document.addEventListener("DOMContentLoaded",function(){
@@ -1029,13 +1027,13 @@
                      const cat=item.dataset.category||"";
                      const text=(item.textContent+" "+(item.dataset.search||"")).toLowerCase();
                      const show=(active==="all"||cat===active)&&(!q||text.includes(q));
-                     item.style.display=show?"":"none";
+                     item.classList.toggle("is-hidden",!show);
                      if(show) count++;
                    });
                    document.querySelectorAll(".guide-section").forEach(section=>{
                      if(section.querySelector(".feature-guide")) return;
-                     const visible=[...section.querySelectorAll(".guide-item")].some(i=>i.style.display!=="none");
-                     section.style.display=visible?"":"none";
+                     const visible=[...section.querySelectorAll(".guide-item")].some(i=>!i.classList.contains("is-hidden"));
+                     section.classList.toggle("is-hidden",!visible);
                    });
                    empty.classList.toggle("is-visible",count===0);
                  }

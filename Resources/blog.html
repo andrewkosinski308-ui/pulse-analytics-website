@@ -1,85 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
-        
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <title>Pulse Insights | Digital Marketing Blog | Pulse Analytics Group LLC</title>
-
-        <meta name="description"
-            content="Pulse Insights provides research-driven articles, digital marketing strategy, SEO, analytics, AI, Google Ads, website development, and practical business insights from Pulse Analytics Group LLC.">
-
-        <meta name="keywords"
-            content="Digital Marketing, SEO, Search Engine Optimization, Website Development, Google Ads, Analytics, AI Marketing, Social Media Marketing, Local SEO">
-
-        <meta name="author" content="Pulse Analytics Group LLC">
-        <meta name="robots" content="index, follow">
-        <link rel="canonical" href="https://www.pulseanalyticsgroup.com/blog.html">
-
-        <!-- Open Graph -->
-
-        <meta property="og:title" content="Pulse Analytics Group LLC">
-
-        <meta property="og:description"
-            content="Helping businesses grow through strategic digital marketing, modern websites, and measurable results.">
-
-        <meta property="og:type" content="website">
-
-        <!-- Favicon -->
-
-        <link rel="icon" href="assets/images/favicon.ico">
-
-        <!-- Google Fonts -->
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet">
-
-        <!-- Font Awesome -->
-
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-
-        <!-- Stylesheet -->
-
-        <link rel="stylesheet" href="styles.css">
-
-    
-        <style>
-            /* ==========================================
-               PULSE INSIGHTS — CONTENT PRESENTATION LAYER
-               Backend-ready: rendering is driven by blog.js
-            =========================================== */
-            .blog-toolbar { align-items: stretch; }
-            .search-box { display:flex; align-items:center; }
-            .search-box input { min-width: 0; }
-            .blog-filters { display:flex; gap:.75rem; flex-wrap:wrap; }
-            .blog-toolbar select { min-height:46px; }
-            .blog-results-meta { margin-top:1rem; font-size:.8rem; opacity:.7; }
-            .blog-grid.is-loading { opacity:.45; pointer-events:none; }
-            .blog-empty { grid-column:1/-1; padding:3rem 1.5rem; text-align:center; border:1px dashed rgba(10,46,111,.18); border-radius:12px; }
-            .blog-empty h3 { margin-bottom:.5rem; }
-            .blog-empty p { margin:0; opacity:.7; }
-            .post-author { margin-top:.65rem; font-size:.75rem; opacity:.7; }
-            .featured-post-link { color:inherit; text-decoration:none; }
-            .featured-post-link:hover { text-decoration:none; }
-            .load-more[hidden] { display:none; }
-            .category-card.is-active { outline:2px solid #1976D2; outline-offset:2px; }
-            .blog-toolbar button { border:0; cursor:pointer; }
-        </style>
-
+        <meta content="Pulse Insights provides research-driven articles, digital marketing strategy, SEO, analytics, AI, Google Ads, website development, and practical business insights from Pulse Analytics Group LLC." name="description">
+        <meta content="Digital Marketing, SEO, Search Engine Optimization, Website Development, Google Ads, Analytics, AI Marketing, Social Media Marketing, Local SEO" name="keywords">
+        <meta content="Pulse Analytics Group LLC" name="author">
+        <meta content="index, follow" name="robots">
+        <meta content="Pulse Insights | Digital Marketing Blog" property="og:title">
+        <meta content="Research-driven digital marketing insights, SEO strategies, analytics, AI, Google Ads, website development, and practical business guidance from Pulse Analytics Group LLC." property="og:description">
+        <meta content="website" property="og:type">
+        <link href="https://www.pulseanalyticsgroup.com/blog.html" rel="canonical">
+        <link href="../assetts/images/favicon.ico" rel="icon">
+        <link href="https://fonts.googleapis.com" rel="preconnect">
+        <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+        <link href="../styles.css" rel="stylesheet">
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Pulse Analytics Group LLC",
+                "alternateName": "Pulse Analytics Group",
+                "description": "Pulse Analytics Group LLC is a full-service digital marketing agency specializing in search engine optimization (SEO), Google Ads management, website design and development, analytics, AI-powered marketing solutions, local SEO, accessibility, and business growth strategies.",
+                "logo": "assets/images/logo/PulseAnalyticsTransparentLogo.png",
+                "slogan": "Data. Insight. Growth.",
+                "email": "mailto:pulseanalyticsgroupllc@gmail.com",
+                "telephone": "+1-814-737-7650",
+                "founder": {
+                    "@type": "Person",
+                    "name": "Andrew Kosinski"
+                },
+                "sameAs": [
+                    "https://www.facebook.com/profile.php?id=61591149445952",
+                    "https://www.instagram.com/pulseanalyticsgroupllc/",
+                    "https://www.tiktok.com/@pulseanalyticsgroup"
+                ]
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "@id": "https://www.pulseanalyticsgroup.com/#website",
+                "url": "https://www.pulseanalyticsgroup.com",
+                "name": "Pulse Analytics Group LLC",
+                "publisher": {
+                    "@id": "https://www.pulseanalyticsgroup.com/#organization"
+                },
+                "inLanguage": "en-US"
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Blog",
+                "@id": "https://www.pulseanalyticsgroup.com/blog.html#blog",
+                "url": "https://www.pulseanalyticsgroup.com/blog.html",
+                "name": "Pulse Insights",
+                "headline": "Pulse Insights | Digital Marketing Blog",
+                "description": "Pulse Insights is the official blog of Pulse Analytics Group LLC, providing expert articles on digital marketing, SEO, local SEO, Google Ads, website development, analytics, accessibility, artificial intelligence, branding, and business growth.",
+                "publisher": {
+                    "@id": "https://www.pulseanalyticsgroup.com/#organization"
+                },
+                "inLanguage": "en-US"
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "@id": "https://www.pulseanalyticsgroup.com/blog.html#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://www.pulseanalyticsgroup.com/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Resources",
+                        "item": "https://www.pulseanalyticsgroup.com/resources.html"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Blog",
+                        "item": "https://www.pulseanalyticsgroup.com/blog.html"
+                    }
+                ]
+            }
+        </script>
     </head>
-
     <body>
-
-        
         <header>
-
             <div class="container">
 
                 <!-- ===========================
@@ -90,9 +108,9 @@
 
                     <div class="header-logo">
 
-                        <a href="index.html" class="logo">
+                        <a href="../index.html" class="logo">
 
-                            <img src="assetts/images/transparent-logo-PA.jpeg"
+                            <img src="../assetts/images/transparent-logo-PA.jpeg"
                                 alt="Pulse Analytics Group LLC Logo">
 
                         </a>
@@ -101,7 +119,7 @@
 
                     <div class="header-branding">
 
-                        <h1>Pulse Analytics Group LLC</h1>
+                        <div class="site-title">Pulse Analytics Group LLC</div>
 
                         <p>Strategic Digital Marketing &amp; Growth Solutions</p>
 
@@ -119,13 +137,17 @@
 
                         <ul class="nav-links">
 
-                            <li><a href="index.html">Home</a></li>
+                            <li>
+
+                                <a href="../index.html">Home</a>
+
+                            </li>
 
                             <!-- SERVICES -->
 
                             <li class="dropdown">
 
-                                <a href="services.html">
+                                <a href="../services.html">
 
                                     Services
 
@@ -135,23 +157,41 @@
 
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="services/seo.html">Search Engine Optimization</a></li>
+                                    <li>
+                                        <a href="../services/seo.html">Search Engine Optimization</a>
+                                    </li>
 
-                                    <li><a href="services/local-seo.html">Local SEO</a></li>
+                                    <li>
+                                        <a href="../services/local-seo.html">Local SEO</a>
+                                    </li>
 
-                                    <li><a href="services/google-ads.html">Google Ads Management</a></li>
+                                    <li>
+                                        <a href="../services/google-ads.html">Google Ads Management</a>
+                                    </li>
 
-                                    <li><a href="services/web-design.html">Website Design &amp; Development</a></li>
+                                    <li>
+                                        <a href="../services/web-design.html">Website Design &amp; Development</a>
+                                    </li>
 
-                                    <li><a href="services/analytics-reporting.html">Analytics &amp; Reporting</a></li>
+                                    <li>
+                                        <a href="../services/analytics-reporting.html">Analytics &amp; Reporting</a>
+                                    </li>
 
-                                    <li><a href="services/social-media.html">Social Media Marketing</a></li>
+                                    <li>
+                                        <a href="../services/social-media.html">Social Media Marketing</a>
+                                    </li>
 
-                                    <li><a href="services/ai-marketing.html">AI Marketing Solutions</a></li>
+                                    <li>
+                                        <a href="../services/ai-marketing.html">AI Marketing Solutions</a>
+                                    </li>
 
-                                    <li><a href="services/branding.html">Brand Strategy</a></li>
+                                    <li>
+                                        <a href="../services/branding.html">Brand Strategy</a>
+                                    </li>
 
-                                    <li><a href="services.html">View All Services</a></li>
+                                    <li>
+                                        <a href="../services.html">View All Services</a>
+                                    </li>
 
                                 </ul>
 
@@ -161,7 +201,7 @@
 
                             <li class="dropdown">
 
-                                <a href="solutions.html">
+                                <a href="../solutions.html">
 
                                     Solutions
 
@@ -171,17 +211,35 @@
 
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="solutions/lead-generation.html">Lead Generation</a></li>
+                                    <li>
+                                        <a href="../solutions/lead-generation.html">Lead Generation</a>
+                                    </li>
 
-                                    <li><a href="solutions/local-business-growth.html">Local Business Growth</a></li>
+                                    <li>
+                                        <a href="../solutions/local-business-growth.html">Local Business Growth</a>
+                                    </li>
 
-                                    <li><a href="solutions/e-commerce.html">E-Commerce</a></li>
+                                    <li>
+                                        <a href="../solutions/e-commerce.html">E-Commerce</a>
+                                    </li>
 
-                                    <li><a href="solutions/startup-marketing.html">Startup Marketing</a></li>
+                                    <li>
+                                        <a href="../solutions/startup-marketing.html">Startup Marketing</a>
+                                    </li>
 
-                                    <li><a href="solutions/enterprise-solutions.html">Enterprise Solutions</a></li>
+                                    <li>
+                                        <a href="../solutions/enterprise-solutions.html">Enterprise Solutions</a>
+                                    </li>
 
                                 </ul>
+
+                            </li>
+
+                            <!-- PRICING -->
+
+                            <li>
+
+                                <a href="../pricing.html">Pricing</a>
 
                             </li>
 
@@ -189,7 +247,7 @@
 
                             <li class="dropdown">
 
-                                <a href="about.html">
+                                <a href="../about.html">
 
                                     About
 
@@ -199,13 +257,21 @@
 
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="about.html">Our Company</a></li>
+                                    <li>
+                                        <a href="../about.html#our-company">Our Company</a>
+                                    </li>
 
-                                    <li><a href="#">Mission &amp; Values</a></li>
+                                    <li>
+                                        <a href="../about.html#mission-values">Mission &amp; Values</a>
+                                    </li>
 
-                                    <li><a href="#">Our Process</a></li>
+                                    <li>
+                                        <a href="../about.html#our-process">Our Process</a>
+                                    </li>
 
-                                    <li><a href="#">Why Choose Pulse Analytics</a></li>
+                                    <li>
+                                        <a href="../about.html#why-choose">Why Choose Pulse Analytics</a>
+                                    </li>
 
                                 </ul>
 
@@ -215,7 +281,7 @@
 
                             <li class="dropdown">
 
-                                <a href="blog.html">
+                                <a href="../resources.html">
 
                                     Resources
 
@@ -225,21 +291,31 @@
 
                                 <ul class="dropdown-menu">
 
-                                    <li><a href="blog.html">Blog</a></li>
+                                    <li>
+                                        <a href="blog.html">Blog</a>
+                                    </li>
 
-                                    <li><a href="resources/marketing-guides.html">Marketing Guides</a></li>
+                                    <li>
+                                        <a href="#">Marketing Guides</a>
+                                    </li>
 
-                                    <li><a href="resources/free-resources.html">Free Resources</a></li>
+                                    <li>
+                                        <a href="#">Free Resources</a>
+                                    </li>
 
-                                    <li><a href="faq.html">FAQ</a></li>
+                                    <li>
+                                        <a href="../faq.html">FAQ</a>
+                                    </li>
 
                                 </ul>
 
                             </li>
 
+                            <!-- CONTACT -->
+
                             <li>
 
-                                <a href="contact.html">Contact</a>
+                                <a href="../contact.html">Contact</a>
 
                             </li>
 
@@ -247,335 +323,90 @@
 
                     </nav>
 
-                </div>                                      
-                
+                </div>
+
+                <div class="header-cart">
+
+                    <a href="../cart/cart.html"
+                        aria-label="View Cart">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        <span id="cartCount">0</span>
+
+                    </a>
+
+                </div>
 
             </div>
 
         </header>
- 
         <main>
-                        <!-- ==========================================
-                BLOG HERO
-            ========================================== -->
-
-            <section class="blog-hero">
-
-                <div class="container">
-
-                    <div class="blog-hero-grid">
-
-                        <div class="blog-hero-content">
-
-                            <span class="section-label">
-
-                                PULSE INSIGHTS
-
-                            </span>
-
-                            <h2>
-
-                                Insights, Strategies &amp; Ideas That Help Businesses Grow
-
-                            </h2>
-
-                            <p class="hero-intro">
-
-                                Welcome to the Pulse Analytics Group Blog, where digital
-                                marketing expertise meets practical business strategy.
-                                Discover educational articles, industry insights,
-                                technology updates, and data-driven marketing strategies
-                                designed to help organizations strengthen their online
-                                presence and achieve measurable business growth.
-
-                            </p>
-
-                            <p>
-
-                                Whether you're a business owner, entrepreneur, marketing
-                                professional, or simply passionate about digital
-                                innovation, our goal is to provide valuable content that
-                                helps you understand today's rapidly evolving digital
-                                landscape. Every article is written to educate first,
-                                inspire second, and empower better decision-making.
-
-                            </p>
-
-                            <div class="hero-buttons">
-
-                                <a href="#latest-articles"
-                                class="btn-primary">
-
-                                    Read Latest Articles
-
-                                </a>
-
-                                <a href="#browse-categories"
-                                class="btn-secondary">
-
-                                    Browse Categories
-
-                                </a>
-
+            
+            <section class="blog-hero" id="hero">
+                <div class="container hero-container">
+                    <div class="hero-content blog-hero-content">
+                        <span class="section-tag">PULSE INSIGHTS</span>
+                        <h2>Insights, Strategies & Ideas That Help Businesses Grow</h2>
+                        <p class="hero-intro">Welcome to the Pulse Analytics Group Blog, where digital marketing expertise meets practical business strategy. Discover educational articles, industry insights, technology updates, and data-driven marketing strategies designed to help organizations strengthen their online presence and achieve measurable business growth.</p>
+                        <p>Whether you're a business owner, entrepreneur, marketing professional, or simply passionate about digital innovation, our goal is to provide valuable content that helps you understand today's rapidly evolving digital landscape. Every article is written to educate first, inspire second, and empower better decision-making.</p>
+                        <div class="hero-buttons"><a class="primary-button" href="#latest-articles">Read Latest Articles</a><a class="secondary-button" href="#browse-categories">Browse Categories</a></div>
+                        <div class="blog-stats" id="blog-stats">
+                            <div class="stat-box">
+                                <p class="stat-number">New</p>
+                                <p>Articles Published Regularly</p>
                             </div>
-
-                            <div id="blog-stats" class="blog-stats">
-
-                                <div class="stat-box">
-
-                                    <p class="stat-number">
-
-                                        New
-
-                                    </p>
-
-                                    <p>
-
-                                        Articles Published Regularly
-
-                                    </p>
-
-                                </div>
-
-                                <div class="stat-box">
-
-                                    <p class="stat-number">
-
-                                        100%
-
-                                    </p>
-
-                                    <p>
-
-                                        Educational Content
-
-                                    </p>
-
-                                </div>
-
-                                <div class="stat-box">
-
-                                    <p class="stat-number">
-
-                                        8+
-
-                                    </p>
-
-                                    <p>
-
-                                        Marketing Categories
-
-                                    </p>
-
-                                </div>
-
+                            <div class="stat-box">
+                                <p class="stat-number">100%</p>
+                                <p>Educational Content</p>
                             </div>
-
+                            <div class="stat-box">
+                                <p class="stat-number">8+</p>
+                                <p>Marketing Categories</p>
+                            </div>
                         </div>
-
-                        <div class="blog-hero-image">
-
-                            <img src="assetts/images/blog/Pulse Analytics Blog Hero.png"
-                                alt="Pulse Analytics Group Blog">
-
-                        </div>
-
                     </div>
-
+                    <div class="hero-image blog-hero-image">
+                        <div class="hero-image-wrapper"><img alt="Pulse Analytics Group Blog" src="../assetts/images/pulse-analytics-blog-featured-image.png"></div>
+                    </div>
                 </div>
-
             </section>
-                        <!-- ==========================================
-                FEATURED INSIGHT
-            ========================================== -->
-
+           
             <section class="featured-insight">
-
                 <div class="container">
-
-                    <div class="section-heading">
-
-                        <span class="section-label">
-
-                            FEATURED INSIGHT
-
-                        </span>
-
-                        <h2>
-
-                            Discover Our Latest Featured Article
-
-                        </h2>
-
-                        <p class="section-intro">
-
-                            Explore our latest in-depth article covering emerging trends,
-                            practical strategies, and innovative technologies shaping the
-                            future of digital marketing. Every featured insight is selected
-                            to provide valuable knowledge that helps organizations make
-                            smarter marketing decisions.
-
-                        </p>
-
+                    <div class="section-header">
+                        <span class="section-tag">FEATURED INSIGHT</span>
+                        <h2>Discover Our Latest Featured Article</h2>
+                        <p class="section-intro">Explore our latest in-depth article covering emerging trends, practical strategies, and innovative technologies shaping the future of digital marketing. Every featured insight is selected to provide valuable knowledge that helps organizations make smarter marketing decisions.</p>
                     </div>
-
-                    <div id="featured-post" class="featured-post">
-
+                    <div class="featured-post" id="featured-post">
                         <div class="featured-post-image">
-
-                            <img src="assetts/images/blog/featured-article-placeholder.jpg"
-                                alt="Featured Blog Article">
-
-                            <div class="featured-badge">
-
-                                Featured
-
-                            </div>
-
+                            <img alt="Featured Blog Article" src="../assetts/images/blog/featured-article-placeholder.jpg">
+                            <div class="featured-badge">Featured</div>
                         </div>
-
                         <div class="featured-post-content">
-
-                            <div class="post-meta">
-
-                                <span>
-
-                                    <i class="fa-solid fa-folder-open"></i>
-
-                                    Search Engine Optimization
-
-                                </span>
-
-                                <span>
-
-                                    <i class="fa-solid fa-calendar-days"></i>
-
-                                    January 15, 2027
-
-                                </span>
-
-                                <span>
-
-                                    <i class="fa-solid fa-clock"></i>
-
-                                    8 Minute Read
-
-                                </span>
-
-                            </div>
-
-                            <h3>
-
-                                How AI and Search Engine Optimization Are Transforming
-                                Digital Marketing
-
-                            </h3>
-
-                            <p>
-
-                                Artificial intelligence is changing how businesses create
-                                content, analyze data, optimize websites, and engage with
-                                customers. In this featured article, we examine how AI is
-                                reshaping modern SEO strategies while highlighting the
-                                importance of maintaining high-quality, user-focused
-                                content that delivers lasting value.
-
-                            </p>
-
-                            <p>
-
-                                Learn practical strategies for combining artificial
-                                intelligence with proven search engine optimization
-                                techniques to improve visibility, strengthen user
-                                experience, and support sustainable business growth.
-
-                            </p>
-
-                            <div class="featured-actions">
-
-                                <a href="#"
-                                class="btn-primary">
-
-                                    Read Featured Article
-
-                                </a>
-
-                                <a href="#latest-articles"
-                                class="btn-secondary">
-
-                                    View All Articles
-
-                                </a>
-
-                            </div>
-
+                            <div class="post-meta"><span><i class="fa-solid fa-folder-open"></i>Search Engine Optimization</span><span><i class="fa-solid fa-calendar-days"></i>January 15, 2027</span><span><i class="fa-solid fa-clock"></i>8 Minute Read</span></div>
+                            <h3>How AI and Search Engine Optimization Are Transforming Digital Marketing</h3>
+                            <p>Artificial intelligence is changing how businesses create content, analyze data, optimize websites, and engage with customers. In this featured article, we examine how AI is reshaping modern SEO strategies while highlighting the importance of maintaining high-quality, user-focused content that delivers lasting value.</p>
+                            <p>Learn practical strategies for combining artificial intelligence with proven search engine optimization techniques to improve visibility, strengthen user experience, and support sustainable business growth.</p>
+                            <div class="featured-actions"><a class="primary-button" href="#">Read Featured Article</a><a class="secondary-button" href="#latest-articles">View All Articles</a></div>
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
-                        <!-- ==========================================
-                LATEST ARTICLES
-            ========================================== -->
-
-            <section id="latest-articles" class="latest-articles">
-
+            
+            <section class="latest-articles" id="latest-articles">
                 <div class="container">
-
-                    <div class="section-heading">
-
-                        <span class="section-label">
-
-                            LATEST ARTICLES
-
-                        </span>
-
-                        <h2>
-
-                            Explore Our Latest Insights
-
-                        </h2>
-
-                        <p class="section-intro">
-
-                            Stay informed with expert perspectives on search engine
-                            optimization, digital marketing, Google Ads, analytics,
-                            artificial intelligence, website development, accessibility,
-                            and business growth. Browse our latest articles or use the
-                            search and filter tools to quickly find the information you're
-                            looking for.
-
-                        </p>
-
+                    <div class="section-header">
+                        <span class="section-tag">LATEST ARTICLES</span>
+                        <h2>Explore Our Latest Insights</h2>
+                        <p class="section-intro">Stay informed with expert perspectives on search engine optimization, digital marketing, Google Ads, analytics, artificial intelligence, website development, accessibility, and business growth. Browse our latest articles or use the search and filter tools to quickly find the information you're looking for.</p>
                     </div>
-
-                    <!-- ==========================================
-                        SEARCH & FILTER BAR
-                    =========================================== -->
-
+                    
                     <div class="blog-toolbar">
-
-                        <div class="search-box">
-
-                            <input id="blog-search" type="search"
-                                placeholder="Search articles..."
-                                autocomplete="off"
-                                aria-label="Search articles">
-
-                            <button id="blog-search-button" type="button" aria-label="Search articles">
-
-                                <i class="fa-solid fa-magnifying-glass"></i>
-
-                            </button>
-
-                        </div>
-
+                        <div class="search-box"><input aria-label="Search articles" autocomplete="off" id="blog-search" placeholder="Search articles..." type="search"><button aria-label="Search articles" id="blog-search-button" type="button"><i class="fa-solid fa-magnifying-glass"></i></button></div>
                         <div class="blog-filters">
-
-                            <select id="blog-category" aria-label="Filter by category">
-
+                            <select aria-label="Filter by category" id="blog-category">
                                 <option value="all">All Categories</option>
                                 <option value="SEO">SEO</option>
                                 <option value="Google Ads">Google Ads</option>
@@ -584,1187 +415,231 @@
                                 <option value="Website Development">Website Development</option>
                                 <option value="Accessibility">Accessibility</option>
                                 <option value="Business Strategy">Business Strategy</option>
-
                             </select>
-
-                            <select id="blog-sort" aria-label="Sort articles">
-
+                            <select aria-label="Sort articles" id="blog-sort">
                                 <option value="newest">Newest First</option>
                                 <option value="oldest">Oldest First</option>
                                 <option value="az">A-Z</option>
                                 <option value="za">Z-A</option>
                                 <option value="popular">Most Popular</option>
-
                             </select>
-
                         </div>
-
                     </div>
-
-                    <p id="blog-results-meta" class="blog-results-meta" aria-live="polite"></p>
-
-                    <!-- ==========================================
-                        BLOG GRID
-                    =========================================== -->
-
-                    <div id="blog-grid" class="blog-grid">
-
-                        <!-- Blog Card -->
-
-                        <article class="blog-card">
-
-                            <a href="blog/how-ai-is-changing-seo.html">
-
-                                <div class="blog-image">
-
-                                    <img src="assetts/images/blog/blog-placeholder-1.jpg"
-                                        alt="How AI Is Changing SEO">
-
-                                    <span class="category-tag">
-
-                                        SEO
-
-                                    </span>
-
-                                </div>
-
-                                <div class="blog-content">
-
-                                    <div class="blog-meta">
-
-                                        <span>
-
-                                            <i class="fa-solid fa-calendar-days"></i>
-
-                                            Jan 15, 2027
-
-                                        </span>
-
-                                        <span>
-
-                                            <i class="fa-solid fa-clock"></i>
-
-                                            8 min read
-
-                                        </span>
-
-                                    </div>
-
-                                    <h3>
-
-                                        How AI Is Changing Search Engine Optimization
-
-                                    </h3>
-
-                                    <p>
-
-                                        Explore how artificial intelligence is reshaping
-                                        keyword research, content strategy, technical SEO,
-                                        and user experience.
-
-                                    </p>
-
-                                    <span class="read-more">
-
-                                        Read Article
-
-                                        <i class="fa-solid fa-arrow-right"></i>
-
-                                    </span>
-
-                                </div>
-
-                            </a>
-
-                        </article>
-
-                        <!-- Duplicate this card for additional posts -->
-
+                    <p aria-live="polite" class="blog-results-meta" id="blog-results-meta">
+                    </p>
+                    
+                    <div class="blog-grid" id="blog-grid">
+                        <article class="blog-card"><a href="blog/how-ai-is-changing-seo.html"><div class="blog-image"><img alt="How AI Is Changing SEO" src="../assetts/images/blog/blog-placeholder-1.jpg"><span class="category-tag">SEO</span></div><div class="blog-content"><div class="blog-meta"><span><i class="fa-solid fa-calendar-days"></i>Jan 15, 2027</span><span><i class="fa-solid fa-clock"></i>8 min read</span></div><h3>How AI Is Changing Search Engine Optimization</h3><p>Explore how artificial intelligence is reshaping keyword research, content strategy, technical SEO, and user experience.</p><span class="read-more">Read Article<i class="fa-solid fa-arrow-right"></i></span></div></a></article>
                     </div>
-
-                    <div class="load-more">
-
-                        <button id="load-more" class="btn-primary" type="button">
-
-                            Load More Articles
-
-                        </button>
-
-                    </div>
-
+                    <div class="load-more"><button class="primary-button" id="load-more" type="button">Load More Articles</button></div>
                 </div>
-
             </section>
-                <!-- ==========================================
-                BROWSE BY CATEGORY
-                ========================================== -->
-
-            <section id="browse-categories" class="blog-categories">
-
+            
+            <section class="blog-categories" id="browse-categories">
                 <div class="container">
-
-                    <div class="section-heading">
-
-                        <span class="section-label">
-
-                            EXPLORE BY TOPIC
-
-                        </span>
-
-                        <h2>
-
-                            Find Articles That Match Your Interests
-
-                        </h2>
-
-                        <p class="section-intro">
-
-                            Digital marketing is constantly evolving, and every business
-                            has unique challenges to solve. Browse our growing collection
-                            of educational articles by topic to discover practical
-                            strategies, professional insights, and expert guidance tailored
-                            to your interests.
-
-                        </p>
-
+                    <div class="section-header">
+                        <span class="section-tag">EXPLORE BY TOPIC</span>
+                        <h2>Find Articles That Match Your Interests</h2>
+                        <p class="section-intro">Digital marketing is constantly evolving, and every business has unique challenges to solve. Browse our growing collection of educational articles by topic to discover practical strategies, professional insights, and expert guidance tailored to your interests.</p>
                     </div>
-
-                    <div class="category-grid">
-
-                        <!-- ==========================================
-                            SEO
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="seo">
-
-                            <i class="fa-solid fa-magnifying-glass-chart"></i>
-
-                            <h3>
-
-                                Search Engine Optimization
-
-                            </h3>
-
-                            <p>
-
-                                Technical SEO, keyword research, on-page optimization,
-                                content strategy, link building, and search visibility.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            LOCAL SEO
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="local-seo">
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            <h3>
-
-                                Local SEO
-
-                            </h3>
-
-                            <p>
-
-                                Google Business Profile optimization, local rankings,
-                                citations, reviews, maps, and local search strategies.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            GOOGLE ADS
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="google-ads">
-
-                            <i class="fa-brands fa-google"></i>
-
-                            <h3>
-
-                                Google Ads
-
-                            </h3>
-
-                            <p>
-
-                                Campaign optimization, bidding strategies, Performance
-                                Max, Search campaigns, conversions, and PPC management.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            WEBSITE DEVELOPMENT
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="web-development">
-
-                            <i class="fa-solid fa-code"></i>
-
-                            <h3>
-
-                                Website Development
-
-                            </h3>
-
-                            <p>
-
-                                HTML, CSS, JavaScript, responsive design, UX, performance,
-                                and modern website best practices.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            ANALYTICS
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="analytics">
-
-                            <i class="fa-solid fa-chart-line"></i>
-
-                            <h3>
-
-                                Analytics & Reporting
-
-                            </h3>
-
-                            <p>
-
-                                Google Analytics, Looker Studio, KPI reporting,
-                                dashboards, attribution, and business intelligence.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            SOCIAL MEDIA
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="social-media">
-
-                            <i class="fa-solid fa-share-nodes"></i>
-
-                            <h3>
-
-                                Social Media Marketing
-
-                            </h3>
-
-                            <p>
-
-                                Facebook, Instagram, LinkedIn, TikTok, YouTube, content
-                                strategy, engagement, and brand growth.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            AI MARKETING
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="ai-marketing">
-
-                            <i class="fa-solid fa-robot"></i>
-
-                            <h3>
-
-                                Artificial Intelligence
-
-                            </h3>
-
-                            <p>
-
-                                AI-powered marketing, automation, prompt engineering,
-                                productivity, emerging technologies, and innovation.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            ACCESSIBILITY
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="accessibility">
-
-                            <i class="fa-solid fa-universal-access"></i>
-
-                            <h3>
-
-                                Accessibility
-
-                            </h3>
-
-                            <p>
-
-                                WCAG compliance, ADA guidance, inclusive design,
-                                accessibility testing, and usability improvements.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            BRAND STRATEGY
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="branding">
-
-                            <i class="fa-solid fa-lightbulb"></i>
-
-                            <h3>
-
-                                Brand Strategy
-
-                            </h3>
-
-                            <p>
-
-                                Branding, positioning, messaging, customer trust,
-                                reputation, and long-term business development.
-
-                            </p>
-
-                        </a>
-
-                        <!-- ==========================================
-                            PULSE NEWS
-                        =========================================== -->
-
-                        <a href="#latest-articles" class="category-card" data-category="pulse-news">
-
-                            <i class="fa-solid fa-bullhorn"></i>
-
-                            <h3>
-
-                                Pulse News
-
-                            </h3>
-
-                            <p>
-
-                                Company announcements, certifications, new services,
-                                community involvement, and Pulse Analytics Group updates.
-
-                            </p>
-
-                        </a>
-
-                    </div>
-
+                    <div class="category-grid"><a class="category-card" data-category="seo" href="#latest-articles"><i class="fa-solid fa-magnifying-glass-chart"></i><h3>Search Engine Optimization</h3><p>Technical SEO, keyword research, on-page optimization, content strategy, link building, and search visibility.</p></a><a class="category-card" data-category="local-seo" href="#latest-articles"><i class="fa-solid fa-location-dot"></i><h3>Local SEO</h3><p>Google Business Profile optimization, local rankings, citations, reviews, maps, and local search strategies.</p></a><a class="category-card" data-category="google-ads" href="#latest-articles"><i class="fa-brands fa-google"></i><h3>Google Ads</h3><p>Campaign optimization, bidding strategies, Performance Max, Search campaigns, conversions, and PPC management.</p></a><a class="category-card" data-category="web-development" href="#latest-articles"><i class="fa-solid fa-code"></i><h3>Website Development</h3><p>HTML, CSS, JavaScript, responsive design, UX, performance, and modern website best practices.</p></a><a class="category-card" data-category="analytics" href="#latest-articles"><i class="fa-solid fa-chart-line"></i><h3>Analytics & Reporting</h3><p>Google Analytics, Looker Studio, KPI reporting, dashboards, attribution, and business intelligence.</p></a><a class="category-card" data-category="social-media" href="#latest-articles"><i class="fa-solid fa-share-nodes"></i><h3>Social Media Marketing</h3><p>Facebook, Instagram, LinkedIn, TikTok, YouTube, content strategy, engagement, and brand growth.</p></a><a class="category-card" data-category="ai-marketing" href="#latest-articles"><i class="fa-solid fa-robot"></i><h3>Artificial Intelligence</h3><p>AI-powered marketing, automation, prompt engineering, productivity, emerging technologies, and innovation.</p></a><a class="category-card" data-category="accessibility" href="#latest-articles"><i class="fa-solid fa-universal-access"></i><h3>Accessibility</h3><p>WCAG compliance, ADA guidance, inclusive design, accessibility testing, and usability improvements.</p></a><a class="category-card" data-category="branding" href="#latest-articles"><i class="fa-solid fa-lightbulb"></i><h3>Brand Strategy</h3><p>Branding, positioning, messaging, customer trust, reputation, and long-term business development.</p></a><a class="category-card" data-category="pulse-news" href="#latest-articles"><i class="fa-solid fa-bullhorn"></i><h3>Pulse News</h3><p>Company announcements, certifications, new services, community involvement, and Pulse Analytics Group updates.</p></a></div>
                 </div>
-
             </section>
-                        <!-- ==========================================
-                WHY READ THE PULSE INSIGHTS BLOG?
-            ========================================== -->
-
+            
             <section class="why-read-blog">
-
                 <div class="container">
-
-                    <div class="section-heading">
-
-                        <span class="section-label">
-
-                            WHY PULSE INSIGHTS?
-
-                        </span>
-
-                        <h2>
-
-                            More Than News—A Resource for Continuous Learning
-
-                        </h2>
-
-                        <p class="section-intro">
-
-                            The Pulse Insights Blog was created to do more than report on
-                            industry news. Every article is designed to educate, inspire,
-                            and help organizations make informed marketing decisions
-                            through practical advice, real-world strategies, and
-                            data-driven insights.
-
-                        </p>
-
+                    <div class="section-header">
+                        <span class="section-tag">WHY PULSE INSIGHTS?</span>
+                        <h2>More Than News—A Resource for Continuous Learning</h2>
+                        <p class="section-intro">The Pulse Insights Blog was created to do more than report on industry news. Every article is designed to educate, inspire, and help organizations make informed marketing decisions through practical advice, real-world strategies, and data-driven insights.</p>
                     </div>
-
                     <div class="insights-grid">
-
-                        <!-- ==========================================
-                            EDUCATIONAL CONTENT
-                        =========================================== -->
-
+                        
                         <article class="insight-card">
-
                             <i class="fa-solid fa-graduation-cap"></i>
-
-                            <h3>
-
-                                Learn Practical Strategies
-
-                            </h3>
-
-                            <p>
-
-                                Discover actionable marketing techniques, step-by-step
-                                tutorials, and proven best practices that can be applied to
-                                your business immediately.
-
-                            </p>
-
+                            <h3>Learn Practical Strategies</h3>
+                            <p>Discover actionable marketing techniques, step-by-step tutorials, and proven best practices that can be applied to your business immediately.</p>
                         </article>
-
-                        <!-- ==========================================
-                            INDUSTRY TRENDS
-                        =========================================== -->
-
+                        
                         <article class="insight-card">
-
                             <i class="fa-solid fa-chart-column"></i>
-
-                            <h3>
-
-                                Stay Ahead of Industry Trends
-
-                            </h3>
-
-                            <p>
-
-                                Keep up with search engine updates, emerging technologies,
-                                artificial intelligence, advertising platforms, and the
-                                latest digital marketing developments.
-
-                            </p>
-
+                            <h3>Stay Ahead of Industry Trends</h3>
+                            <p>Keep up with search engine updates, emerging technologies, artificial intelligence, advertising platforms, and the latest digital marketing developments.</p>
                         </article>
-
-                        <!-- ==========================================
-                            RESEARCH
-                        =========================================== -->
-
+                        
                         <article class="insight-card">
-
                             <i class="fa-solid fa-magnifying-glass"></i>
-
-                            <h3>
-
-                                Research-Driven Content
-
-                            </h3>
-
-                            <p>
-
-                                Our articles are built on research, professional
-                                experience, and measurable marketing principles rather than
-                                speculation or passing trends.
-
-                            </p>
-
+                            <h3>Research-Driven Content</h3>
+                            <p>Our articles are built on research, professional experience, and measurable marketing principles rather than speculation or passing trends.</p>
                         </article>
-
-                        <!-- ==========================================
-                            GROWTH
-                        =========================================== -->
-
+                        
                         <article class="insight-card">
-
                             <i class="fa-solid fa-arrow-trend-up"></i>
-
-                            <h3>
-
-                                Grow With Confidence
-
-                            </h3>
-
-                            <p>
-
-                                Whether you're launching your first website or expanding an
-                                established marketing strategy, our goal is to help you
-                                make smarter business decisions through education.
-
-                            </p>
-
+                            <h3>Grow With Confidence</h3>
+                            <p>Whether you're launching your first website or expanding an established marketing strategy, our goal is to help you make smarter business decisions through education.</p>
                         </article>
-
                     </div>
-
                     <div class="blog-philosophy">
-
-                        <blockquote>
-
-                            "Knowledge shared today creates stronger businesses tomorrow."
-
-                        </blockquote>
-
-                        <p>
-
-                            At Pulse Analytics Group, we believe education is one of the
-                            most valuable services we can provide. That's why every article
-                            published through Pulse Insights is created to help businesses
-                            better understand the digital landscape, strengthen their
-                            marketing strategies, and build sustainable long-term growth.
-
-                        </p>
-
+                        <blockquote>"Knowledge shared today creates stronger businesses tomorrow."</blockquote>
+                        <p>At Pulse Analytics Group, we believe education is one of the most valuable services we can provide. That's why every article published through Pulse Insights is created to help businesses better understand the digital landscape, strengthen their marketing strategies, and build sustainable long-term growth.</p>
                     </div>
-
                 </div>
-
             </section>
-                        <!-- ==========================================
-                ARTICLE INFORMATION
-            ========================================== -->
-
+            
             <section class="article-information">
-
                 <div class="container">
-
-                    <div class="section-heading">
-
-                        <span class="section-label">
-
-                            ARTICLE INFORMATION
-
-                        </span>
-
-                        <h2>
-
-                            About This Article
-
-                        </h2>
-
-                        <p class="section-intro">
-
-                            We believe transparency builds trust. The information below
-                            provides additional details about this article, including its
-                            publication history, topic classification, related resources,
-                            and educational references to help you continue learning.
-
-                        </p>
-
+                    <div class="section-header">
+                        <span class="section-tag">ARTICLE INFORMATION</span>
+                        <h2>About This Article</h2>
+                        <p class="section-intro">We believe transparency builds trust. The information below provides additional details about this article, including its publication history, topic classification, related resources, and educational references to help you continue learning.</p>
                     </div>
-
                     <div class="article-info-grid">
-
                         <div class="info-item">
-
                             <i class="fa-solid fa-folder-open"></i>
-
                             <h3>Category</h3>
-
                             <p>Search Engine Optimization</p>
-
                         </div>
-
                         <div class="info-item">
-
                             <i class="fa-solid fa-calendar-days"></i>
-
                             <h3>Published</h3>
-
                             <p>January 15, 2027</p>
-
                         </div>
-
                         <div class="info-item">
-
                             <i class="fa-solid fa-clock"></i>
-
                             <h3>Reading Time</h3>
-
                             <p>8 Minute Read</p>
-
                         </div>
-
                         <div class="info-item">
-
                             <i class="fa-solid fa-user"></i>
-
                             <h3>Author</h3>
-
                             <p>Pulse Analytics Group</p>
-
                         </div>
-
                         <div class="info-item">
-
                             <i class="fa-solid fa-pen-to-square"></i>
-
                             <h3>Last Updated</h3>
-
                             <p>March 3, 2027</p>
-
                         </div>
-
                         <div class="info-item">
-
                             <i class="fa-solid fa-layer-group"></i>
-
                             <h3>Difficulty</h3>
-
                             <p>Intermediate</p>
-
                         </div>
-
                     </div>
-
                     <div class="related-learning">
-
                         <div class="learning-column">
-
-                            <h3>
-
-                                Related Services
-
-                            </h3>
-
+                            <h3>Related Services</h3>
                             <ul>
-
-                                <li>
-
-                                    <a href="../../services/seo.html">
-
-                                        Search Engine Optimization
-
-                                    </a>
-
-                                </li>
-
-                                <li>
-
-                                    <a href="../../services/analytics-reporting.html">
-
-                                        Analytics & Reporting
-
-                                    </a>
-
-                                </li>
-
+                                <li><a href="../services/seo.html">Search Engine Optimization</a></li>
+                                <li><a href="../services/analytics-reporting.html">Analytics & Reporting</a></li>
                             </ul>
-
                         </div>
-
                         <div class="learning-column">
-
-                            <h3>
-
-                                Marketing Guides
-
-                            </h3>
-
+                            <h3>Marketing Guides</h3>
                             <ul>
-
-                                <li>
-
-                                    <a href="../../marketing-guides/complete-seo-guide.html">
-
-                                        Complete SEO Guide
-
-                                    </a>
-
-                                </li>
-
+                                <li><a href="../resources/marketing-guides/complete-seo-guide.html">Complete SEO Guide</a></li>
                             </ul>
-
                         </div>
-
                         <div class="learning-column">
-
-                            <h3>
-
-                                Free Resources
-
-                            </h3>
-
+                            <h3>Free Resources</h3>
                             <ul>
-
-                                <li>
-
-                                    <a href="../../free-resources/seo-audit-checklist.html">
-
-                                        SEO Audit Checklist
-
-                                    </a>
-
-                                </li>
-
+                                <li><a href="../resources/free-resources/seo-audit-checklist.html">SEO Audit Checklist</a></li>
                             </ul>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
-                        <!-- ==========================================
-                STAY CONNECTED
-            ========================================== -->
-
+            
             <section class="stay-connected">
-
                 <div class="container">
-
                     <div class="stay-connected-grid">
-
                         <div class="stay-connected-content">
-
-                            <span class="section-label">
-
-                                STAY CONNECTED
-
-                            </span>
-
-                            <h2>
-
-                                Never Miss an Insight
-
-                            </h2>
-
-                            <p class="hero-intro">
-
-                                Digital marketing never stands still, and neither do we.
-                                Subscribe to receive the latest articles, marketing
-                                strategies, educational resources, and industry insights
-                                from Pulse Analytics Group delivered directly to your inbox.
-
-                            </p>
-
-                            <p>
-
-                                From search engine optimization and artificial intelligence
-                                to website development, analytics, accessibility, and
-                                emerging digital trends, you'll always have access to
-                                practical knowledge designed to help your business stay
-                                informed and competitive.
-
-                            </p>
-
+                            <span class="section-tag">STAY CONNECTED</span>
+                            <h2>Never Miss an Insight</h2>
+                            <p class="hero-intro">Digital marketing never stands still, and neither do we. Subscribe to receive the latest articles, marketing strategies, educational resources, and industry insights from Pulse Analytics Group delivered directly to your inbox.</p>
+                            <p>From search engine optimization and artificial intelligence to website development, analytics, accessibility, and emerging digital trends, you'll always have access to practical knowledge designed to help your business stay informed and competitive.</p>
                             <ul class="newsletter-benefits">
-
-                                <li>
-
-                                    <i class="fa-solid fa-check"></i>
-
-                                    New blog articles delivered to your inbox
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-check"></i>
-
-                                    Industry news and Google updates
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-check"></i>
-
-                                    Exclusive marketing guides
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-check"></i>
-
-                                    Free templates, checklists, and downloads
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-check"></i>
-
-                                    Practical tips you can implement immediately
-
-                                </li>
-
+                                <li><i class="fa-solid fa-check"></i>New blog articles delivered to your inbox</li>
+                                <li><i class="fa-solid fa-check"></i>Industry news and Google updates</li>
+                                <li><i class="fa-solid fa-check"></i>Exclusive marketing guides</li>
+                                <li><i class="fa-solid fa-check"></i>Free templates, checklists, and downloads</li>
+                                <li><i class="fa-solid fa-check"></i>Practical tips you can implement immediately</li>
                             </ul>
-
                         </div>
-
                         <div class="newsletter-card">
-
-                            <h3>
-
-                                Join the Pulse Community
-
-                            </h3>
-
-                            <p>
-
-                                Receive educational content—not spam.
-
-                            </p>
-
-                            <form>
-
-                                <input type="text"
-                                    placeholder="Full Name">
-
-                                <input type="email"
-                                    placeholder="Email Address">
-
-                                <button type="submit"
-                                        class="btn-primary">
-
-                                    Subscribe
-
-                                </button>
-
-                            </form>
-
-                            <small>
-
-                                We respect your privacy. You may unsubscribe at any time.
-
-                            </small>
-
+                            <h3>Join the Pulse Community</h3>
+                            <p>Receive educational content—not spam.</p>
+                            <form><input placeholder="Full Name" type="text"><input placeholder="Email Address" type="email"><button class="primary-button" type="submit">Subscribe</button></form>
+                            <small>We respect your privacy. You may unsubscribe at any time.</small>
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
-
-            <footer id="footer">
-
-                <div class="container">
-
-                    <div class="footer-grid">
-
-                        <!-- Company Information -->
-
-                        <div class="footer-column">
-
-                            <img src="assetts/images/logo/PulseAnalyticsTransparLogo.png"
-                                alt="Pulse Analytics Group LLC Logo"
-                                class="footer-logo">
-
-                            <h3>Pulse Analytics Group LLC</h3>
-
-                            <p>
-
-                                Helping businesses grow through strategic digital
-                                marketing, modern website development, data-driven
-                                analytics, and innovative technology solutions.
-
-                            </p>
-
-                            <div class="social-icons">
-
-                                <a href="#" aria-label="Facebook">
-
-                                    <i class="fa-brands fa-facebook-f"></i>
-
-                                </a>
-
-                                <a href="#" aria-label="Instagram">
-
-                                    <i class="fa-brands fa-instagram"></i>
-
-                                </a>
-
-                                <a href="#" aria-label="LinkedIn">
-
-                                    <i class="fa-brands fa-linkedin-in"></i>
-
-                                </a>
-
-                                <a href="#" aria-label="YouTube">
-
-                                    <i class="fa-brands fa-youtube"></i>
-
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Services -->
-
-                        <div class="footer-column">
-
-                            <h3>Services</h3>
-
-                            <ul>
-
-                                <li><a href="services/seo.html">Search Engine Optimization</a></li>
-
-                                <li><a href="services/local-seo.html">Local SEO</a></li>
-
-                                <li><a href="services/google-ads.html">Google Ads Management</a></li>
-
-                                <li><a href="services/web-design.html">Website Development</a></li>
-
-                                <li><a href="services/social-media.html">Social Media Marketing</a></li>
-
-                                <li><a href="services/analytics-reporting.html">Analytics & Reporting</a></li>
-
-                                <li><a href="services/ai-marketing.html">AI Marketing Solutions</a></li>
-
-                            </ul>
-
-                        </div>
-
-                        <!-- Resources -->
-
-                        <div class="footer-column">
-
-                            <h3>Resources</h3>
-
-                            <ul>
-
-                                <li><a href="about.html">About Us</a></li>
-
-                                <li><a href="blog.html">Blog</a></li>
-
-                                <li><a href="faq.html">Frequently Asked Questions</a></li>
-
-                                <li><a href="free-website-audit.html">Pulse Performance Audit™</a></li>
-
-                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-
-                                <li><a href="terms-of-service.html">Terms of Service</a></li>
-
-                                <li><a href="sitemap.html">Sitemap</a></li>
-
-                            </ul>
-
-                        </div>
-
-                        <!-- Contact -->
-
-                        <div class="footer-column">
-
-                            <h3>Contact Us</h3>
-
-                            <ul class="contact-list">
-
-                                <li>
-
-                                    <i class="fa-solid fa-location-dot"></i>
-
-                                    Union City, Pennsylvania
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-envelope"></i>
-
-                                    <a href="mailto:info@pulseanalyticsgroup.com">
-
-                                        info@pulseanalyticsgroup.com
-
-                                    </a>
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-phone"></i>
-
-                                    <a href="tel:+18145551234">
-
-                                        (814) 555-1234
-
-                                    </a>
-
-                                </li>
-
-                                <li>
-
-                                    <i class="fa-solid fa-clock"></i>
-
-                                    Monday – Friday<br>
-                                    9:00 AM – 5:00 PM
-
-                                </li>
-
-                            </ul>
-
-                        </div>
-
+        </main>
+        <footer id="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-column">
+                        <img alt="Pulse Analytics Group LLC Logo" class="footer-logo" src="../assetts/images/logo/PulseAnalyticsTransparLogo.png">
+                        <h3>Pulse Analytics Group LLC</h3>
+                        <p>Helping businesses grow through strategic digital marketing, modern website development, data-driven analytics, and innovative technology solutions.</p>
+                        <div class="social-icons"><a aria-label="Facebook" href="#"><i class="fa-brands fa-facebook-f"></i></a><a aria-label="Instagram" href="#"><i class="fa-brands fa-instagram"></i></a><a aria-label="LinkedIn" href="#"><i class="fa-brands fa-linkedin-in"></i></a><a aria-label="YouTube" href="#"><i class="fa-brands fa-youtube"></i></a></div>
                     </div>
-
-                    <hr>
-
-                    <div class="footer-bottom">
-
-                        <p>
-
-                            &copy; 2026 Pulse Analytics Group LLC. All Rights Reserved.
-
-                        </p>
-
-                        <p>
-
-                            Helping Businesses Grow Through Strategic Marketing,
-                            Modern Technology, and Measurable Results.
-
-                        </p>
-
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="../services/seo.html">Search Engine Optimization</a></li>
+                            <li><a href="../services/local-seo.html">Local SEO</a></li>
+                            <li><a href="../services/google-ads.html">Google Ads Management</a></li>
+                            <li><a href="../services/web-design.html">Website Development</a></li>
+                            <li><a href="../services/social-media.html">Social Media Marketing</a></li>
+                            <li><a href="../services/analytics-reporting.html">Analytics & Reporting</a></li>
+                            <li><a href="../services/ai-marketing.html">AI Marketing Solutions</a></li>
+                        </ul>
                     </div>
-
+                    <div class="footer-column">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="../about.html">About Us</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="../resources/faq.html">Frequently Asked Questions</a></li>
+                            <li><a href="../free-website-audit.html">Pulse Performance Audit™</a></li>
+                            <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="../terms-of-service.html">Terms of Service</a></li>
+                            <li><a href="../sitemap.html">Sitemap</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Contact Us</h3>
+                        <ul class="contact-list">
+                            <li><i class="fa-solid fa-location-dot"></i>Union City, Pennsylvania</li>
+                            <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@pulseanalyticsgroup.com">info@pulseanalyticsgroup.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i><a href="tel:+18145551234">(814) 555-1234</a></li>
+                            <li><i class="fa-solid fa-clock"></i>Monday – Friday<br>9:00 AM – 5:00 PM</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <div class="footer-bottom">
+                    <p>© 2026 Pulse Analytics Group LLC. All Rights Reserved.</p>
+                    <p>Helping Businesses Grow Through Strategic Marketing, Modern Technology, and Measurable Results.</p>
                 </div>
 
-            </footer>
+                    <!-- BACK TO TOP BUTTON -->
+                <button id="backToTop" aria-label="Back to Top">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </button>   
 
-        </main>
+            </div>
+              
 
-        <!-- ==========================================
-            BACK TO TOP BUTTON
-        =========================================== -->
+            
+     
+        </footer>
+        
 
-        <button id="backToTop"
-                aria-label="Back to Top">
-
-            <i class="fa-solid fa-arrow-up"></i>
-
-        </button>
-
-                <!-- ==========================================
-            STRUCTURED DATA (SCHEMA)
-        ========================================== -->
-
-        <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@graph": [
-
-            {
-            "@type": "Organization",
-            "@id": "https://www.pulseanalyticsgroup.com/#organization",
-            "name": "Pulse Analytics Group LLC",
-            "url": "https://www.pulseanalyticsgroup.com",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.pulseanalyticsgroup.com/assets/images/logo.png"
-            },
-            "sameAs": [
-                "https://www.facebook.com/",
-                "https://www.linkedin.com/company/",
-                "https://www.instagram.com/",
-                "https://www.youtube.com/"
-            ]
-            },
-
-            {
-            "@type": "WebSite",
-            "@id": "https://www.pulseanalyticsgroup.com/#website",
-            "url": "https://www.pulseanalyticsgroup.com",
-            "name": "Pulse Analytics Group LLC",
-            "publisher": {
-                "@id": "https://www.pulseanalyticsgroup.com/#organization"
-            },
-            "inLanguage": "en-US"
-            },
-
-            {
-            "@type": "Blog",
-            "@id": "https://www.pulseanalyticsgroup.com/blog.html#blog",
-            "url": "https://www.pulseanalyticsgroup.com/blog.html",
-            "name": "Pulse Insights",
-            "headline": "Pulse Insights | Digital Marketing Blog",
-            "description": "Pulse Insights is the official blog of Pulse Analytics Group LLC, providing expert articles on digital marketing, SEO, local SEO, Google Ads, website development, analytics, accessibility, artificial intelligence, branding, and business growth.",
-            "publisher": {
-                "@id": "https://www.pulseanalyticsgroup.com/#organization"
-            },
-            "about": [
-                {
-                "@type": "Thing",
-                "name": "Search Engine Optimization"
-                },
-                {
-                "@type": "Thing",
-                "name": "Digital Marketing"
-                },
-                {
-                "@type": "Thing",
-                "name": "Google Ads"
-                },
-                {
-                "@type": "Thing",
-                "name": "Website Development"
-                },
-                {
-                "@type": "Thing",
-                "name": "Analytics"
-                },
-                {
-                "@type": "Thing",
-                "name": "Artificial Intelligence"
-                },
-                {
-                "@type": "Thing",
-                "name": "Accessibility"
-                },
-                {
-                "@type": "Thing",
-                "name": "Brand Strategy"
-                }
-            ],
-            "inLanguage": "en-US"
-            },
-
-            {
-            "@type": "BreadcrumbList",
-            "@id": "https://www.pulseanalyticsgroup.com/blog.html#breadcrumb",
-            "itemListElement": [
-
-                {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://www.pulseanalyticsgroup.com/"
-                },
-
-                {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Resources",
-                "item": "https://www.pulseanalyticsgroup.com/resources.html"
-                },
-
-                {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Blog",
-                "item": "https://www.pulseanalyticsgroup.com/blog.html"
-                }
-
-            ]
-            }
-
-        ]
-        }
         </script>
+        <script src="../main.js">
 
-        <!-- ==========================================
-            JAVASCRIPT
-        ========================================== -->
-
-        <script src="blog.js" defer></script>
-        <script src="main.js"></script>
- 
-
+        </script>
     </body>
-
 </html>
