@@ -2874,41 +2874,73 @@ header .container{
 =================================================== */
 
 #footer hr{
-    margin:var(--space-4) 0;
+    margin:var(--space-4) 0 0;
 
     border:0;
     border-top:1px solid rgba(255,255,255,.08);
 }
 
 
-/* ===================================================
-   FOOTER BOTTOM
-=================================================== */
-
 #footer .footer-bottom{
+    position:relative;
+
+    width:100%;
+
+    padding-top:0;
+}
+
+#footer .footer-bottom-main{
     display:flex;
 
     align-items:center;
     justify-content:space-between;
 
-    gap:var(--space-3);
+    width:100%;
 
+    gap:var(--space-3);
+}
+
+#footer .footer-validation,
+#footer .footer-copyright{
+    transform: translateY(1.45rem);
+}
+
+/* ===================================================
+   FOOTER BOTTOM
+=================================================== */
+#footer .footer-bottom{
+    width:100%;
     padding-top:0;
+}
+
+#footer .footer-bottom-main{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    width:100%;
+    gap:var(--space-3);
 }
 
 #footer .footer-bottom p{
     margin:0;
-
     color:rgba(255,255,255,.6);
-
     font-size:.82rem;
     line-height:1.4;
 }
 
-#footer .footer-bottom p:last-child{
-    text-align:right;
+#footer .footer-validation{
+    flex-shrink:0;
 }
 
+#footer .footer-copyright{
+    flex-shrink:0;
+}
+
+#footer .footer-tagline{
+    flex-shrink:1;
+    margin-left:auto !important;
+    text-align:right;
+}
 
 /* ===================================================
    FOOTER RESPONSIVE
@@ -2971,7 +3003,7 @@ header .container{
     justify-content:center;
     align-items:center;
     width:100%;
-    margin:1rem 0 1.25rem;
+    margin:0 0 1.25rem;
 }
 
 #footer #backToTop{
@@ -14103,13 +14135,14 @@ body:has(.pricing-hero) #footer #backToTop{
    RESEARCH BARS
 =================================================== */
 
-.research-bars{
+.brand-research-chart .research-bars{
     display:grid;
     gap:1rem;
 }
 
-.research-bar{
+.brand-research-chart .research-bar{
     display:grid;
+    width:100%;
 
     grid-template-columns:
         minmax(170px,1.2fr)
@@ -14120,7 +14153,7 @@ body:has(.pricing-hero) #footer #backToTop{
     gap:1rem;
 }
 
-.research-bar > span{
+.brand-research-chart .research-bar > span{
     color:var(--text);
     font-size:.95rem;
     font-weight:500;
@@ -14130,9 +14163,12 @@ body:has(.pricing-hero) #footer #backToTop{
 
 /* ---------- Bar Track ---------- */
 
-.bar-track{
+.brand-research-chart .bar-track{
+    display:block;
     width:100%;
     height:12px;
+    min-width:0;
+    max-width:none;
 
     overflow:hidden;
 
@@ -14144,8 +14180,12 @@ body:has(.pricing-hero) #footer #backToTop{
 
 /* ---------- Bar Fill ---------- */
 
-.bar-fill{
+.brand-research-chart .bar-fill{
+    display:block;
+    width:0;
     height:100%;
+    min-width:0;
+    max-width:none;
 
     background:var(--secondary);
 
@@ -14157,7 +14197,7 @@ body:has(.pricing-hero) #footer #backToTop{
 
 /* ---------- Research Percentages ---------- */
 
-.research-bar strong{
+.brand-research-chart .research-bar strong{
     color:var(--primary);
 
     font-size:.95rem;
@@ -14169,23 +14209,23 @@ body:has(.pricing-hero) #footer #backToTop{
 
 /* ---------- Individual Bar Widths ---------- */
 
-.bar-fill-88{
+.brand-research-chart .bar-fill-88{
     width:88%;
 }
 
-.bar-fill-85{
+.brand-research-chart .bar-fill-85{
     width:85%;
 }
 
-.bar-fill-84{
+.brand-research-chart .bar-fill-84{
     width:84%;
 }
 
-.bar-fill-82{
+.brand-research-chart .bar-fill-82{
     width:82%;
 }
 
-.bar-fill-80{
+.brand-research-chart .bar-fill-80{
     width:80%;
 }
 
@@ -14508,22 +14548,22 @@ body:has(.pricing-hero) #footer #backToTop{
         padding:1.25rem;
     }
 
-    .research-bar{
+    .brand-research-chart .research-bar{
         grid-template-columns:
             1fr 48px;
 
         gap:.5rem .75rem;
     }
 
-    .research-bar > span{
+    .brand-research-chart .research-bar > span{
         grid-column:1 / -1;
     }
 
-    .research-bar .bar-track{
+    .brand-research-chart .research-bar .bar-track{
         grid-column:1;
     }
 
-    .research-bar strong{
+    .brand-research-chart .research-bar strong{
         grid-column:2;
         grid-row:2;
 
@@ -14566,11 +14606,11 @@ body:has(.pricing-hero) #footer #backToTop{
         font-size:1.2rem;
     }
 
-    .research-bar > span{
+    .brand-research-chart .research-bar > span{
         font-size:.9rem;
     }
 
-    .research-bar strong{
+    .brand-research-chart .research-bar strong{
         font-size:.9rem;
     }
 
@@ -19462,7 +19502,7 @@ SOCIAL PLATFORM BAR WIDTHS
     gap: .85rem;
 }
 
-.framework-step {
+.enterprise-section .framework-step {
     display: grid;
     grid-template-columns: 48px 1fr;
     align-items: center;
@@ -19478,7 +19518,7 @@ SOCIAL PLATFORM BAR WIDTHS
     background: var(--white, var(--light));
 }
 
-.framework-step > span {
+.enterprise-section .framework-step > span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -19491,13 +19531,13 @@ SOCIAL PLATFORM BAR WIDTHS
     font-weight: 800;
 }
 
-.framework-step strong {
+.enterprise-section .framework-step strong {
     display: block;
     color: var(--primary);
     font-size: .9rem;
 }
 
-.framework-step small {
+.enterprise-section .framework-step small {
     display: block;
     margin-top: .2rem;
     color: var(--text-light);
