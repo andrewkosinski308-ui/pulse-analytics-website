@@ -1,0 +1,13 @@
+# Minimal Supabase CLI config for Pulse Analytics
+# Project: gultqhsccxuqvibymwdg (us-east-1)
+
+project_id = "gultqhsccxuqvibymwdg"
+
+[api]
+enabled = true
+
+[db]
+major_version = 17
+
+[storage]
+enabled = true

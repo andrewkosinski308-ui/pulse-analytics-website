@@ -1,0 +1,11 @@
+{
+  "name": "pulse-analytics-website",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4"
+  },
+  "scripts": {
+    "types:generate": "echo Run: npx supabase gen types typescript --project-id gultqhsccxuqvibymwdg -o src/lib/supabase/database.types.ts"
+  }
+}
