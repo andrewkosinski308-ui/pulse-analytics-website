@@ -19956,6 +19956,9 @@ SOCIAL PLATFORM BAR WIDTHS
     }
 
     header {
+        left: 0;
+        right: 0;
+        width: auto;
         max-width: 100%;
         min-width: 0;
     }
@@ -20009,6 +20012,7 @@ SOCIAL PLATFORM BAR WIDTHS
         overflow-wrap: anywhere;
         white-space: normal;
         max-width: 100%;
+        min-width: 0;
     }
 
     .header-branding p {
