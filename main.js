@@ -146,7 +146,15 @@ if (backToTop) {
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Open menu");
     toggle.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
-    actions.appendChild(toggle);
+    const container = headerEl.querySelector(".container") || actions.parentElement;
+    const navWrap = headerEl.querySelector(".header-nav");
+    if (container && navWrap && navWrap.parentNode === container) {
+        container.insertBefore(toggle, navWrap);
+    } else if (container) {
+        container.appendChild(toggle);
+    } else {
+        actions.appendChild(toggle);
+    }
 
     const dropdowns = Array.prototype.slice.call(nav.querySelectorAll(".dropdown"));
 

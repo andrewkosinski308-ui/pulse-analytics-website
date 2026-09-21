@@ -19948,11 +19948,14 @@ SOCIAL PLATFORM BAR WIDTHS
 @media (max-width: 992px) {
 
     :root {
-        --header-height: 92px;
+        --header-height: 120px;
     }
 
     .mobile-menu {
         display: inline-flex;
+        grid-area: menu;
+        justify-self: start;
+        margin: 0;
     }
 
     header {
@@ -19964,8 +19967,11 @@ SOCIAL PLATFORM BAR WIDTHS
     }
 
     header .container {
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "brand actions"
+            "menu menu";
         align-items: center;
         gap: 0.5rem 0.75rem;
         padding: 0.7rem 0;
@@ -19984,7 +19990,7 @@ SOCIAL PLATFORM BAR WIDTHS
         min-width: 0;
         max-width: none;
         margin: 0;
-        order: 1;
+        grid-area: brand;
     }
 
     .header-logo {
@@ -20036,7 +20042,7 @@ SOCIAL PLATFORM BAR WIDTHS
         justify-content: flex-end;
         gap: 0.15rem;
         margin-left: auto;
-        order: 2;
+        grid-area: actions;
     }
 
     .header-cart a,
@@ -20063,13 +20069,23 @@ SOCIAL PLATFORM BAR WIDTHS
     }
 
     header.nav-open {
-        max-height: 100vh;
-        overflow-x: visible;
-        overflow-y: auto;
+        overflow: visible;
     }
 
     header.nav-open .header-nav {
         display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        width: auto;
+        max-width: 100%;
+        margin: 0;
+        flex: none;
+        max-height: calc(100vh - var(--header-height));
+        overflow-x: visible;
+        overflow-y: auto;
+        background: var(--light);
     }
 
     header.nav-open.header-hidden {
