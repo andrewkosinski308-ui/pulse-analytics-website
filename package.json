@@ -6,6 +6,8 @@
     "@supabase/supabase-js": "^2.57.4"
   },
   "scripts": {
+    "generate:supabase-env": "node scripts/generate-supabase-env.mjs",
+    "build": "npm run generate:supabase-env",
     "types:generate": "echo Run: npx supabase gen types typescript --project-id gultqhsccxuqvibymwdg -o src/lib/supabase/database.types.ts"
   }
 }

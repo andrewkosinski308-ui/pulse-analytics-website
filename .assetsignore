@@ -32,6 +32,9 @@ Thumbs.db
 .tmp-*
 *.log
 
+# Build-time tooling (generated js/supabase-env.js is deployed; the generator is not)
+scripts/
+
 # Supabase CLI local state (keep migrations in git; do not ship CLI temp dirs)
 supabase/.temp/
 .supabase/
