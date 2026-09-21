@@ -156,18 +156,211 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </header>
     <main>
-        <section id="page-stub">
+        <section class="contact-form-section" id="page-stub">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Pulse Performance Audit™</span>
-                    <h1>Free Website Audit</h1>
-                    <p>This page is a placeholder for our complimentary Pulse Performance Audit™ request experience. In the meantime, reach out through our contact page and we will help you get started.</p>
+
+                <div class="form-introduction">
+
+                    <p class="section-label">
+                        Pulse Performance Audit™
+                    </p>
+
+                    <h1>
+                        Free Website Audit
+                    </h1>
+
+                    <p>
+                        Request a complimentary Pulse Performance Audit™ and we will review
+                        your website for performance, search visibility, technical health,
+                        user experience, and conversion opportunities.
+                    </p>
+
+                    <p>
+                        Share a few details about your business and website. There is no
+                        pressure and no obligation—just a clearer picture of where your
+                        digital presence can improve.
+                    </p>
+
                 </div>
 
-                <div class="stub-actions">
-                    <a href="contact.html" class="primary-button">Contact Us</a>
-                    <a href="index.html" class="secondary-button">Back to Home</a>
-                </div>
+                <form class="contact-form audit-request-form" name="audit-request" action="https://script.google.com/macros/s/AKfycbzcTaO8cyLzLAqXo4mHUclFoneY5BSmIRPtlh3jCvZULxxg7k1-jD6gtNIQESLLSdtX/exec" method="POST">
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+
+                            <label for="audit-name">
+                                Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="audit-name"
+                                name="name"
+                                autocomplete="name"
+                                required>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="audit-business">
+                                Business Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="audit-business"
+                                name="business"
+                                autocomplete="organization"
+                                required>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="audit-email">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="audit-email"
+                                name="email"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="audit-phone">
+                                Phone
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="audit-phone"
+                                name="phone"
+                                autocomplete="tel">
+
+                        </div>
+
+                        <div class="form-field full-width">
+
+                            <label for="audit-website">
+                                Website
+                            </label>
+
+                            <input
+                                type="url"
+                                id="audit-website"
+                                name="website"
+                                placeholder="https://"
+                                autocomplete="url"
+                                required>
+
+                        </div>
+
+                        <div class="form-field full-width">
+
+                            <label>
+                                What should we review?
+                            </label>
+
+                            <div class="checkbox-grid">
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="performance">
+                                    <span>Website Performance &amp; Speed</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="seo">
+                                    <span>Search Engine Optimization (SEO)</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="mobile">
+                                    <span>Mobile Responsiveness</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="ux">
+                                    <span>User Experience &amp; Navigation</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="technical">
+                                    <span>Technical Website Health</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="local-seo">
+                                    <span>Local SEO Visibility</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="analytics">
+                                    <span>Analytics &amp; Tracking Review</span>
+                                </label>
+
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="audit_focus" value="conversions">
+                                    <span>Conversion Opportunities</span>
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-field full-width">
+
+                            <label for="audit-message">
+                                Tell Us About Your Goals or Challenges
+                            </label>
+
+                            <textarea
+                                id="audit-message"
+                                name="message"
+                                rows="7"></textarea>
+
+                        </div>
+
+                        <div class="form-field full-width">
+
+                            <label for="audit-lead-source">
+                                How did you hear about us?
+                            </label>
+
+                            <select id="audit-lead-source" name="lead_source">
+                                <option value="">Please select</option>
+                                <option value="google-search">Google Search</option>
+                                <option value="google-ads">Google Ads</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="referral">Referral</option>
+                                <option value="word-of-mouth">Word of Mouth</option>
+                                <option value="website">Website</option>
+                                <option value="other">Other</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="cta-button">
+                        Request My Free Audit
+                    </button>
+
+                    <p class="form-note">
+                        No pressure. No obligation. You will receive useful insights you
+                        can use whether or not you decide to work with Pulse Analytics.
+                    </p>
+
+                </form>
+
             </div>
         </section>
     </main>
