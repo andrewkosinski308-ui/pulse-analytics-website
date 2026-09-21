@@ -263,6 +263,23 @@
   }
 }
 
+@media (max-width: 992px) {
+  .header-actions {
+    position: static;
+    top: auto;
+    right: auto;
+    z-index: 1101;
+    gap: 0.15rem;
+  }
+
+  .header-portal a {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+}
+
 @media (max-width: 640px) {
   .client-auth-card,
   .client-portal-panel {
