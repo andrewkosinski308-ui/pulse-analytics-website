@@ -1,1 +1,37 @@
-.git
+# Cloudflare Workers Static Assets ignore list
+# Placed at the assets root (repository root). Same syntax as .gitignore.
+# Prevents development/build-only files from being uploaded as public assets.
+
+.git/
+.github/
+.wrangler/
+.cursor/
+
+node_modules/
+**/node_modules/**
+
+# Local secrets and env (do not ignore js/supabase-env.js — auth pages load it when present)
+.env
+.env.*
+!.env.example
+
+# Package manager / tooling noise
+package-lock.json
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Temporary / local-only
+.tmp-migrations/
+.tmp-*
+*.log
+
+# Supabase CLI local state (keep migrations in git; do not ship CLI temp dirs)
+supabase/.temp/
+.supabase/
