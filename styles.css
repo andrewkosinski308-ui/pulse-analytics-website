@@ -1537,6 +1537,12 @@ header .container{
     gap:var(--space-4);
 }
 
+@media (max-width:992px){
+    #services .services-grid{
+        grid-template-columns:1fr;
+    }
+}
+
 #services .service-card{
     display:flex;
     flex-direction:column;
@@ -3020,6 +3026,17 @@ header .container{
         flex-direction:column;
 
         text-align:center;
+    }
+
+    #footer .footer-bottom-main {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #footer .footer-copyright {
+        flex-shrink: 1;
+        min-width: 0;
+        max-width: 100%;
     }
 
     #footer .footer-bottom p:last-child{
