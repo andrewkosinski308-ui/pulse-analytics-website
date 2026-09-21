@@ -10133,6 +10133,13 @@ body:has(.pricing-hero) #footer #backToTop{
     max-width: 900px; 
     margin: 0 auto var(--space-3); 
     text-align: center;
+}
+
+.page-coming-soon {
+    margin: 0 auto var(--space-3);
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 600;
 } 
  
 .guides-hero .section-intro { 
