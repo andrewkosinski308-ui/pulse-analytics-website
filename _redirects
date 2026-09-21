@@ -1,0 +1,10 @@
+# Path redirects for Cloudflare Workers Static Assets.
+# Domain-level redirects are handled in workers/router.js (Host header).
+# Status 301 = permanent.
+
+# Legacy blog location -> current Resource Center blog
+/blog.html    /resources/blog.html    301
+
+# Known case-sensitive directory mismatches (prior Solutions/Resources casing)
+/Solutions/*  /solutions/:splat       301
+/Resources/*  /resources/:splat       301

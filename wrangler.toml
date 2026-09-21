@@ -1,0 +1,15 @@
+# Cloudflare Workers Static Assets - Pulse Analytics Group LLC
+# Deploy: npm run build && npx wrangler deploy
+#
+# Preserves the existing GitHub -> Cloudflare static-asset deployment flow.
+# A thin Worker runs first for legacy-domain / legacy-path redirects only.
+
+name = "pulse-analytics-website"
+compatibility_date = "2026-03-20"
+main = "workers/router.js"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+not_found_handling = "404-page"
+run_worker_first = true

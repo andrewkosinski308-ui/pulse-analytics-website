@@ -35,6 +35,12 @@ Thumbs.db
 # Build-time tooling (generated js/supabase-env.js is deployed; the generator is not)
 scripts/
 
+# Worker source + Wrangler config (not public assets)
+workers/
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+
 # Supabase CLI local state (keep migrations in git; do not ship CLI temp dirs)
 supabase/.temp/
 .supabase/
