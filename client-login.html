@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal Sign In | Pulse Analytics Group LLC</title>
+    <meta name="description" content="Sign in to the Pulse Analytics Client Portal.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="assetts/images/Pulse%20Analytics%20Favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="client-portal.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-brand">
+                <div class="header-logo">
+                    <a href="index.html" class="logo">
+                        <img src="assetts/images/transparent-logo-PA.jpeg" alt="Pulse Analytics Group LLC Logo">
+                    </a>
+                </div>
+                <div class="header-branding">
+                    <h1>Pulse Analytics Group LLC</h1>
+                    <p>Client Portal</p>
+                </div>
+            </div>
+            <div class="header-nav">
+                <nav id="primary-navigation" aria-label="Client auth navigation">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Back to Website</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="client-auth-page">
+        <div class="container">
+            <div class="client-auth-card">
+                <div class="client-auth-brand">
+                    <img src="assetts/images/transparent-logo-PA.jpeg" alt="">
+                    <h1>Client Portal Sign In</h1>
+                    <p>Access your Pulse Analytics client account</p>
+                </div>
+
+                <div id="auth-alert" class="client-auth-alert" role="alert" aria-live="polite"></div>
+
+                <form id="client-login-form" class="client-auth-form" novalidate>
+                    <label>
+                        Email
+                        <input id="email" name="email" type="email" autocomplete="username" required placeholder="you@company.com">
+                    </label>
+                    <label>
+                        Password
+                        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your password">
+                    </label>
+                    <div class="client-auth-actions">
+                        <button type="submit" class="primary-button" id="sign-in-btn">Sign In</button>
+                    </div>
+                </form>
+
+                <div class="client-auth-links">
+                    <a href="client-forgot-password.html">Forgot Password?</a>
+                    <a href="index.html">Return to website</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/supabase-env.js"></script>
+    <script type="module">
+        import {
+            initAuth,
+            signIn,
+            redirectAuthenticatedClientAwayFromLogin,
+            isClientPortalEligible
+        } from './js/pulse-auth.js';
+
+        const alertEl = document.getElementById('auth-alert');
+        const form = document.getElementById('client-login-form');
+        const button = document.getElementById('sign-in-btn');
+
+        function showAlert(message, type = 'error') {
+            alertEl.textContent = message;
+            alertEl.dataset.type = type;
+            alertEl.classList.add('is-visible');
+        }
+
+        function clearAlert() {
+            alertEl.textContent = '';
+            alertEl.classList.remove('is-visible');
+        }
+
+        try {
+            await initAuth();
+            const redirected = await redirectAuthenticatedClientAwayFromLogin();
+            if (!redirected) {
+                /* navigated away */
+            }
+        } catch (err) {
+            showAlert(err.message || 'Unable to initialize authentication.', 'error');
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearAlert();
+
+            const email = form.email.value.trim();
+            const password = form.password.value;
+
+            if (!email || !password) {
+                showAlert('Enter your email and password.', 'error');
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = 'Signing in…';
+
+            try {
+                const authState = await signIn(email, password);
+                if (isClientPortalEligible(authState)) {
+                    window.location.replace('client-portal.html');
+                    return;
+                }
+                showAlert('Sign-in succeeded, but this account cannot access the Client Portal.', 'error');
+            } catch (err) {
+                showAlert(err.message || 'Sign-in failed. Check your credentials and try again.', 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Sign In';
+            }
+        });
+    </script>
+</body>
+</html>

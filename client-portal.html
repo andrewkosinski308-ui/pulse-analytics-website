@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal | Pulse Analytics Group LLC</title>
+    <meta name="description" content="Pulse Analytics Client Portal account overview.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="assetts/images/Pulse%20Analytics%20Favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="client-portal.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-brand">
+                <div class="header-logo">
+                    <a href="index.html" class="logo">
+                        <img src="assetts/images/transparent-logo-PA.jpeg" alt="Pulse Analytics Group LLC Logo">
+                    </a>
+                </div>
+                <div class="header-branding">
+                    <h1>Pulse Analytics Group LLC</h1>
+                    <p>Client Portal</p>
+                </div>
+            </div>
+            <div class="header-nav">
+                <nav aria-label="Client portal navigation">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Website</a></li>
+                        <li><a href="contact.html">Support</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="client-portal-shell">
+        <div class="container">
+            <div id="portal-loading" class="client-portal-loading">Verifying your session…</div>
+
+            <div id="portal-panel" class="client-portal-panel" hidden>
+                <h1 id="welcome-title">Welcome</h1>
+                <p class="portal-subtitle">You are signed in to the Pulse Analytics Client Portal.</p>
+
+                <div class="client-portal-meta" aria-live="polite">
+                    <div class="meta-row">
+                        <div class="meta-label">Name</div>
+                        <div class="meta-value" id="meta-name">—</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-label">Company</div>
+                        <div class="meta-value" id="meta-company">—</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-label">Email</div>
+                        <div class="meta-value" id="meta-email">—</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-label">Account role</div>
+                        <div class="meta-value" id="meta-role">—</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-label">Membership</div>
+                        <div class="meta-value" id="meta-membership">—</div>
+                    </div>
+                </div>
+
+                <div class="client-portal-actions">
+                    <button type="button" class="secondary-button" id="sign-out-btn">Sign Out</button>
+                    <a class="primary-button" href="index.html">Visit Website</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/supabase-env.js"></script>
+    <script type="module">
+        import {
+            initAuth,
+            subscribeAuth,
+            signOut,
+            isClientPortalEligible,
+            getSiteRootPrefix
+        } from './js/pulse-auth.js';
+
+        const loadingEl = document.getElementById('portal-loading');
+        const panelEl = document.getElementById('portal-panel');
+        const signOutBtn = document.getElementById('sign-out-btn');
+        const loginHref = `${getSiteRootPrefix()}client-login.html`;
+
+        function renderPortal(authState) {
+            const name =
+                authState.profile?.full_name?.trim() ||
+                authState.user?.email?.split('@')[0] ||
+                'Client';
+
+            document.getElementById('welcome-title').textContent = `Welcome, ${name}`;
+            document.getElementById('meta-name').textContent = name;
+            document.getElementById('meta-company').textContent = authState.client?.name || '—';
+            document.getElementById('meta-email').textContent =
+                authState.profile?.email || authState.user?.email || '—';
+            document.getElementById('meta-role').textContent = 'Client Account';
+            document.getElementById('meta-membership').textContent =
+                authState.membership?.member_role
+                    ? String(authState.membership.member_role).replace(/^./, (c) => c.toUpperCase())
+                    : '—';
+
+            loadingEl.hidden = true;
+            panelEl.hidden = false;
+        }
+
+        try {
+            await initAuth();
+
+            subscribeAuth((authState) => {
+                if (authState.loading) {
+                    loadingEl.hidden = false;
+                    loadingEl.textContent = 'Verifying your session…';
+                    panelEl.hidden = true;
+                    return;
+                }
+
+                if (!isClientPortalEligible(authState)) {
+                    window.location.replace(loginHref);
+                    return;
+                }
+
+                renderPortal(authState);
+            });
+        } catch (err) {
+            loadingEl.textContent = err.message || 'Unable to load the Client Portal.';
+            setTimeout(() => window.location.replace(loginHref), 1500);
+        }
+
+        signOutBtn.addEventListener('click', async () => {
+            signOutBtn.disabled = true;
+            signOutBtn.textContent = 'Signing out…';
+            try {
+                await signOut();
+                window.location.replace('client-login.html');
+            } catch (err) {
+                signOutBtn.disabled = false;
+                signOutBtn.textContent = 'Sign Out';
+                loadingEl.hidden = false;
+                loadingEl.textContent = err.message || 'Sign-out failed.';
+            }
+        });
+    </script>
+</body>
+</html>

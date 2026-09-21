@@ -1,0 +1,276 @@
+/* Client auth + portal shell only — does not alter global marketing styles */
+
+.client-auth-page {
+  min-height: 70vh;
+  padding: 4rem 0 5rem;
+  background:
+    radial-gradient(circle at top right, rgba(51, 161, 255, 0.12), transparent 45%),
+    linear-gradient(180deg, var(--off-white) 0%, var(--light) 100%);
+}
+
+.client-auth-card {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2.25rem 2rem;
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.client-auth-brand {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.client-auth-brand img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+}
+
+.client-auth-brand h1 {
+  font-size: 1.45rem;
+  color: var(--primary);
+  margin: 0 0 0.35rem;
+}
+
+.client-auth-brand p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.client-auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.client-auth-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
+.client-auth-form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--button-radius);
+  font: inherit;
+  color: var(--text);
+  background: var(--light);
+}
+
+.client-auth-form input:focus {
+  outline: 2px solid rgba(25, 118, 210, 0.35);
+  border-color: var(--secondary);
+}
+
+.client-auth-actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.client-auth-actions .primary-button,
+.client-auth-actions .secondary-button {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.client-auth-actions .primary-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+}
+
+.client-auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  font-size: 0.92rem;
+}
+
+.client-auth-links a {
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.client-auth-links a:hover {
+  text-decoration: underline;
+}
+
+.client-auth-alert {
+  display: none;
+  padding: 0.85rem 1rem;
+  border-radius: var(--button-radius);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  margin-bottom: 0.25rem;
+}
+
+.client-auth-alert.is-visible {
+  display: block;
+}
+
+.client-auth-alert[data-type="error"] {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.client-auth-alert[data-type="success"] {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.client-auth-alert[data-type="info"] {
+  background: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #bfdbfe;
+}
+
+.client-portal-shell {
+  min-height: 70vh;
+  padding: 4rem 0 5rem;
+  background: linear-gradient(180deg, var(--off-white) 0%, var(--light) 100%);
+}
+
+.client-portal-panel {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.25rem;
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.client-portal-panel h1 {
+  margin: 0 0 0.5rem;
+  color: var(--primary);
+  font-size: 1.85rem;
+}
+
+.client-portal-panel .portal-subtitle {
+  margin: 0 0 1.75rem;
+  color: var(--text-light);
+}
+
+.client-portal-meta {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.client-portal-meta .meta-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.client-portal-meta .meta-label {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.client-portal-meta .meta-value {
+  color: var(--text);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.client-portal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.client-portal-loading {
+  text-align: center;
+  color: var(--text-light);
+  padding: 3rem 1rem;
+}
+
+/* Header Client Portal entry (alongside cart) */
+.header-actions {
+  position: absolute;
+  top: 25px;
+  right: 55px;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.header-actions .header-cart {
+  position: static;
+  top: auto;
+  right: auto;
+}
+
+.header-portal a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 52px;
+  height: 52px;
+  padding: 0 0.65rem;
+  color: #0a2e6f;
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.header-portal a:hover {
+  color: #1976d2;
+  transform: translateY(-2px);
+}
+
+.header-portal i {
+  font-size: 1.55rem;
+}
+
+.header-portal .portal-label {
+  display: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+@media (min-width: 1100px) {
+  .header-portal .portal-label {
+    display: inline;
+  }
+
+  .header-actions {
+    right: 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .client-auth-card,
+  .client-portal-panel {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .client-portal-meta .meta-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
