@@ -12,13 +12,26 @@ const typeFilters = document.getElementById("research-type-filters");
 const topicFilters = document.getElementById("research-topic-filters");
 const pager = document.getElementById("research-pager");
 const search = document.getElementById("research-search");
+const searchButton = document.getElementById("research-search-button");
 const sort = document.getElementById("research-sort");
 
-search.addEventListener("input", debounce(() => {
+function applySearch() {
   state.q = search.value.trim();
   state.page = 1;
   load();
-}, 300));
+}
+
+search.addEventListener("input", debounce(applySearch, 300));
+search.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    applySearch();
+  }
+});
+searchButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  applySearch();
+});
 
 sort.addEventListener("change", () => {
   state.sort = sort.value;

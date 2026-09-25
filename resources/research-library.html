@@ -27,6 +27,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
         <link rel="stylesheet" href="../styles.css">
+        <style>
+            #research-search-button {
+                pointer-events: auto;
+                background: none;
+                border: 0;
+                padding: 0;
+                margin: 0;
+                font: inherit;
+                line-height: 1;
+                cursor: pointer;
+            }
+        </style>
         <link rel="canonical" href="https://pulseanalyticsgroupllc.com/resources/research-library.html">
         <script type="application/ld+json">
                 {
@@ -137,7 +149,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <p class="section-intro">This library lists works Pulse Analytics has reviewed and published in its own catalog. External studies stay with their original publishers. Pulse Analytics does not host those papers.</p>
                         <div class="resource-search-wrap">
                             <input id="research-search" class="resource-search" type="search" placeholder="Search published research..." aria-label="Search published research" autocomplete="off">
-                            <span class="resource-search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <button type="button" id="research-search-button" class="resource-search-icon" aria-label="Search published research"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
                         </div>
                         <label class="section-label" for="research-sort">Sort</label>
                         <select id="research-sort" aria-label="Sort published research">
