@@ -132,6 +132,17 @@ function renderResults(body) {
   }
 }
 
+const EXTERNAL_LABELS = {
+  google: "Official Google resource",
+  w3c: "W3C Resource",
+  webdev: "web.dev Resource",
+  nng: "Nielsen Norman Group Resource",
+  openai: "OpenAI Resource",
+  ibm: "IBM Resource",
+  salesforce: "Salesforce Resource",
+  zapier: "Zapier Resource"
+};
+
 function card(work) {
   const article = document.createElement("article");
   article.className = "resource-card";
@@ -143,8 +154,8 @@ function card(work) {
   const actions = document.createElement("div");
   actions.className = "resource-card-actions";
   const link = document.createElement("a");
-  if (work.sourceType === "google") {
-    type.textContent = "Official Google resource";
+  if (EXTERNAL_LABELS[work.sourceType]) {
+    type.textContent = EXTERNAL_LABELS[work.sourceType];
     copy.textContent = work.summary || "";
     link.href = safeHttps(work.sourceUrl) || "#";
     link.target = "_blank";

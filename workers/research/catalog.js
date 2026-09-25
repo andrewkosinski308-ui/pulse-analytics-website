@@ -415,6 +415,19 @@ export function publicWork(row) {
   };
 }
 
+function curatedIdentity(publisher) {
+  const name = String(publisher || "").trim();
+  if (/^google\b/i.test(name)) return { provider: "google", sourceType: "google" };
+  if (/nielsen norman/i.test(name)) return { provider: "nng", sourceType: "nng" };
+  if (/^web\.dev$/i.test(name)) return { provider: "webdev", sourceType: "webdev" };
+  if (/^w3c\b/i.test(name)) return { provider: "w3c", sourceType: "w3c" };
+  if (/^openai$/i.test(name)) return { provider: "openai", sourceType: "openai" };
+  if (/^ibm$/i.test(name)) return { provider: "ibm", sourceType: "ibm" };
+  if (/^salesforce$/i.test(name)) return { provider: "salesforce", sourceType: "salesforce" };
+  if (/^zapier$/i.test(name)) return { provider: "zapier", sourceType: "zapier" };
+  return { provider: "google", sourceType: "google" };
+}
+
 function publicCurated(row) {
   const topics = (row.research_curated_resource_topics || [])
     .map((link) => link.research_topics)
@@ -429,8 +442,7 @@ function publicCurated(row) {
     doi: null,
     summary: row.description ? plainText(row.description, 600) : null,
     sourceUrl: row.external_url,
-    provider: "google",
-    sourceType: "google",
+    ...curatedIdentity(row.publisher),
     attribution: plainText(row.publisher, 160),
     rightsClass: row.rights_class,
     openAccess: null,

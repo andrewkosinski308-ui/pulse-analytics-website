@@ -74,6 +74,50 @@ test("official google resources are not served by the research detail route", as
   assert.equal(response.status, 404);
 });
 
+test("analytics ai and ux resources stay official external links", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?category=ai-marketing-technology&topic=martech&q=marketing&pageSize=20"),
+    env,
+    async (input) => {
+      const url = String(input.url || input);
+      calls.push(url);
+      return collectionResponse(url);
+    }
+  );
+  const body = await response.json();
+  const ibm = body.results.find((row) => row.slug === "guide-to-ai-in-marketing");
+  const guide = body.results.find((row) => row.slug === "seo-starter-guide");
+  assert.equal(response.status, 200);
+  assert.equal(ibm.sourceType, "ibm");
+  assert.equal(ibm.provider, "ibm");
+  assert.equal(ibm.sourceUrl, "https://www.ibm.com/think/topics/ai-in-marketing");
+  assert.equal(ibm.rightsClass, "source_link");
+  assert.equal(body.results.find((row) => row.slug === "ten-usability-heuristics").sourceType, "nng");
+  assert.equal(body.results.find((row) => row.slug === "learn-accessibility").sourceType, "webdev");
+  assert.equal(body.results.find((row) => row.slug === "learn-accessibility").sourceUrl, "https://web.dev/learn/accessibility");
+  assert.equal(body.results.find((row) => row.slug === "marketing-automation-guide").sourceType, "zapier");
+  assert.equal(body.results.find((row) => row.slug === "marketing-automation-guide").sourceUrl, "https://zapier.com/blog/marketing-automation-use-cases/");
+  assert.equal(guide.sourceType, "google");
+  assert.equal(body.results.some((row) => row.slug === "deep-learning"), false);
+  assert.equal(calls.some((url) => url.includes("research_categories.slug=eq.ai-marketing-technology")), true);
+  assert.equal(calls.some((url) => url.includes("martech")), true);
+  assert.equal(calls.some((url) => url.includes("ibm.com") || url.includes("openai.com") || url.includes("zapier.com") || url.includes("nngroup.com") || url.includes("web.dev") || url.includes("w3.org") || url.includes("salesforce.com")), false);
+  for (const category of ["analytics-measurement", "websites-ux-conversion"]) {
+    const categoryCalls = [];
+    const categoryResponse = await handleResearchRequest(
+      new Request(`https://pulse.test/api/research/resources?category=${category}&pageSize=20`),
+      env,
+      async (input) => {
+        categoryCalls.push(String(input.url || input));
+        return collectionResponse(String(input.url || input));
+      }
+    );
+    assert.equal(categoryResponse.status, 200);
+    assert.equal(categoryCalls.some((url) => url.includes(`research_categories.slug=eq.${category}`)), true);
+  }
+});
+
 test("tier query parameters still cannot bypass the public catalog", async () => {
   const calls = [];
   const response = await handleResearchRequest(
@@ -99,6 +143,10 @@ function collectionResponse(url) {
     }
     return jsonResponse([
       googleRow(),
+      externalRow("guide-to-ai-in-marketing", "A guide to AI in marketing", "IBM", "https://www.ibm.com/think/topics/ai-in-marketing"),
+      externalRow("ten-usability-heuristics", "10 Usability Heuristics for User Interface Design", "Nielsen Norman Group", "https://www.nngroup.com/articles/ten-usability-heuristics/"),
+      externalRow("learn-accessibility", "Learn Accessibility", "web.dev", "https://web.dev/learn/accessibility"),
+      externalRow("marketing-automation-guide", "Your guide to marketing automation", "Zapier", "https://zapier.com/blog/marketing-automation-use-cases/"),
       { ...googleRow(), slug: "draft-guide", status: "draft" },
       { ...googleRow(), slug: "premium-guide", access_tier: "premium", external_url: "https://support.google.com/webmasters/answer/7576553" }
     ]);
@@ -112,6 +160,16 @@ function collectionResponse(url) {
     ]);
   }
   return jsonResponse([bertRow(), draftWork(), studyRow(), premiumWork()]);
+}
+
+function externalRow(slug, title, publisher, externalUrl) {
+  return {
+    ...googleRow(),
+    slug,
+    title,
+    publisher,
+    external_url: externalUrl
+  };
 }
 
 function googleRow() {
