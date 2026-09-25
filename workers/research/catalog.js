@@ -26,6 +26,14 @@ const WORK_SELECT = [
   "research_licenses(name,url,notes)"
 ].join(",");
 
+// Public catalog reads share this entry point. Primary and fallback callers
+// pass different Supabase clients and the same options.
+export async function getPublishedResearchCatalog(options, catalog) {
+  if (options.slug) return catalog.getPublished(options.slug);
+  const [page, facets] = await Promise.all([catalog.list(options.query), catalog.facets()]);
+  return { ...page, facets };
+}
+
 export function createCatalog(env, fetchImpl = fetch) {
   const base = String(env.SUPABASE_URL || "").replace(/\/$/, "");
   return {
@@ -53,7 +61,7 @@ export function createCatalog(env, fetchImpl = fetch) {
       const response = await rest(fetchImpl, base, env, null, `/rest/v1/research_works?${params}`, {
         headers: { Prefer: "count=exact" }
       });
-      const rows = await response.json();
+      const rows = await publishedRows(response);
       return {
         results: rows.map(publicWork),
         total: readTotal(response, rows.length),
@@ -67,9 +75,9 @@ export function createCatalog(env, fetchImpl = fetch) {
         base,
         env,
         null,
-        "/rest/v1/research_works?select=resource_type,research_resource_topics(research_topics(name,slug))&status=eq.published&limit=200"
+        "/rest/v1/research_works?select=status,resource_type,research_resource_topics(research_topics(name,slug))&status=eq.published&limit=200"
       );
-      const rows = await response.json();
+      const rows = await publishedRows(response);
       const types = new Map();
       const topics = new Map();
       for (const row of rows) {
@@ -95,7 +103,7 @@ export function createCatalog(env, fetchImpl = fetch) {
         null,
         `/rest/v1/research_works?select=${encodeURIComponent(WORK_SELECT)}&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`
       );
-      const rows = await response.json();
+      const rows = await publishedRows(response);
       return rows[0] ? publicWork(rows[0]) : null;
     },
     async provider(key, jwt) {
@@ -235,11 +243,20 @@ export function publicWork(row) {
   };
 }
 
+async function publishedRows(response) {
+  let body;
+  try {
+    body = await response.json();
+  } catch {
+    throw catalogFailure("application");
+  }
+  if (!Array.isArray(body)) throw catalogFailure("application");
+  return body.filter((row) => row && row.status === "published");
+}
+
 async function rest(fetchImpl, base, env, jwt, path, options = {}) {
-  if (!base || !env.SUPABASE_ANON_KEY) {
-    const error = new Error("catalog_unavailable");
-    error.code = "catalog_unavailable";
-    throw error;
+  if (!base || !env.SUPABASE_ANON_KEY || /service_role/i.test(env.SUPABASE_ANON_KEY)) {
+    throw catalogFailure("binding");
   }
   const headers = {
     apikey: env.SUPABASE_ANON_KEY,
@@ -247,13 +264,31 @@ async function rest(fetchImpl, base, env, jwt, path, options = {}) {
     "Content-Type": "application/json",
     ...(options.headers || {})
   };
-  const response = await fetchImpl(`${base}${path}`, { ...options, headers });
-  if (!response.ok) {
-    const error = new Error("catalog_unavailable");
-    error.code = "catalog_unavailable";
-    throw error;
+  let response;
+  try {
+    response = await fetchImpl(`${base}${path}`, { ...options, headers });
+  } catch (error) {
+    throw catalogFailure(isTransportFailure(error) ? "transport" : "application");
+  }
+  if (!response || response.ok !== true) {
+    throw catalogFailure(isTransportStatus(response?.status) ? "transport" : "application");
   }
   return response;
+}
+
+function catalogFailure(failure) {
+  const error = new Error("catalog_unavailable");
+  error.code = "catalog_unavailable";
+  error.failure = failure;
+  return error;
+}
+
+function isTransportFailure(error) {
+  return error?.name === "TypeError" || error?.name === "AbortError" || error?.name === "TimeoutError";
+}
+
+function isTransportStatus(status) {
+  return status === 502 || status === 503 || status === 504;
 }
 
 async function uniqueSlug(fetchImpl, base, env, jwt, baseSlug) {

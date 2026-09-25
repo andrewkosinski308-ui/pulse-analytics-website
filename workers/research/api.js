@@ -1,4 +1,4 @@
-import { createCatalog } from "./catalog.js";
+import { createCatalog, getPublishedResearchCatalog } from "./catalog.js";
 import { adapterFor } from "./registry.js";
 import { parseListQuery, parseOpenAlexId, parseSlug } from "./validate.js";
 
@@ -44,31 +44,38 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
 async function listResources(url, env, fetchImpl) {
   const query = parseListQuery(url);
   if (query.error) return json({ error: query.error }, 400);
-  const loaded = await withCatalogFallback(env, url, fetchImpl, (catalog) => Promise.all([
-    catalog.list(query),
-    catalog.facets()
-  ]).then(([page, facets]) => ({ ...page, facets })));
+  const loaded = await withCatalogFallback(env, url, fetchImpl, (catalog) => getPublishedResearchCatalog({ query }, catalog));
   return json(loaded.result, 200, bindingHeader(env, loaded.source));
 }
 
 async function readResource(rawSlug, env, fetchImpl, requestUrl) {
   const slug = parseSlug(decodeURIComponent(rawSlug));
   if (!slug) return json({ error: "not_found" }, 404);
-  const loaded = await withCatalogFallback(env, requestUrl, fetchImpl, (catalog) => catalog.getPublished(slug));
+  const loaded = await withCatalogFallback(env, requestUrl, fetchImpl, (catalog) => getPublishedResearchCatalog({ slug }, catalog));
   if (!loaded.result) return json({ error: "not_found" }, 404);
   return json({ result: loaded.result }, 200, bindingHeader(env, loaded.source));
 }
 
-// Worker bindings are the primary catalog configuration.
-// js/supabase-env.js is only a fallback when those bindings are missing
-// or the bound Supabase request fails.
+// Permanent catalog availability:
+// 1. Primary: the Worker Supabase binding.
+// 2. Secondary: the deployed public Supabase config, only after a binding
+//    or transport failure. Application errors stay on the primary path.
 async function withCatalogFallback(env, requestUrl, fetchImpl, read) {
-  const bound = Boolean(env.SUPABASE_URL && env.SUPABASE_ANON_KEY);
+  const primary = primaryCatalogEnv(env);
+  if (!primary) {
+    const fallback = await readPublicSupabaseConfig(env, requestUrl);
+    return {
+      result: await read(createCatalog({ ...env, ...fallback }, fetchImpl)),
+      source: "fallback"
+    };
+  }
   try {
-    const result = await read(createCatalog(await catalogEnv(env, requestUrl), fetchImpl));
-    return { result, source: bound ? "binding" : "fallback" };
+    return {
+      result: await read(createCatalog(primary, fetchImpl)),
+      source: "binding"
+    };
   } catch (error) {
-    if (error.code !== "catalog_unavailable" || !bound) throw error;
+    if (catalogFailureKind(error) === "application") throw error;
     const fallback = await readPublicSupabaseConfig(env, requestUrl);
     return {
       result: await read(createCatalog({ ...env, ...fallback }, fetchImpl)),
@@ -77,9 +84,26 @@ async function withCatalogFallback(env, requestUrl, fetchImpl, read) {
   }
 }
 
-async function catalogEnv(env, requestUrl) {
-  if (env.SUPABASE_URL && env.SUPABASE_ANON_KEY) return env;
-  return { ...env, ...(await readPublicSupabaseConfig(env, requestUrl)) };
+function primaryCatalogEnv(env) {
+  return usableSupabaseConfig(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+}
+
+function catalogFailureKind(error) {
+  if (error?.failure === "binding" || error?.failure === "transport") return error.failure;
+  return "application";
+}
+
+function usableSupabaseConfig(url, anonKey) {
+  const key = String(anonKey || "").trim();
+  if (!key || /service_role/i.test(key)) return null;
+  let parsed;
+  try {
+    parsed = new URL(String(url || "").trim());
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== "https:" || !parsed.hostname.endsWith(".supabase.co")) return null;
+  return { SUPABASE_URL: parsed.origin, SUPABASE_ANON_KEY: key };
 }
 
 async function readPublicSupabaseConfig(env, requestUrl) {
@@ -97,12 +121,14 @@ async function readPublicSupabaseConfig(env, requestUrl) {
   const text = await response.text();
   const url = text.match(/url:\s*'([^']+)'/);
   const anonKey = text.match(/anonKey:\s*'([^']+)'/);
-  if (!url || !anonKey || /service_role/i.test(anonKey[1])) {
+  const config = url && anonKey ? usableSupabaseConfig(url[1], anonKey[1]) : null;
+  if (!config) {
     const error = new Error("catalog_unavailable");
     error.code = "catalog_unavailable";
+    error.failure = "binding";
     throw error;
   }
-  return { SUPABASE_URL: url[1], SUPABASE_ANON_KEY: anonKey[1] };
+  return config;
 }
 
 async function discover(request, env, fetchImpl) {

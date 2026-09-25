@@ -105,24 +105,7 @@ test("published catalog read returns normalized rows", async () => {
     async (input) => {
       const url = String(input.url || input);
       if (url.includes("resource_type,research_resource_topics")) return jsonResponse([]);
-      return jsonResponse([{
-        title: "Published study",
-        slug: "published-study",
-        resource_type: "article",
-        publication_date: "2020-01-01",
-        source_url: "https://doi.org/10.1000/example",
-        retrieved_at: "2026-09-24T00:00:00Z",
-        rights_class: "metadata",
-        summary: null,
-        open_access: false,
-        doi: "10.1000/example",
-        venue: "Journal",
-        limitations_unknown: true,
-        research_providers: { key: "openalex", attribution_text: "OpenAlex" },
-        research_resource_contributors: [],
-        research_resource_topics: [],
-        research_licenses: []
-      }], { "content-range": "0-0/1" });
+      return jsonResponse([publishedStudy()], { "content-range": "0-0/1" });
     }
   );
   const body = await response.json();
@@ -210,24 +193,7 @@ test("catalog reads use the deployed publishable config when worker bindings are
       calls.push(String(input));
       if (options.headers.apikey !== "publishable-key") return new Response("{}", { status: 401 });
       if (String(input).includes("resource_type,research_resource_topics")) return jsonResponse([]);
-      return jsonResponse([{
-        title: "Published study",
-        slug: "published-study",
-        resource_type: "article",
-        publication_date: "2020-01-01",
-        source_url: "https://doi.org/10.1000/example",
-        retrieved_at: "2026-09-24T00:00:00Z",
-        rights_class: "metadata",
-        summary: null,
-        open_access: false,
-        doi: "10.1000/example",
-        venue: "Journal",
-        limitations_unknown: true,
-        research_providers: { key: "openalex", attribution_text: "OpenAlex" },
-        research_resource_contributors: [],
-        research_resource_topics: [],
-        research_licenses: []
-      }], { "content-range": "0-0/1" });
+      return jsonResponse([publishedStudy()], { "content-range": "0-0/1" });
     }
   );
   const body = await response.json();
@@ -236,6 +202,268 @@ test("catalog reads use the deployed publishable config when worker bindings are
   assert.equal(response.headers.get("X-Pulse-Bindings"), "supabase_url=absent; supabase_anon=absent; openalex=absent; source=fallback");
   assert.equal(calls.some((url) => url.startsWith("https://example.supabase.co/rest/v1/research_works")), true);
 });
+
+test("primary catalog binding succeeds without reading the fallback", async () => {
+  const assets = [];
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
+    {
+      ...env,
+      ASSETS: { fetch: async () => { assets.push("fallback"); return new Response(""); } }
+    },
+    async (input) => {
+      calls.push(String(input.url || input));
+      return catalogResponse(String(input.url || input));
+    }
+  );
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.results[0].slug, "bert-pre-training");
+  assert.equal(body.results.some((row) => row.slug === "deep-learning"), false);
+  assert.equal(assets.length, 0);
+  assert.equal(calls.every((url) => url.startsWith("https://example.supabase.co/")), true);
+  assert.equal(response.headers.get("X-Pulse-Bindings"), "supabase_url=present; supabase_anon=present; openalex=present; source=binding");
+});
+
+test("missing worker binding uses the deployed public catalog config", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
+    fallbackEnv(),
+    async (input) => {
+      calls.push(String(input.url || input));
+      assert.equal(String(input).includes("status=eq.published"), true);
+      return catalogResponse(String(input.url || input));
+    }
+  );
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.results[0].slug, "bert-pre-training");
+  assert.equal(body.results.some((row) => row.slug === "deep-learning"), false);
+  assert.equal(calls.some((url) => url.startsWith("https://fallback.supabase.co/")), true);
+  assert.equal(calls.some((url) => url.startsWith("https://primary.supabase.co/")), false);
+  assert.equal(response.headers.get("X-Pulse-Bindings").includes("source=fallback"), true);
+});
+
+test("transport failure uses the same published catalog query through the fallback", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
+    {
+      ...env,
+      SUPABASE_URL: "https://primary.supabase.co",
+      ASSETS: {
+        fetch: async () => new Response("window.PULSE_SUPABASE = { url: 'https://fallback.supabase.co', anonKey: 'publishable-key', siteUrl: '' };")
+      }
+    },
+    async (input) => {
+      const url = String(input.url || input);
+      calls.push(url);
+      if (url.startsWith("https://primary.supabase.co/")) throw new TypeError("network down");
+      return catalogResponse(url);
+    }
+  );
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.results[0].slug, "bert-pre-training");
+  assert.equal(calls.some((url) => url.startsWith("https://primary.supabase.co/")), true);
+  assert.equal(calls.some((url) => url.startsWith("https://fallback.supabase.co/")), true);
+  assert.equal(response.headers.get("X-Pulse-Bindings"), "supabase_url=present; supabase_anon=present; openalex=present; source=fallback");
+});
+
+test("schema error does not use the catalog fallback", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
+    {
+      ...env,
+      SUPABASE_URL: "https://primary.supabase.co",
+      ASSETS: {
+        fetch: async () => {
+          calls.push("fallback-config");
+          return new Response("window.PULSE_SUPABASE = { url: 'https://fallback.supabase.co', anonKey: 'publishable-key', siteUrl: '' };");
+        }
+      }
+    },
+    async (input) => {
+      calls.push(String(input.url || input));
+      return new Response(JSON.stringify({ code: "PGRST204", message: "column missing" }), { status: 400 });
+    }
+  );
+  const body = await response.json();
+  assert.equal(response.status, 503);
+  assert.equal(body.error, "catalog_unavailable");
+  assert.equal(calls.includes("fallback-config"), false);
+  assert.equal(calls.some((url) => url.startsWith("https://fallback.supabase.co/")), false);
+});
+
+test("invalid catalog query does not query supabase or the fallback", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?pageSize=100&sort=secret"),
+    {
+      ...env,
+      ASSETS: { fetch: async () => { calls.push("fallback-config"); return new Response(""); } }
+    },
+    async (input) => {
+      calls.push(String(input.url || input));
+      return jsonResponse([]);
+    }
+  );
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).error, "invalid_query");
+  assert.equal(calls.length, 0);
+});
+
+test("primary and fallback catalog responses match and hide drafts", async () => {
+  const primary = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12&sort=title"),
+    env,
+    async (input) => catalogResponse(String(input.url || input))
+  );
+  const fallback = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12&sort=title"),
+    fallbackEnv(),
+    async (input) => {
+      const url = String(input.url || input);
+      assert.equal(url.includes("status=eq.published"), true);
+      return catalogResponse(url);
+    }
+  );
+  const primaryBody = await primary.json();
+  const fallbackBody = await fallback.json();
+  assert.equal(primary.status, 200);
+  assert.deepEqual(fallbackBody, primaryBody);
+  assert.equal(primaryBody.results[0].slug, "bert-pre-training");
+  assert.equal(JSON.stringify(primaryBody).includes("deep-learning"), false);
+  assert.equal(primary.headers.get("X-Pulse-Bindings").endsWith("source=binding"), true);
+  assert.equal(fallback.headers.get("X-Pulse-Bindings").endsWith("source=fallback"), true);
+});
+
+test("detail route uses the binding first and the fallback after transport failure", async () => {
+  const primary = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources/bert-pre-training"),
+    env,
+    async (input) => catalogResponse(String(input.url || input))
+  );
+  const primaryBody = await primary.json();
+  assert.equal(primary.status, 200);
+  assert.equal(primaryBody.result.slug, "bert-pre-training");
+  assert.equal(primary.headers.get("X-Pulse-Bindings").endsWith("source=binding"), true);
+
+  const calls = [];
+  const fallback = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources/bert-pre-training"),
+    {
+      ...env,
+      SUPABASE_URL: "https://primary.supabase.co",
+      ASSETS: {
+        fetch: async () => new Response("window.PULSE_SUPABASE = { url: 'https://fallback.supabase.co', anonKey: 'publishable-key', siteUrl: '' };")
+      }
+    },
+    async (input) => {
+      const url = String(input.url || input);
+      calls.push(url);
+      if (url.startsWith("https://primary.supabase.co/")) throw new TypeError("timeout");
+      return catalogResponse(url);
+    }
+  );
+  const fallbackBody = await fallback.json();
+  assert.equal(fallback.status, 200);
+  assert.deepEqual(fallbackBody, primaryBody);
+  assert.equal(fallback.headers.get("X-Pulse-Bindings").endsWith("source=fallback"), true);
+
+  const denied = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources/bert-pre-training"),
+    {
+      ...env,
+      ASSETS: { fetch: async () => { calls.push("fallback-config"); return new Response(""); } }
+    },
+    async () => new Response(JSON.stringify({ code: "42501" }), { status: 401 })
+  );
+  assert.equal(denied.status, 503);
+  assert.equal((await denied.json()).error, "catalog_unavailable");
+  assert.equal(calls.includes("fallback-config"), false);
+});
+
+test("staff catalog routes stay authenticated and do not use the public fallback", async () => {
+  const calls = [];
+  const assets = { fetch: async () => { calls.push("fallback-config"); return new Response(""); } };
+  for (const path of ["/api/research/staff/discover", "/api/research/staff/stage", "/api/research/staff/publish"]) {
+    const response = await handleResearchRequest(
+      new Request(`https://pulse.test${path}`, { method: "POST", body: "{}" }),
+      { ...env, ASSETS: assets },
+      async (input) => {
+        calls.push(String(input.url || input));
+        return jsonResponse([]);
+      }
+    );
+    assert.equal(response.status, 401);
+    assert.equal((await response.json()).error, "unauthorized");
+  }
+  assert.equal(calls.length, 0);
+});
+
+function publishedStudy() {
+  return {
+    title: "Published study",
+    slug: "published-study",
+    status: "published",
+    resource_type: "article",
+    publication_date: "2020-01-01",
+    source_url: "https://doi.org/10.1000/example",
+    retrieved_at: "2026-09-24T00:00:00Z",
+    rights_class: "metadata",
+    summary: null,
+    open_access: false,
+    doi: "10.1000/example",
+    venue: "Journal",
+    limitations_unknown: true,
+    research_providers: { key: "openalex", attribution_text: "OpenAlex" },
+    research_resource_contributors: [],
+    research_resource_topics: [],
+    research_licenses: []
+  };
+}
+
+function bertRow() {
+  return {
+    ...publishedStudy(),
+    title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    slug: "bert-pre-training",
+    status: "published",
+    doi: "10.18653/v1/n19-1423",
+    source_url: "https://doi.org/10.18653/v1/n19-1423"
+  };
+}
+
+function draftRow() {
+  return {
+    ...publishedStudy(),
+    title: "Deep Learning",
+    slug: "deep-learning",
+    status: "draft"
+  };
+}
+
+function fallbackEnv() {
+  return {
+    ASSETS: {
+      fetch: async () => new Response("window.PULSE_SUPABASE = { url: 'https://fallback.supabase.co', anonKey: 'publishable-key', siteUrl: '' };")
+    }
+  };
+}
+
+function catalogResponse(url) {
+  if (url.includes("resource_type,research_resource_topics")) {
+    return jsonResponse([bertRow()]);
+  }
+  if (url.includes("slug=eq.")) {
+    return jsonResponse(url.includes("bert-pre-training") ? [bertRow(), draftRow()] : [draftRow()]);
+  }
+  return jsonResponse([bertRow(), draftRow()], { "content-range": "0-1/1" });
+}
 
 function jsonResponse(body, headers = {}) {
   return new Response(JSON.stringify(body), {
