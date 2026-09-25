@@ -23,7 +23,7 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
     }
     const detail = url.pathname.match(/^\/api\/research\/resources\/([^/]+)$/);
     if (request.method === "GET" && detail) {
-      return await readResource(detail[1], env, fetchImpl);
+      return await readResource(detail[1], env, fetchImpl, url);
     }
     if (request.method === "POST" && url.pathname === "/api/research/staff/discover") {
       return await discover(request, env, fetchImpl);
@@ -44,17 +44,56 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
 async function listResources(url, env, fetchImpl) {
   const query = parseListQuery(url);
   if (query.error) return json({ error: query.error }, 400);
-  const catalog = createCatalog(env, fetchImpl);
-  const [page, facets] = await Promise.all([catalog.list(query), catalog.facets()]);
-  return json({ ...page, facets });
+  return json(await withCatalogFallback(env, url, fetchImpl, (catalog) => Promise.all([
+    catalog.list(query),
+    catalog.facets()
+  ]).then(([page, facets]) => ({ ...page, facets }))));
 }
 
-async function readResource(rawSlug, env, fetchImpl) {
+async function readResource(rawSlug, env, fetchImpl, requestUrl) {
   const slug = parseSlug(decodeURIComponent(rawSlug));
   if (!slug) return json({ error: "not_found" }, 404);
-  const work = await createCatalog(env, fetchImpl).getPublished(slug);
+  const work = await withCatalogFallback(env, requestUrl, fetchImpl, (catalog) => catalog.getPublished(slug));
   if (!work) return json({ error: "not_found" }, 404);
   return json({ result: work });
+}
+
+async function withCatalogFallback(env, requestUrl, fetchImpl, read) {
+  try {
+    return await read(createCatalog(await catalogEnv(env, requestUrl), fetchImpl));
+  } catch (error) {
+    if (error.code !== "catalog_unavailable" || !env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) throw error;
+    const fallback = await readPublicSupabaseConfig(env, requestUrl);
+    return read(createCatalog({ ...env, ...fallback }, fetchImpl));
+  }
+}
+
+async function catalogEnv(env, requestUrl) {
+  if (env.SUPABASE_URL && env.SUPABASE_ANON_KEY) return env;
+  return { ...env, ...(await readPublicSupabaseConfig(env, requestUrl)) };
+}
+
+async function readPublicSupabaseConfig(env, requestUrl) {
+  if (!env.ASSETS) {
+    const error = new Error("catalog_unavailable");
+    error.code = "catalog_unavailable";
+    throw error;
+  }
+  const response = await env.ASSETS.fetch(new Request(new URL("/js/supabase-env.js", requestUrl)));
+  if (!response.ok) {
+    const error = new Error("catalog_unavailable");
+    error.code = "catalog_unavailable";
+    throw error;
+  }
+  const text = await response.text();
+  const url = text.match(/url:\s*'([^']+)'/);
+  const anonKey = text.match(/anonKey:\s*'([^']+)'/);
+  if (!url || !anonKey || /service_role/i.test(anonKey[1])) {
+    const error = new Error("catalog_unavailable");
+    error.code = "catalog_unavailable";
+    throw error;
+  }
+  return { SUPABASE_URL: url[1], SUPABASE_ANON_KEY: anonKey[1] };
 }
 
 async function discover(request, env, fetchImpl) {

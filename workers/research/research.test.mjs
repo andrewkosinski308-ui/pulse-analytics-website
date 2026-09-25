@@ -197,6 +197,45 @@ test("openalex rate limit becomes a safe error", async () => {
   assert.equal(JSON.stringify(body).includes("server-side-test-key"), false);
 });
 
+test("catalog reads use the deployed publishable config when worker bindings are missing", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
+    {
+      ASSETS: {
+        fetch: async () => new Response("window.PULSE_SUPABASE = { url: 'https://example.supabase.co', anonKey: 'publishable-key', siteUrl: '' };")
+      }
+    },
+    async (input, options) => {
+      calls.push(String(input));
+      if (options.headers.apikey !== "publishable-key") return new Response("{}", { status: 401 });
+      if (String(input).includes("resource_type,research_resource_topics")) return jsonResponse([]);
+      return jsonResponse([{
+        title: "Published study",
+        slug: "published-study",
+        resource_type: "article",
+        publication_date: "2020-01-01",
+        source_url: "https://doi.org/10.1000/example",
+        retrieved_at: "2026-09-24T00:00:00Z",
+        rights_class: "metadata",
+        summary: null,
+        open_access: false,
+        doi: "10.1000/example",
+        venue: "Journal",
+        limitations_unknown: true,
+        research_providers: { key: "openalex", attribution_text: "OpenAlex" },
+        research_resource_contributors: [],
+        research_resource_topics: [],
+        research_licenses: []
+      }], { "content-range": "0-0/1" });
+    }
+  );
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.results[0].slug, "published-study");
+  assert.equal(calls.some((url) => url.startsWith("https://example.supabase.co/rest/v1/research_works")), true);
+});
+
 function jsonResponse(body, headers = {}) {
   return new Response(JSON.stringify(body), {
     status: 200,
