@@ -1,6 +1,43 @@
 import { resolveImportTarget } from "./duplicates.js";
 import { plainText, slugify } from "./validate.js";
 
+const PUBLISHABLE_RIGHTS = new Set([
+  "metadata",
+  "source_link",
+  "permitted_description",
+  "open_access_link",
+  "dataset_values_permitted",
+  "pulse_summary",
+  "provider_analysis"
+]);
+
+const STAFF_SELECT = [
+  "id",
+  "title",
+  "slug",
+  "resource_type",
+  "publication_date",
+  "status",
+  "access_tier",
+  "source_url",
+  "external_id",
+  "retrieved_at",
+  "rights_class",
+  "summary",
+  "open_access",
+  "doi",
+  "venue",
+  "methodology",
+  "limitations",
+  "limitations_unknown",
+  "provider_id",
+  "updated_at",
+  "research_providers(key,attribution_text)",
+  "research_resource_contributors(role,research_contributors(full_name))",
+  "research_resource_topics(research_topics(name,display_name,slug,status,category_id,research_categories(slug,display_name)))",
+  "research_licenses(name,url,notes)"
+].join(",");
+
 const WORK_SELECT = [
   "id",
   "title",
@@ -165,11 +202,11 @@ export function createCatalog(env, fetchImpl = fetch) {
         base,
         env,
         jwt,
-        `/rest/v1/research_work_identifiers?select=work_id,research_works(id,slug)&scheme=eq.doi&value=eq.${encodeURIComponent(doi)}&limit=1`
+        `/rest/v1/research_work_identifiers?select=work_id,research_works(id,slug,status)&scheme=eq.doi&value=eq.${encodeURIComponent(doi)}&limit=1`
       );
       const rows = await response.json();
       const work = rows[0]?.research_works;
-      return work ? { id: work.id, slug: work.slug } : null;
+      return work ? { id: work.id, slug: work.slug, status: work.status } : null;
     },
     async findByClaim(providerId, externalId, jwt) {
       const response = await rest(
@@ -177,21 +214,38 @@ export function createCatalog(env, fetchImpl = fetch) {
         base,
         env,
         jwt,
-        `/rest/v1/research_provider_claims?select=work_id,research_works(id,slug)&provider_id=eq.${providerId}&external_id=eq.${encodeURIComponent(externalId)}&limit=1`
+        `/rest/v1/research_provider_claims?select=work_id,research_works(id,slug,status)&provider_id=eq.${providerId}&external_id=eq.${encodeURIComponent(externalId)}&limit=1`
       );
       const rows = await response.json();
       const work = rows[0]?.research_works;
-      return work ? { id: work.id, slug: work.slug } : null;
+      return work ? { id: work.id, slug: work.slug, status: work.status } : null;
     },
-    async stage(provider, record, jwt, topicSlugs = []) {
-      const topics = await resolveControlledTopics(fetchImpl, base, env, jwt, topicSlugs);
+    async listDrafts(jwt) {
+      const response = await rest(
+        fetchImpl,
+        base,
+        env,
+        jwt,
+        `/rest/v1/research_works?select=${encodeURIComponent(STAFF_SELECT)}&status=eq.draft&access_tier=eq.public&order=updated_at.desc&limit=50`
+      );
+      const rows = (await jsonArray(response)).filter((row) => row && row.status === "draft" && row.access_tier === "public");
+      return { results: rows.map(staffWork) };
+    },
+    async stage(provider, record, jwt, topicSlugs = [], categorySlug = "") {
+      const topics = await resolveControlledTopics(fetchImpl, base, env, jwt, topicSlugs, categorySlug);
       const existingByDoi = record.doi ? await this.findByDoi(record.doi, jwt) : null;
       const existingByClaim = await this.findByClaim(provider.id, record.openAlexId, jwt);
       const target = resolveImportTarget(existingByDoi, existingByClaim);
+      if (target.action === "update" && target.status === "draft" && topics.length) {
+        await upsertClaim(fetchImpl, base, env, jwt, provider.id, target.workId, record, true);
+        await replaceControlledTopics(fetchImpl, base, env, jwt, target.workId, topics);
+        await logIngest(fetchImpl, base, env, jwt, provider.id, "stage", "draft", target.slug);
+        return { duplicate: false, slug: target.slug, status: "draft" };
+      }
       if (target.action === "attach" || target.action === "update") {
         await upsertClaim(fetchImpl, base, env, jwt, provider.id, target.workId, record, target.action === "update");
         await logIngest(fetchImpl, base, env, jwt, provider.id, "stage", "duplicate", target.slug);
-        return { duplicate: true, slug: target.slug, status: "unchanged" };
+        return { duplicate: true, slug: target.slug, status: target.status || "unchanged" };
       }
       const slug = await uniqueSlug(fetchImpl, base, env, jwt, slugify(record.title, record.openAlexId.toLowerCase()));
       const inserted = await rest(fetchImpl, base, env, jwt, "/rest/v1/research_works", {
@@ -203,6 +257,7 @@ export function createCatalog(env, fetchImpl = fetch) {
           publication_date: record.publicationDate,
           slug,
           status: "draft",
+          access_tier: "public",
           provider_id: provider.id,
           source_url: record.sourceUrl,
           external_id: record.openAlexId,
@@ -230,6 +285,18 @@ export function createCatalog(env, fetchImpl = fetch) {
       return { duplicate: false, slug, status: "draft" };
     },
     async publish(slug, jwt) {
+      const loaded = await rest(
+        fetchImpl,
+        base,
+        env,
+        jwt,
+        `/rest/v1/research_works?select=${encodeURIComponent(STAFF_SELECT)}&slug=eq.${encodeURIComponent(slug)}&status=eq.draft&limit=1`
+      );
+      const rows = await jsonArray(loaded);
+      const row = rows[0];
+      if (!row || row.status !== "draft") return null;
+      assertPublishable(row);
+      await assertNoIdentityConflict(fetchImpl, base, env, jwt, row);
       const response = await rest(
         fetchImpl,
         base,
@@ -242,8 +309,10 @@ export function createCatalog(env, fetchImpl = fetch) {
           body: JSON.stringify({ status: "published", updated_at: new Date().toISOString() })
         }
       );
-      const rows = await response.json();
-      return rows[0] ? { slug: rows[0].slug, status: rows[0].status } : null;
+      const published = await jsonArray(response);
+      return published[0] && published[0].status === "published"
+        ? { slug: published[0].slug, status: published[0].status }
+        : null;
     }
   };
 }
@@ -421,7 +490,18 @@ async function insertContributors(fetchImpl, base, env, jwt, workId, authors) {
   }
 }
 
-async function resolveControlledTopics(fetchImpl, base, env, jwt, slugs) {
+async function resolveControlledTopics(fetchImpl, base, env, jwt, slugs, categorySlug = "") {
+  if (categorySlug) {
+    const categories = await rest(
+      fetchImpl,
+      base,
+      env,
+      jwt,
+      `/rest/v1/research_categories?select=id,slug&slug=eq.${encodeURIComponent(categorySlug)}&limit=1`
+    );
+    const categoryRows = await jsonArray(categories);
+    if (!categoryRows[0]) rejectCuration("invalid_taxonomy");
+  }
   const unique = [...new Set(slugs)];
   if (!unique.length) return [];
   const list = unique.map((slug) => encodeURIComponent(slug)).join(",");
@@ -430,16 +510,129 @@ async function resolveControlledTopics(fetchImpl, base, env, jwt, slugs) {
     base,
     env,
     jwt,
-    `/rest/v1/research_topics?select=id,slug&status=eq.active&category_id=not.is.null&slug=in.(${list})`
+    `/rest/v1/research_topics?select=id,slug,category_id,research_categories(slug)&status=eq.active&category_id=not.is.null&slug=in.(${list})`
   );
   const rows = await jsonArray(response);
-  if (rows.length !== unique.length) {
-    const error = new Error("invalid_query");
-    error.code = "invalid_query";
-    error.failure = "application";
-    throw error;
+  if (rows.length !== unique.length) rejectCuration("invalid_taxonomy");
+  if (categorySlug && rows.some((row) => row.research_categories?.slug !== categorySlug)) {
+    rejectCuration("invalid_taxonomy");
   }
   return rows;
+}
+
+async function replaceControlledTopics(fetchImpl, base, env, jwt, workId, topics) {
+  await rest(
+    fetchImpl,
+    base,
+    env,
+    jwt,
+    `/rest/v1/research_resource_topics?work_id=eq.${encodeURIComponent(workId)}`,
+    { method: "DELETE" }
+  );
+  await linkControlledTopics(fetchImpl, base, env, jwt, workId, topics);
+}
+
+function assertPublishable(row) {
+  const sourceUrl = String(row.source_url || "");
+  const provenanceReady = Boolean(
+    String(row.title || "").trim()
+    && row.provider_id
+    && row.research_providers?.key
+    && String(row.external_id || "").trim()
+    && sourceUrl.startsWith("https://")
+    && row.retrieved_at
+  );
+  if (!provenanceReady) rejectCuration("provenance_incomplete");
+  if (!PUBLISHABLE_RIGHTS.has(row.rights_class)) rejectCuration("rights_rejected");
+  if (row.access_tier !== "public") rejectCuration("access_rejected");
+  const topics = (row.research_resource_topics || []).map((link) => link.research_topics).filter(Boolean);
+  const classified = topics.length > 0 && topics.every((topic) => (
+    topic.status === "active"
+    && topic.category_id
+    && topic.research_categories?.slug
+  ));
+  if (!classified) rejectCuration("invalid_taxonomy");
+}
+
+async function assertNoIdentityConflict(fetchImpl, base, env, jwt, row) {
+  if (row.doi) {
+    const doiRows = await jsonArray(await rest(
+      fetchImpl,
+      base,
+      env,
+      jwt,
+      `/rest/v1/research_work_identifiers?select=work_id&scheme=eq.doi&value=eq.${encodeURIComponent(row.doi)}&work_id=neq.${encodeURIComponent(row.id)}&limit=1`
+    ));
+    if (doiRows.length) rejectCuration("duplicate_work");
+  }
+  const claimRows = await jsonArray(await rest(
+    fetchImpl,
+    base,
+    env,
+    jwt,
+    `/rest/v1/research_provider_claims?select=work_id&provider_id=eq.${encodeURIComponent(row.provider_id)}&external_id=eq.${encodeURIComponent(row.external_id)}&work_id=neq.${encodeURIComponent(row.id)}&limit=1`
+  ));
+  if (claimRows.length) rejectCuration("duplicate_work");
+}
+
+function rejectCuration(code) {
+  const error = new Error(code);
+  error.code = code;
+  error.failure = "application";
+  throw error;
+}
+
+function staffWork(row) {
+  const topics = (row.research_resource_topics || [])
+    .map((link) => link.research_topics)
+    .filter(Boolean)
+    .map((topic) => ({
+      slug: topic.slug,
+      name: plainText(topic.display_name || topic.name, 80),
+      status: topic.status,
+      categorySlug: topic.research_categories?.slug || null,
+      categoryName: topic.research_categories?.display_name
+        ? plainText(topic.research_categories.display_name, 80)
+        : null
+    }));
+  const categories = [];
+  for (const topic of topics) {
+    if (!topic.categorySlug || categories.some((category) => category.slug === topic.categorySlug)) continue;
+    categories.push({ slug: topic.categorySlug, name: topic.categoryName });
+  }
+  const contributors = (row.research_resource_contributors || [])
+    .filter((link) => link.role === "author")
+    .map((link) => plainText(link.research_contributors?.full_name, 160))
+    .filter(Boolean);
+  return {
+    title: plainText(row.title, 300),
+    slug: row.slug,
+    resourceType: row.resource_type,
+    publicationDate: row.publication_date,
+    contributors,
+    sourceUrl: row.source_url,
+    doi: row.doi,
+    provider: row.research_providers?.key || null,
+    externalId: row.external_id,
+    rightsClass: row.rights_class,
+    openAccess: row.open_access,
+    accessTier: row.access_tier,
+    status: row.status,
+    retrievedAt: row.retrieved_at,
+    venue: row.venue ? plainText(row.venue, 160) : null,
+    summary: row.summary ? plainText(row.summary, 600) : null,
+    methodology: row.methodology ? plainText(row.methodology, 600) : null,
+    limitations: row.limitations ? plainText(row.limitations, 600) : null,
+    limitationsUnknown: row.limitations_unknown,
+    categories,
+    topics,
+    license: row.research_licenses?.[0]
+      ? {
+          name: plainText(row.research_licenses[0].name, 80),
+          url: row.research_licenses[0].url
+        }
+      : null
+  };
 }
 
 async function linkControlledTopics(fetchImpl, base, env, jwt, workId, topics) {

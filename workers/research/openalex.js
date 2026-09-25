@@ -34,7 +34,7 @@ export function createOpenAlexAdapter(env, fetchImpl = fetch) {
       const payload = await requestOpenAlex(
         env,
         fetchImpl,
-        `/works?search=${encodeURIComponent(query)}&per_page=5&select=id,display_name,publication_date,type,doi`
+        `/works?search=${encodeURIComponent(query)}&per_page=5&select=${SELECT}`
       );
       return (payload.results || []).map(normalizeOpenAlexWork);
     }

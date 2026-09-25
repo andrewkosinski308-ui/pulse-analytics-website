@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /resources/research-curation.html
+Disallow: /resources/research-curation
 
 Sitemap: https://pulseanalyticsgroupllc.com/sitemap.xml

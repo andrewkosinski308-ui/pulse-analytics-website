@@ -12,7 +12,12 @@ const STATUSES = {
   provider_unavailable: 502,
   provider_auth_failed: 502,
   provider_not_configured: 503,
-  catalog_unavailable: 503
+  catalog_unavailable: 503,
+  invalid_taxonomy: 400,
+  provenance_incomplete: 400,
+  rights_rejected: 409,
+  duplicate_work: 409,
+  access_rejected: 403
 };
 
 export async function handleResearchRequest(request, env, fetchImpl = fetch) {
@@ -33,6 +38,9 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
     }
     if (request.method === "POST" && url.pathname === "/api/research/staff/publish") {
       return await publish(request, env, fetchImpl);
+    }
+    if (request.method === "GET" && url.pathname === "/api/research/staff/drafts") {
+      return await drafts(request, env, fetchImpl, url);
     }
     return json({ error: "not_found" }, 404);
   } catch (error) {
@@ -143,12 +151,7 @@ async function discover(request, env, fetchImpl) {
   if (provider.error) return provider.error;
   const results = await adapterFor("openalex", env, fetchImpl).discover(query);
   return json({
-    results: results.map((row) => ({
-      externalId: row.openAlexId,
-      title: row.title,
-      publicationDate: row.publicationDate,
-      doi: row.doi
-    }))
+    results: results.map(staffCandidate)
   });
 }
 
@@ -158,13 +161,30 @@ async function stage(request, env, fetchImpl) {
   const body = await readJson(request);
   const externalId = parseOpenAlexId(body.externalId);
   const topicSlugs = readTopicSlugs(body.topicSlugs);
-  if (!externalId || body.url || body.sourceUrl || !topicSlugs) return json({ error: "invalid_query" }, 400);
+  const categorySlug = readCategorySlug(body.categorySlug);
+  if (!externalId || body.url || body.sourceUrl || !topicSlugs || categorySlug === null) {
+    return json({ error: "invalid_query" }, 400);
+  }
   const provider = await requireOpenAlex(admin.jwt, env, fetchImpl);
   if (provider.error) return provider.error;
   const record = await adapterFor("openalex", env, fetchImpl).fetchByExternalId(externalId);
   if (!record || !record.title) return json({ error: "not_found" }, 404);
-  const staged = await createCatalog(env, fetchImpl).stage(provider.provider, record, admin.jwt, topicSlugs);
+  const staged = await createCatalog(env, fetchImpl).stage(
+    provider.provider,
+    record,
+    admin.jwt,
+    topicSlugs,
+    categorySlug
+  );
   return json(staged);
+}
+
+async function drafts(request, env, fetchImpl, url) {
+  const admin = await requireAdmin(request, env, fetchImpl);
+  if (admin.error) return admin.error;
+  if (url.search) return json({ error: "invalid_query" }, 400);
+  const listed = await createCatalog(env, fetchImpl).listDrafts(admin.jwt);
+  return json(listed);
 }
 
 async function publish(request, env, fetchImpl) {
@@ -206,6 +226,33 @@ async function requireAdmin(request, env, fetchImpl) {
     return { error: json({ error: "forbidden" }, 403) };
   }
   return { jwt };
+}
+
+function staffCandidate(row) {
+  return {
+    externalId: row.openAlexId,
+    title: row.title,
+    contributors: row.authors,
+    publicationDate: row.publicationDate,
+    resourceType: row.resourceType,
+    doi: row.doi,
+    provider: "openalex",
+    sourceUrl: row.sourceUrl,
+    summary: row.summary,
+    venue: row.venue,
+    rightsClass: row.rightsClass,
+    openAccess: row.openAccess,
+    license: row.license,
+    providerTopics: row.topics,
+    metadataOnly: true,
+    fullTextStored: false
+  };
+}
+
+function readCategorySlug(value) {
+  if (value == null || value === "") return "";
+  if (typeof value !== "string") return null;
+  return parseSlug(value);
 }
 
 function readTopicSlugs(value) {

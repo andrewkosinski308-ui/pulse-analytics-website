@@ -412,6 +412,16 @@ test("staff catalog routes stay authenticated and do not use the public fallback
     assert.equal(response.status, 401);
     assert.equal((await response.json()).error, "unauthorized");
   }
+  const drafts = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/staff/drafts"),
+    { ...env, ASSETS: assets },
+    async (input) => {
+      calls.push(String(input.url || input));
+      return jsonResponse([]);
+    }
+  );
+  assert.equal(drafts.status, 401);
+  assert.equal((await drafts.json()).error, "unauthorized");
   assert.equal(calls.length, 0);
 });
 

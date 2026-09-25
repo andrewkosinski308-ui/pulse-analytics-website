@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research curation | Pulse Analytics Group LLC</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Internal research curation for Pulse Analytics Group LLC administrators.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #172033;
+            --muted: #526074;
+            --line: #d5dbe6;
+            --paper: #f6f7fb;
+            --card: #fff;
+            --accent: #1f4b99;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+        }
+        main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+        h1 { font-size: 1.6rem; margin: 0 0 8px; }
+        h2 { font-size: 1.15rem; margin: 0 0 12px; }
+        p { line-height: 1.5; }
+        .lede, .note { color: var(--muted); }
+        form, .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        label { display: block; font-weight: 600; margin-bottom: 6px; }
+        input, select, button {
+            font: inherit;
+            border-radius: 8px;
+        }
+        input, select {
+            width: 100%;
+            border: 1px solid var(--line);
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+        button, .choice {
+            border: 1px solid var(--accent);
+            background: var(--accent);
+            color: #fff;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+        button.secondary, .choice {
+            background: #fff;
+            color: var(--accent);
+        }
+        button:disabled { opacity: 0.55; cursor: not-allowed; }
+        .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .results, .topics { display: flex; flex-wrap: wrap; gap: 8px; }
+        .choice[aria-pressed="true"] { background: var(--accent); color: #fff; }
+        .status-banner {
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin: 0 0 8px;
+        }
+        #curation-message { min-height: 1.4em; }
+        dl { display: grid; grid-template-columns: minmax(8rem, 34%) 1fr; gap: 6px 12px; margin: 0; }
+        dt { color: var(--muted); }
+        dd { margin: 0; overflow-wrap: anywhere; }
+        @media (max-width: 640px) {
+            dl { grid-template-columns: 1fr; }
+            main { padding-top: 16px; }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Research curation</h1>
+    <p class="lede">Administrator workflow for the Industry Research Library. Discovery stays on the Pulse server. Staging saves a draft. Nothing is published until you publish it.</p>
+    <p id="curation-message" role="status"></p>
+
+    <section id="curation-auth">
+        <form id="curation-login">
+            <h2>Administrator sign in</h2>
+            <label for="curation-email">Email</label>
+            <input id="curation-email" name="email" type="email" autocomplete="username" required>
+            <label for="curation-password">Password</label>
+            <input id="curation-password" name="password" type="password" autocomplete="current-password" required>
+            <button type="submit">Sign in</button>
+        </form>
+    </section>
+
+    <section id="curation-workspace" hidden>
+        <div class="row">
+            <button id="curation-sign-out" class="secondary" type="button">Sign out</button>
+        </div>
+
+        <form id="curation-discover">
+            <h2>Discover</h2>
+            <label for="curation-query">Search OpenAlex through Pulse</label>
+            <input id="curation-query" name="query" type="search" maxlength="80" required>
+            <button type="submit">Discover</button>
+        </form>
+        <div id="curation-results" class="results"></div>
+
+        <section id="curation-review" class="card" hidden>
+            <h2>Review</h2>
+            <p id="curation-draft-flag" class="status-banner" hidden>DRAFT / NOT PUBLISHED</p>
+            <dl id="curation-facts"></dl>
+            <h2>Provider labels</h2>
+            <p class="note">These OpenAlex labels are provider metadata. They are not Pulse topics and they will not be created in the taxonomy.</p>
+            <ul id="curation-provider-topics"></ul>
+            <h2>Rights</h2>
+            <dl id="curation-rights"></dl>
+            <p class="note">Pulse stores metadata, and a short description only when the provider permits it. The original source is linked. Full text is not copied or stored.</p>
+            <h2>Classify</h2>
+            <p class="note">If the fit is uncertain, stage it without a topic. A draft without an active Pulse topic cannot be published.</p>
+            <label for="curation-category">Pulse category</label>
+            <select id="curation-category"></select>
+            <div id="curation-topics" class="topics"></div>
+            <div class="row">
+                <button id="curation-stage" type="button">Stage draft</button>
+                <button id="curation-stage-unclassified" class="secondary" type="button">Stage without classification</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Staged drafts</h2>
+            <div id="curation-drafts"></div>
+        </section>
+    </section>
+</main>
+<script src="../js/supabase-env.js"></script>
+<script type="module" src="../js/research-curation.js"></script>
+</body>
+</html>
