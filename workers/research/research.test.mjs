@@ -108,6 +108,7 @@ test("published catalog read returns normalized rows", async () => {
     async (input) => {
       const url = String(input.url || input);
       if (url.includes("resource_type,research_resource_topics")) return jsonResponse([]);
+      if (url.includes("/research_curated_resources")) return jsonResponse([]);
       return jsonResponse([publishedStudy()], { "content-range": "0-0/1" });
     }
   );
@@ -196,6 +197,7 @@ test("catalog reads use the deployed publishable config when worker bindings are
       calls.push(String(input));
       if (options.headers.apikey !== "publishable-key") return new Response("{}", { status: 401 });
       if (String(input).includes("resource_type,research_resource_topics")) return jsonResponse([]);
+      if (String(input).includes("/research_curated_resources")) return jsonResponse([]);
       return jsonResponse([publishedStudy()], { "content-range": "0-0/1" });
     }
   );
@@ -584,6 +586,7 @@ function fallbackEnv() {
 }
 
 function catalogResponse(url) {
+  if (url.includes("/rest/v1/research_curated_resources")) return jsonResponse([]);
   if (url.includes("/rest/v1/research_categories") || url.includes("/rest/v1/research_topics?")) {
     return jsonResponse([]);
   }

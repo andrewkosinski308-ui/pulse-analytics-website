@@ -119,11 +119,11 @@ function renderResults(body) {
   const rows = body.results || [];
   if (!rows.length) {
     status.textContent = state.q || state.type || state.category || state.topic
-      ? "No published works match this search."
-      : "The Industry Research Library does not have any published works yet.";
+      ? "No published resources match this search."
+      : "The Industry Research Library does not have any published resources yet.";
     return;
   }
-  status.textContent = `${body.total} published ${body.total === 1 ? "work" : "works"}.`;
+  status.textContent = `${body.total} published ${body.total === 1 ? "resource" : "resources"}.`;
   rows.forEach((work) => results.append(card(work)));
   const pages = Math.ceil(body.total / body.pageSize);
   if (pages > 1) {
@@ -137,20 +137,46 @@ function card(work) {
   article.className = "resource-card";
   const type = document.createElement("span");
   type.className = "resource-type";
-  type.textContent = work.resourceType || "Research";
   const title = document.createElement("h3");
   title.textContent = work.title;
   const copy = document.createElement("p");
-  const authors = (work.contributors || []).join(", ");
-  copy.textContent = [authors, work.publicationDate, work.venue].filter(Boolean).join(" · ");
   const actions = document.createElement("div");
   actions.className = "resource-card-actions";
   const link = document.createElement("a");
-  link.href = `research-detail.html?slug=${encodeURIComponent(work.slug)}`;
-  link.textContent = "View record →";
-  actions.append(link);
-  article.append(type, title, copy, actions);
-  return article;
+  if (work.sourceType === "google") {
+    type.textContent = "Official Google resource";
+    copy.textContent = work.summary || "";
+    link.href = safeHttps(work.sourceUrl) || "#";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "View Resource";
+    actions.append(link);
+    article.append(type, title, copy, actions);
+    return article;
+  }
+  type.textContent = work.resourceType || "Research";
+    const authors = (work.contributors || []).join(", ");
+    copy.textContent = [authors, work.publicationDate, work.venue].filter(Boolean).join(" · ");
+    link.href = `research-detail.html?slug=${encodeURIComponent(work.slug)}`;
+    link.textContent = "View record →";
+    actions.append(link);
+    article.append(type, title, copy);
+    if (work.summary) {
+      const about = document.createElement("p");
+      about.textContent = work.summary;
+      article.append(about);
+    }
+    article.append(actions);
+    return article;
+}
+
+function safeHttps(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return url.protocol === "https:" ? url.href : "";
+  } catch {
+    return "";
+  }
 }
 
 function pageButton(label, enabled, page) {

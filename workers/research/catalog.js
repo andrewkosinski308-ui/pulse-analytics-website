@@ -80,6 +80,71 @@ function workSelect(query) {
   );
 }
 
+function workListParams(query) {
+  const params = new URLSearchParams();
+  params.set("select", workSelect(query));
+  params.set("status", "eq.published");
+  params.set("access_tier", "eq.public");
+  params.set("limit", "200");
+  if (query.type) params.set("resource_type", `eq.${query.type}`);
+  if (query.q) {
+    const term = query.q.replace(/[%*,]/g, " ");
+    params.set("or", `(title.ilike.*${term}*,summary.ilike.*${term}*)`);
+  }
+  if (query.topic) params.set("research_resource_topics.research_topics.slug", `eq.${query.topic}`);
+  if (query.category) {
+    params.set("research_resource_topics.research_topics.research_categories.slug", `eq.${query.category}`);
+  }
+  return params;
+}
+
+function curatedListParams(query) {
+  const categoryEmbed = query.category
+    ? "research_categories!inner(slug,display_name)"
+    : "research_categories(slug,display_name)";
+  const topicEmbed = query.topic
+    ? "research_topics!inner(name,display_name,slug)"
+    : "research_topics(name,display_name,slug)";
+  const linkEmbed = query.topic
+    ? `research_curated_resource_topics!inner(${topicEmbed})`
+    : `research_curated_resource_topics(${topicEmbed})`;
+  const params = new URLSearchParams();
+  params.set("select", [
+    "slug",
+    "title",
+    "description",
+    "publisher",
+    "external_url",
+    "resource_type",
+    "status",
+    "access_tier",
+    "rights_class",
+    categoryEmbed,
+    linkEmbed
+  ].join(","));
+  params.set("status", "eq.published");
+  params.set("access_tier", "eq.public");
+  params.set("limit", "200");
+  if (query.type) params.set("resource_type", `eq.${query.type}`);
+  if (query.q) {
+    const term = query.q.replace(/[%*,]/g, " ");
+    params.set("or", `(title.ilike.*${term}*,description.ilike.*${term}*,publisher.ilike.*${term}*)`);
+  }
+  if (query.topic) params.set("research_curated_resource_topics.research_topics.slug", `eq.${query.topic}`);
+  if (query.category) params.set("research_categories.slug", `eq.${query.category}`);
+  return params;
+}
+
+function compareCatalog(a, b, sort) {
+  if (sort === "title") return a.title.localeCompare(b.title) || a.slug.localeCompare(b.slug);
+  const ad = a.publicationDate || "";
+  const bd = b.publicationDate || "";
+  if (ad && !bd) return -1;
+  if (!ad && bd) return 1;
+  if (ad !== bd) return bd.localeCompare(ad);
+  return a.title.localeCompare(b.title) || a.slug.localeCompare(b.slug);
+}
+
 // Public catalog reads share this entry point. Primary and fallback callers
 // pass different Supabase clients and the same options.
 export async function getPublishedResearchCatalog(options, catalog) {
@@ -92,43 +157,37 @@ export function createCatalog(env, fetchImpl = fetch) {
   const base = String(env.SUPABASE_URL || "").replace(/\/$/, "");
   return {
     async list(query) {
-      const params = new URLSearchParams();
-      params.set("select", workSelect(query));
-      params.set("status", "eq.published");
-      params.set("access_tier", "eq.public");
-      params.set("order", query.sort === "title" ? "title.asc" : "publication_date.desc.nullslast,title.asc");
-      params.set("limit", String(query.pageSize));
-      params.set("offset", String((query.page - 1) * query.pageSize));
-      if (query.type) params.set("resource_type", `eq.${query.type}`);
-      if (query.q) {
-        const term = query.q.replace(/[%*,]/g, " ");
-        params.set("or", `(title.ilike.*${term}*,summary.ilike.*${term}*)`);
-      }
-      if (query.topic) {
-        params.set("research_resource_topics.research_topics.slug", `eq.${query.topic}`);
-      }
-      if (query.category) {
-        params.set("research_resource_topics.research_topics.research_categories.slug", `eq.${query.category}`);
-      }
-      const response = await rest(fetchImpl, base, env, null, `/rest/v1/research_works?${params}`, {
-        headers: { Prefer: "count=exact" }
-      });
-      const rows = await publishedRows(response);
+      const [workResponse, curatedResponse] = await Promise.all([
+        rest(fetchImpl, base, env, null, `/rest/v1/research_works?${workListParams(query)}`),
+        rest(fetchImpl, base, env, null, `/rest/v1/research_curated_resources?${curatedListParams(query)}`)
+      ]);
+      const rows = [
+        ...(await publishedRows(workResponse)).map(publicWork),
+        ...(await publishedRows(curatedResponse)).map(publicCurated)
+      ].sort((a, b) => compareCatalog(a, b, query.sort));
+      const start = (query.page - 1) * query.pageSize;
       return {
-        results: rows.map(publicWork),
-        total: readTotal(response, rows.length),
+        results: rows.slice(start, start + query.pageSize),
+        total: rows.length,
         page: query.page,
         pageSize: query.pageSize
       };
     },
     async facets() {
-      const [usage, categories, topics] = await Promise.all([
+      const [usage, curatedUsage, categories, topics] = await Promise.all([
         rest(
           fetchImpl,
           base,
           env,
           null,
           "/rest/v1/research_works?select=status,access_tier,resource_type&status=eq.published&access_tier=eq.public&limit=200"
+        ),
+        rest(
+          fetchImpl,
+          base,
+          env,
+          null,
+          "/rest/v1/research_curated_resources?select=status,access_tier,resource_type&status=eq.published&access_tier=eq.public&limit=200"
         ),
         rest(
           fetchImpl,
@@ -145,7 +204,7 @@ export function createCatalog(env, fetchImpl = fetch) {
           "/rest/v1/research_topics?select=slug,display_name,name,sort_order,status,category_id,research_categories(slug,sort_order)&status=eq.active&category_id=not.is.null&order=sort_order.asc"
         )
       ]);
-      const usageRows = await publishedRows(usage);
+      const usageRows = [...(await publishedRows(usage)), ...(await publishedRows(curatedUsage))];
       const categoryRows = await jsonArray(categories);
       const topicRows = await jsonArray(topics);
       const types = new Map();
@@ -337,6 +396,7 @@ export function publicWork(row) {
     sourceUrl: row.source_url,
     provider: row.research_providers?.key || null,
     attribution: plainText(row.research_providers?.attribution_text, 300),
+    sourceType: row.research_providers?.key || "openalex",
     rightsClass: row.rights_class,
     openAccess: row.open_access,
     methodology: row.methodology ? plainText(row.methodology, 600) : null,
@@ -352,6 +412,36 @@ export function publicWork(row) {
           url: row.research_licenses[0].url
         }
       : null
+  };
+}
+
+function publicCurated(row) {
+  const topics = (row.research_curated_resource_topics || [])
+    .map((link) => link.research_topics)
+    .filter(Boolean)
+    .map((topic) => ({ name: plainText(topic.display_name || topic.name, 80), slug: topic.slug }));
+  return {
+    title: plainText(row.title, 300),
+    slug: row.slug,
+    resourceType: row.resource_type,
+    publicationDate: null,
+    venue: null,
+    doi: null,
+    summary: row.description ? plainText(row.description, 600) : null,
+    sourceUrl: row.external_url,
+    provider: "google",
+    sourceType: "google",
+    attribution: plainText(row.publisher, 160),
+    rightsClass: row.rights_class,
+    openAccess: null,
+    methodology: null,
+    limitations: null,
+    limitationsUnknown: true,
+    retrievedAt: null,
+    updatedAt: null,
+    contributors: [],
+    topics,
+    license: null
   };
 }
 
