@@ -38,6 +38,32 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 line-height: 1;
                 cursor: pointer;
             }
+            .scholar-search-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: .75rem;
+                max-width: 760px;
+                margin: 0 auto;
+            }
+            .scholar-search-row .resource-search {
+                flex: 1 1 16rem;
+                width: auto;
+                min-width: 0;
+                padding-right: 1.25rem;
+            }
+            #scholar-search-button {
+                flex: 0 0 auto;
+                cursor: pointer;
+            }
+            #scholar-results {
+                margin-top: 1.5rem;
+            }
+            #scholar-results .resource-card h3,
+            #scholar-results .resource-card p {
+                overflow-wrap: anywhere;
+            }
         </style>
         <link rel="canonical" href="https://pulseanalyticsgroupllc.com/resources/research-library.html">
         <script type="application/ld+json">
@@ -147,9 +173,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span class="section-label">INDUSTRY RESEARCH LIBRARY</span>
                         <h1>Published research, linked to its source.</h1>
                         <p class="section-intro">This library lists works Pulse Analytics has reviewed and published in its own catalog. External studies stay with their original publishers. Pulse Analytics does not host those papers.</p>
+                        <p class="section-label">Search Our Library</p>
                         <div class="resource-search-wrap">
-                            <input id="research-search" class="resource-search" type="search" placeholder="Search published research..." aria-label="Search published research" autocomplete="off">
-                            <button type="button" id="research-search-button" class="resource-search-icon" aria-label="Search published research"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+                            <input id="research-search" class="resource-search" type="search" placeholder="Search published research..." aria-label="Search our library" autocomplete="off">
+                            <button type="button" id="research-search-button" class="resource-search-icon" aria-label="Search our library"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
                         </div>
                         <label class="section-label" for="research-sort">Sort</label>
                         <select id="research-sort" aria-label="Sort published research">
@@ -157,6 +184,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <option value="title">Title</option>
                         </select>
                     </div>
+                </div>
+            </section>
+            <section class="resource-section" aria-labelledby="scholar-heading">
+                <div class="container">
+                    <div class="resource-section-header">
+                        <h2 id="scholar-heading">Search Scholarly Research</h2>
+                        <p>Search published studies from OpenAlex. These results stay on this page and are not added to the Pulse library.</p>
+                    </div>
+                    <form id="scholar-search-form" class="scholar-search-row" role="search">
+                        <input id="scholar-search" class="resource-search" type="search" maxlength="100" placeholder="Google Search Console" aria-label="Search scholarly research" autocomplete="off">
+                        <button type="submit" id="scholar-search-button" class="resource-filter">Search</button>
+                    </form>
+                    <p id="scholar-status" role="status"></p>
+                    <div id="scholar-results" class="resource-grid"></div>
                 </div>
             </section>
             <section class="resources-filters">

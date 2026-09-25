@@ -37,6 +37,26 @@ export function createOpenAlexAdapter(env, fetchImpl = fetch) {
         `/works?search=${encodeURIComponent(query)}&per_page=5&select=${SELECT}`
       );
       return (payload.results || []).map(normalizeOpenAlexWork);
+    },
+    async searchWorks(query, limit) {
+      const select = [
+        "id",
+        "display_name",
+        "publication_year",
+        "type",
+        "doi",
+        "open_access",
+        "authorships",
+        "primary_location",
+        "cited_by_count"
+      ].join(",");
+      const payload = await requestOpenAlex(
+        env,
+        fetchImpl,
+        `/works?search=${encodeURIComponent(query)}&per_page=${limit}&select=${select}`
+      );
+      if (!payload) return [];
+      return (payload.results || []).map(publicScholarWork).filter((row) => row.title && row.sourceUrl);
     }
   };
 }
@@ -109,6 +129,73 @@ export async function requestOpenAlex(env, fetchImpl, pathAndQuery) {
     throw error;
   }
   return response.json();
+}
+
+export function publicScholarWork(work) {
+  const openAlexId = String(work.id || "").split("/").pop();
+  const doi = normalizeDoi(work.doi);
+  const names = (work.authorships || [])
+    .map((row) => plainText(row?.author?.display_name, 160))
+    .filter(Boolean);
+  const year = Number.isInteger(work.publication_year) && work.publication_year >= 1000 && work.publication_year <= 2100
+    ? work.publication_year
+    : null;
+  const cited = Number.isInteger(work.cited_by_count) && work.cited_by_count >= 0 && work.cited_by_count < 100000000
+    ? work.cited_by_count
+    : null;
+  const result = {
+    id: /^W\d{1,20}$/.test(openAlexId) ? openAlexId : "",
+    title: plainText(work.display_name, 300),
+    publicationYear: year,
+    authors: names.slice(0, 3),
+    moreAuthors: names.length > 3,
+    sourceName: plainText(work.primary_location?.source?.display_name, 160),
+    type: scholarlyType(work),
+    doi,
+    openalexId: /^W\d{1,20}$/.test(openAlexId) ? openAlexId : "",
+    sourceUrl: scholarlySourceUrl(work, doi, openAlexId),
+    isOpenAccess: Boolean(work.open_access?.is_oa)
+  };
+  if (cited !== null) result.citedByCount = cited;
+  return result;
+}
+
+function scholarlyType(work) {
+  const kind = String(work.type || "").toLowerCase();
+  const sourceType = String(work.primary_location?.source?.type || "").toLowerCase();
+  if (kind === "article" && sourceType === "journal") return "Journal Article";
+  const labels = {
+    article: "Article",
+    review: "Review",
+    book: "Book",
+    "book-chapter": "Book chapter",
+    dissertation: "Dissertation",
+    preprint: "Preprint",
+    report: "Report",
+    dataset: "Dataset",
+    editorial: "Editorial",
+    letter: "Letter"
+  };
+  return labels[kind] || "Scholarly work";
+}
+
+function scholarlySourceUrl(work, doi, openAlexId) {
+  const landing = httpsPage(work.primary_location?.landing_page_url);
+  if (landing) return landing;
+  if (doi) return `https://doi.org/${doi}`;
+  if (/^W\d{1,20}$/.test(openAlexId)) return `https://openalex.org/${openAlexId}`;
+  return "";
+}
+
+function httpsPage(value) {
+  try {
+    const url = new URL(String(value || ""));
+    if (url.protocol !== "https:" || url.username || url.password) return "";
+    if (url.pathname.toLowerCase().endsWith(".pdf")) return "";
+    return url.href;
+  } catch {
+    return "";
+  }
 }
 
 function normalizeDoi(value) {

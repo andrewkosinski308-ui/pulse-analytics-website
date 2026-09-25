@@ -203,6 +203,84 @@ function pageButton(label, enabled, page) {
   return button;
 }
 
+const scholarForm = document.getElementById("scholar-search-form");
+const scholarSearch = document.getElementById("scholar-search");
+const scholarStatus = document.getElementById("scholar-status");
+const scholarResults = document.getElementById("scholar-results");
+
+if (scholarForm) {
+  scholarForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    searchScholarly();
+  });
+}
+
+async function searchScholarly() {
+  const q = scholarSearch.value.trim();
+  scholarResults.replaceChildren();
+  if (q.length < 2) {
+    scholarStatus.textContent = "Enter a search of at least 2 characters.";
+    return;
+  }
+  scholarStatus.textContent = "Searching scholarly research…";
+  try {
+    const response = await fetch(`/api/research/search?${new URLSearchParams({ q })}`);
+    const body = await response.json();
+    if (!response.ok) {
+      scholarStatus.textContent = response.status === 400
+        ? "Enter a search of at least 2 characters."
+        : "Scholarly research search is temporarily unavailable. Please try again.";
+      return;
+    }
+    const rows = body.results || [];
+    if (!rows.length) {
+      scholarStatus.textContent = "No scholarly research matched that search.";
+      return;
+    }
+    scholarStatus.textContent = `${rows.length} scholarly ${rows.length === 1 ? "result" : "results"}.`;
+    rows.forEach((item) => scholarResults.append(scholarCard(item)));
+  } catch {
+    scholarStatus.textContent = "Scholarly research search is temporarily unavailable. Please try again.";
+  }
+}
+
+function scholarCard(item) {
+  const article = document.createElement("article");
+  article.className = "resource-card";
+  const type = document.createElement("span");
+  type.className = "resource-type";
+  type.textContent = "Scholarly research";
+  const title = document.createElement("h3");
+  title.textContent = item.title || "";
+  const meta = document.createElement("p");
+  meta.textContent = [item.publicationYear, item.type].filter(Boolean).join(" · ");
+  const authors = document.createElement("p");
+  const names = Array.isArray(item.authors) ? item.authors.filter(Boolean) : [];
+  authors.textContent = names.join(", ") + (item.moreAuthors ? " and others" : "");
+  const source = document.createElement("p");
+  source.textContent = item.sourceName || "";
+  const actions = document.createElement("div");
+  actions.className = "resource-card-actions";
+  const link = document.createElement("a");
+  link.href = safeHttps(item.sourceUrl) || "#";
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View Source";
+  actions.append(link);
+  if (/^[a-z0-9-]{1,96}$/.test(item.catalogSlug || "")) {
+    const local = document.createElement("a");
+    local.href = `research-detail.html?slug=${encodeURIComponent(item.catalogSlug)}`;
+    local.textContent = "View record →";
+    actions.append(local);
+  }
+  article.append(type, title);
+  if (meta.textContent) article.append(meta);
+  if (authors.textContent) article.append(authors);
+  if (source.textContent) article.append(source);
+  article.append(actions);
+  return article;
+}
+
 function debounce(fn, wait) {
   let timer;
   return (...args) => {

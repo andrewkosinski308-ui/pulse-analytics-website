@@ -1,6 +1,6 @@
 import { createCatalog, getPublishedResearchCatalog } from "./catalog.js";
 import { adapterFor } from "./registry.js";
-import { parseListQuery, parseOpenAlexId, parseSlug } from "./validate.js";
+import { parseListQuery, parseOpenAlexId, parseScholarQuery, parseSlug } from "./validate.js";
 
 const STATUSES = {
   invalid_query: 400,
@@ -26,6 +26,9 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
     if (request.method === "GET" && url.pathname === "/api/research/resources") {
       return await listResources(url, env, fetchImpl);
     }
+    if (request.method === "GET" && url.pathname === "/api/research/search") {
+      return await searchScholarly(url, request, env, fetchImpl);
+    }
     const detail = url.pathname.match(/^\/api\/research\/resources\/([^/]+)$/);
     if (request.method === "GET" && detail) {
       return await readResource(detail[1], env, fetchImpl, url);
@@ -46,6 +49,90 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
   } catch (error) {
     const code = STATUSES[error.code] ? error.code : "catalog_unavailable";
     return json({ error: code }, STATUSES[code]);
+  }
+}
+
+const searchHits = new Map();
+const searchCache = new Map();
+const SEARCH_TTL_MS = 60000;
+const SEARCH_LIMIT = 30;
+
+async function searchScholarly(url, request, env, fetchImpl) {
+  const query = parseScholarQuery(url);
+  if (query.error) return json({ error: "invalid_query" }, 400);
+  const ip = request.headers.get("CF-Connecting-IP") || "anonymous";
+  if (!allowSearch(ip)) return json({ error: "search_unavailable" }, 429);
+  const cacheKey = `${query.q}\n${query.limit}`;
+  const cached = readSearchCache(cacheKey);
+  if (cached) return json({ results: cached });
+  try {
+    const results = await adapterFor("openalex", env, fetchImpl).searchWorks(query.q, query.limit);
+    const slugs = await publishedCatalogSlugs(env, fetchImpl, results);
+    const publicResults = results.map((row) => {
+      const catalogSlug = slugs.get(row.id);
+      return catalogSlug ? { ...row, catalogSlug } : row;
+    });
+    writeSearchCache(cacheKey, publicResults);
+    return json({ results: publicResults });
+  } catch {
+    return json({ error: "search_unavailable" }, 503);
+  }
+}
+
+function allowSearch(ip) {
+  const now = Date.now();
+  const recent = (searchHits.get(ip) || []).filter((time) => now - time < SEARCH_TTL_MS);
+  if (recent.length >= SEARCH_LIMIT) {
+    searchHits.set(ip, recent);
+    return false;
+  }
+  recent.push(now);
+  searchHits.set(ip, recent);
+  return true;
+}
+
+function readSearchCache(key) {
+  const hit = searchCache.get(key);
+  if (!hit) return null;
+  if (Date.now() - hit.at > SEARCH_TTL_MS) {
+    searchCache.delete(key);
+    return null;
+  }
+  return hit.results;
+}
+
+function writeSearchCache(key, results) {
+  if (searchCache.size > 40) searchCache.delete(searchCache.keys().next().value);
+  searchCache.set(key, { at: Date.now(), results });
+}
+
+async function publishedCatalogSlugs(env, fetchImpl, results) {
+  const config = usableSupabaseConfig(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  const ids = [...new Set(results.map((row) => row.id).filter((id) => /^W\d{1,20}$/.test(id)))];
+  if (!config || !ids.length) return new Map();
+  try {
+    const response = await fetchImpl(
+      `${config.SUPABASE_URL}/rest/v1/research_works?select=slug,external_id&status=eq.published&access_tier=eq.public&external_id=in.(${ids.join(",")})`,
+      {
+        method: "GET",
+        headers: {
+          apikey: config.SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${config.SUPABASE_ANON_KEY}`
+        }
+      }
+    );
+    if (!response.ok) return new Map();
+    const rows = await response.json();
+    const slugs = new Map();
+    if (!Array.isArray(rows)) return slugs;
+    for (const row of rows) {
+      if (row && ids.includes(row.external_id) && /^[a-z0-9-]{1,96}$/.test(row.slug || "")) {
+        slugs.set(row.external_id, row.slug);
+      }
+    }
+    return slugs;
+  } catch {
+    return new Map();
   }
 }
 

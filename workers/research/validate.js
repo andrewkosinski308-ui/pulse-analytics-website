@@ -35,6 +35,21 @@ export function parseListQuery(url) {
   return { page, pageSize, sort, type, topic, category, q: q.trim() };
 }
 
+const SCHOLAR_KEYS = new Set(["q", "limit"]);
+
+export function parseScholarQuery(url) {
+  const unknown = [...url.searchParams.keys()].filter((key) => !SCHOLAR_KEYS.has(key));
+  if (unknown.length) return { error: "invalid_query" };
+  const q = String(url.searchParams.get("q") || "").replace(/\s+/g, " ").trim();
+  const limit = readInt(url.searchParams.get("limit"), 10);
+  if (limit === null || limit < 1 || limit > 20) return { error: "invalid_query" };
+  if (q.length < 2 || q.length > 100) return { error: "invalid_query" };
+  if (/[<>\\{}()[\];`]/.test(q) || /https?:\/\//i.test(q) || /api\.openalex\.org/i.test(q)) {
+    return { error: "invalid_query" };
+  }
+  return { q, limit };
+}
+
 export function parseSlug(value) {
   if (!/^[a-z0-9-]{1,96}$/.test(value || "")) return null;
   return value;
