@@ -4,10 +4,13 @@
  * Responsibilities:
  * 1. Redirect legacy Pulse domains to the production host (301).
  * 2. Redirect known obsolete/incorrect paths to current production paths (301).
- * 3. Pass all other requests to static assets (custom 404.html via not_found_handling).
+ * 3. Serve the Industry Research Library API from the Pulse catalog.
+ * 4. Pass all other requests to static assets (custom 404.html via not_found_handling).
  *
  * Does not redirect unknown URLs to the homepage.
  */
+
+import { handleResearchRequest } from "./research/api.js";
 
 const PRODUCTION_HOST = "pulseanalyticsgroupllc.com";
 
@@ -63,6 +66,10 @@ export default {
       }
       dest.pathname = rewrittenPath;
       return Response.redirect(dest.toString(), 301);
+    }
+
+    if (url.pathname.startsWith("/api/research/")) {
+      return handleResearchRequest(request, env);
     }
 
     return env.ASSETS.fetch(request);

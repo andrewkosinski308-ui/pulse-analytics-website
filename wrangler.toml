@@ -1,8 +1,10 @@
 # Cloudflare Workers Static Assets - Pulse Analytics Group LLC
 # Deploy: npm run build && npx wrangler deploy
+# Worker secrets, set in Cloudflare and never committed:
+# OPENALEX_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY
 #
 # Preserves the existing GitHub -> Cloudflare static-asset deployment flow.
-# A thin Worker runs first for legacy-domain / legacy-path redirects only.
+# A thin Worker runs first for legacy-domain / legacy-path redirects and the research catalog API.
 
 name = "pulse-analytics-website"
 compatibility_date = "2026-03-20"
