@@ -8,6 +8,7 @@ const WORK_SELECT = [
   "resource_type",
   "publication_date",
   "status",
+  "access_tier",
   "source_url",
   "external_id",
   "retrieved_at",
@@ -26,6 +27,22 @@ const WORK_SELECT = [
   "research_licenses(name,url,notes)"
 ].join(",");
 
+function workSelect(query) {
+  const categoryEmbed = query.category
+    ? "research_categories!inner(slug,display_name)"
+    : "research_categories(slug,display_name)";
+  const topicEmbed = query.topic || query.category
+    ? `research_topics!inner(name,display_name,slug,status,${categoryEmbed})`
+    : `research_topics(name,display_name,slug,status,${categoryEmbed})`;
+  const linkEmbed = query.topic || query.category
+    ? `research_resource_topics!inner(${topicEmbed})`
+    : `research_resource_topics(${topicEmbed})`;
+  return WORK_SELECT.replace(
+    "research_resource_topics(research_topics(name,slug))",
+    linkEmbed
+  );
+}
+
 // Public catalog reads share this entry point. Primary and fallback callers
 // pass different Supabase clients and the same options.
 export async function getPublishedResearchCatalog(options, catalog) {
@@ -38,15 +55,10 @@ export function createCatalog(env, fetchImpl = fetch) {
   const base = String(env.SUPABASE_URL || "").replace(/\/$/, "");
   return {
     async list(query) {
-      const select = query.topic
-        ? WORK_SELECT.replace(
-            "research_resource_topics(research_topics(name,slug))",
-            "research_resource_topics!inner(research_topics!inner(name,slug))"
-          )
-        : WORK_SELECT;
       const params = new URLSearchParams();
-      params.set("select", select);
+      params.set("select", workSelect(query));
       params.set("status", "eq.published");
+      params.set("access_tier", "eq.public");
       params.set("order", query.sort === "title" ? "title.asc" : "publication_date.desc.nullslast,title.asc");
       params.set("limit", String(query.pageSize));
       params.set("offset", String((query.page - 1) * query.pageSize));
@@ -57,6 +69,9 @@ export function createCatalog(env, fetchImpl = fetch) {
       }
       if (query.topic) {
         params.set("research_resource_topics.research_topics.slug", `eq.${query.topic}`);
+      }
+      if (query.category) {
+        params.set("research_resource_topics.research_topics.research_categories.slug", `eq.${query.category}`);
       }
       const response = await rest(fetchImpl, base, env, null, `/rest/v1/research_works?${params}`, {
         headers: { Prefer: "count=exact" }
@@ -70,29 +85,56 @@ export function createCatalog(env, fetchImpl = fetch) {
       };
     },
     async facets() {
-      const response = await rest(
-        fetchImpl,
-        base,
-        env,
-        null,
-        "/rest/v1/research_works?select=status,resource_type,research_resource_topics(research_topics(name,slug))&status=eq.published&limit=200"
-      );
-      const rows = await publishedRows(response);
+      const [usage, categories, topics] = await Promise.all([
+        rest(
+          fetchImpl,
+          base,
+          env,
+          null,
+          "/rest/v1/research_works?select=status,access_tier,resource_type&status=eq.published&access_tier=eq.public&limit=200"
+        ),
+        rest(
+          fetchImpl,
+          base,
+          env,
+          null,
+          "/rest/v1/research_categories?select=slug,display_name,sort_order&order=sort_order.asc"
+        ),
+        rest(
+          fetchImpl,
+          base,
+          env,
+          null,
+          "/rest/v1/research_topics?select=slug,display_name,name,sort_order,status,category_id,research_categories(slug,sort_order)&status=eq.active&category_id=not.is.null&order=sort_order.asc"
+        )
+      ]);
+      const usageRows = await publishedRows(usage);
+      const categoryRows = await jsonArray(categories);
+      const topicRows = await jsonArray(topics);
       const types = new Map();
-      const topics = new Map();
-      for (const row of rows) {
+      for (const row of usageRows) {
         types.set(row.resource_type, (types.get(row.resource_type) || 0) + 1);
-        for (const link of row.research_resource_topics || []) {
-          const topic = link.research_topics;
-          if (!topic) continue;
-          const current = topics.get(topic.slug) || { slug: topic.slug, name: topic.name, count: 0 };
-          current.count += 1;
-          topics.set(topic.slug, current);
-        }
       }
+      const controlledTopics = topicRows
+        .filter((topic) => topic.status === "active" && topic.category_id && topic.research_categories?.slug)
+        .map((topic) => ({
+          slug: topic.slug,
+          name: topic.display_name || topic.name,
+          categorySlug: topic.research_categories.slug,
+          sortOrder: topic.sort_order,
+          categorySort: topic.research_categories.sort_order || 0
+        }))
+        .sort((a, b) => a.categorySort - b.categorySort || a.sortOrder - b.sortOrder);
       return {
         types: [...types.entries()].map(([value, count]) => ({ value, count })),
-        topics: [...topics.values()]
+        categories: categoryRows
+          .map((category) => ({
+            slug: category.slug,
+            name: category.display_name,
+            sortOrder: category.sort_order
+          }))
+          .sort((a, b) => a.sortOrder - b.sortOrder),
+        topics: controlledTopics
       };
     },
     async getPublished(slug) {
@@ -101,7 +143,7 @@ export function createCatalog(env, fetchImpl = fetch) {
         base,
         env,
         null,
-        `/rest/v1/research_works?select=${encodeURIComponent(WORK_SELECT)}&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`
+        `/rest/v1/research_works?select=${encodeURIComponent(workSelect({}))}&slug=eq.${encodeURIComponent(slug)}&status=eq.published&access_tier=eq.public&limit=1`
       );
       const rows = await publishedRows(response);
       return rows[0] ? publicWork(rows[0]) : null;
@@ -141,7 +183,8 @@ export function createCatalog(env, fetchImpl = fetch) {
       const work = rows[0]?.research_works;
       return work ? { id: work.id, slug: work.slug } : null;
     },
-    async stage(provider, record, jwt) {
+    async stage(provider, record, jwt, topicSlugs = []) {
+      const topics = await resolveControlledTopics(fetchImpl, base, env, jwt, topicSlugs);
       const existingByDoi = record.doi ? await this.findByDoi(record.doi, jwt) : null;
       const existingByClaim = await this.findByClaim(provider.id, record.openAlexId, jwt);
       const target = resolveImportTarget(existingByDoi, existingByClaim);
@@ -178,7 +221,7 @@ export function createCatalog(env, fetchImpl = fetch) {
       await upsertClaim(fetchImpl, base, env, jwt, provider.id, work.id, record, true);
       await insertIdentifiers(fetchImpl, base, env, jwt, work.id, record);
       await insertContributors(fetchImpl, base, env, jwt, work.id, record.authors);
-      await insertTopics(fetchImpl, base, env, jwt, work.id, record.topics);
+      await linkControlledTopics(fetchImpl, base, env, jwt, work.id, topics);
       await rest(fetchImpl, base, env, jwt, "/rest/v1/research_licenses", {
         method: "POST",
         body: JSON.stringify({ work_id: work.id, ...record.license })
@@ -213,7 +256,7 @@ export function publicWork(row) {
   const topics = (row.research_resource_topics || [])
     .map((link) => link.research_topics)
     .filter(Boolean)
-    .map((topic) => ({ name: plainText(topic.name, 80), slug: topic.slug }));
+    .map((topic) => ({ name: plainText(topic.display_name || topic.name, 80), slug: topic.slug }));
   return {
     title: plainText(row.title, 300),
     slug: row.slug,
@@ -244,6 +287,11 @@ export function publicWork(row) {
 }
 
 async function publishedRows(response) {
+  const body = await jsonArray(response);
+  return body.filter((row) => row && row.status === "published" && row.access_tier === "public");
+}
+
+async function jsonArray(response) {
   let body;
   try {
     body = await response.json();
@@ -251,7 +299,7 @@ async function publishedRows(response) {
     throw catalogFailure("application");
   }
   if (!Array.isArray(body)) throw catalogFailure("application");
-  return body.filter((row) => row && row.status === "published");
+  return body;
 }
 
 async function rest(fetchImpl, base, env, jwt, path, options = {}) {
@@ -373,30 +421,33 @@ async function insertContributors(fetchImpl, base, env, jwt, workId, authors) {
   }
 }
 
-async function insertTopics(fetchImpl, base, env, jwt, workId, topics) {
-  for (const name of topics) {
-    const slug = slugify(name, "topic");
-    const found = await rest(
-      fetchImpl,
-      base,
-      env,
-      jwt,
-      `/rest/v1/research_topics?select=id&slug=eq.${encodeURIComponent(slug)}&limit=1`
-    );
-    let topic = (await found.json())[0];
-    if (!topic) {
-      const created = await rest(fetchImpl, base, env, jwt, "/rest/v1/research_topics", {
-        method: "POST",
-        headers: { Prefer: "return=representation" },
-        body: JSON.stringify({ slug, name })
-      });
-      topic = (await created.json())[0];
-    }
-    await rest(fetchImpl, base, env, jwt, "/rest/v1/research_resource_topics", {
-      method: "POST",
-      body: JSON.stringify({ work_id: workId, topic_id: topic.id })
-    });
+async function resolveControlledTopics(fetchImpl, base, env, jwt, slugs) {
+  const unique = [...new Set(slugs)];
+  if (!unique.length) return [];
+  const list = unique.map((slug) => encodeURIComponent(slug)).join(",");
+  const response = await rest(
+    fetchImpl,
+    base,
+    env,
+    jwt,
+    `/rest/v1/research_topics?select=id,slug&status=eq.active&category_id=not.is.null&slug=in.(${list})`
+  );
+  const rows = await jsonArray(response);
+  if (rows.length !== unique.length) {
+    const error = new Error("invalid_query");
+    error.code = "invalid_query";
+    error.failure = "application";
+    throw error;
   }
+  return rows;
+}
+
+async function linkControlledTopics(fetchImpl, base, env, jwt, workId, topics) {
+  if (!topics.length) return;
+  await rest(fetchImpl, base, env, jwt, "/rest/v1/research_resource_topics", {
+    method: "POST",
+    body: JSON.stringify(topics.map((topic) => ({ work_id: workId, topic_id: topic.id })))
+  });
 }
 
 async function logIngest(fetchImpl, base, env, jwt, providerId, action, status, message) {

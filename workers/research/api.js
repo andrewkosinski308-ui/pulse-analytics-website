@@ -157,12 +157,13 @@ async function stage(request, env, fetchImpl) {
   if (admin.error) return admin.error;
   const body = await readJson(request);
   const externalId = parseOpenAlexId(body.externalId);
-  if (!externalId || body.url || body.sourceUrl) return json({ error: "invalid_query" }, 400);
+  const topicSlugs = readTopicSlugs(body.topicSlugs);
+  if (!externalId || body.url || body.sourceUrl || !topicSlugs) return json({ error: "invalid_query" }, 400);
   const provider = await requireOpenAlex(admin.jwt, env, fetchImpl);
   if (provider.error) return provider.error;
   const record = await adapterFor("openalex", env, fetchImpl).fetchByExternalId(externalId);
   if (!record || !record.title) return json({ error: "not_found" }, 404);
-  const staged = await createCatalog(env, fetchImpl).stage(provider.provider, record, admin.jwt);
+  const staged = await createCatalog(env, fetchImpl).stage(provider.provider, record, admin.jwt, topicSlugs);
   return json(staged);
 }
 
@@ -205,6 +206,18 @@ async function requireAdmin(request, env, fetchImpl) {
     return { error: json({ error: "forbidden" }, 403) };
   }
   return { jwt };
+}
+
+function readTopicSlugs(value) {
+  if (value == null) return [];
+  if (!Array.isArray(value) || value.length > 8) return null;
+  const slugs = [];
+  for (const item of value) {
+    const slug = parseSlug(typeof item === "string" ? item : "");
+    if (!slug) return null;
+    slugs.push(slug);
+  }
+  return [...new Set(slugs)];
 }
 
 async function readJson(request) {

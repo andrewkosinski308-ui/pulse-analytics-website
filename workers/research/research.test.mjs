@@ -20,6 +20,9 @@ test("query validation rejects urls, bad pages, and unknown sorts", () => {
   assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?page=0")).error, "invalid_query");
   assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?pageSize=100")).error, "invalid_query");
   assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?sort=secret")).error, "invalid_query");
+  assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?tier=premium")).error, "invalid_query");
+  assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?access_tier=internal")).error, "invalid_query");
+  assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?category=search-seo")).category, "search-seo");
   assert.equal(parseListQuery(new URL("https://pulse.test/api/research/resources?sort=title")).sort, "title");
 });
 
@@ -232,9 +235,13 @@ test("missing worker binding uses the deployed public catalog config", async () 
     new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
     fallbackEnv(),
     async (input) => {
-      calls.push(String(input.url || input));
-      assert.equal(String(input).includes("status=eq.published"), true);
-      return catalogResponse(String(input.url || input));
+      const url = String(input.url || input);
+      calls.push(url);
+      if (url.includes("/research_works")) {
+        assert.equal(url.includes("status=eq.published"), true);
+        assert.equal(url.includes("access_tier=eq.public"), true);
+      }
+      return catalogResponse(url);
     }
   );
   const body = await response.json();
@@ -327,7 +334,10 @@ test("primary and fallback catalog responses match and hide drafts", async () =>
     fallbackEnv(),
     async (input) => {
       const url = String(input.url || input);
-      assert.equal(url.includes("status=eq.published"), true);
+      if (url.includes("/research_works")) {
+        assert.equal(url.includes("status=eq.published"), true);
+        assert.equal(url.includes("access_tier=eq.public"), true);
+      }
       return catalogResponse(url);
     }
   );
@@ -405,11 +415,119 @@ test("staff catalog routes stay authenticated and do not use the public fallback
   assert.equal(calls.length, 0);
 });
 
+test("public catalog hides drafts and non-public tiers on list and detail", async () => {
+  const calls = [];
+  const list = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?page=1&pageSize=12"),
+    env,
+    async (input) => {
+      const url = String(input.url || input);
+      calls.push(url);
+      return catalogResponse(url);
+    }
+  );
+  const body = await list.json();
+  assert.equal(list.status, 200);
+  assert.deepEqual(body.results.map((row) => row.slug), ["bert-pre-training"]);
+  assert.equal(calls.some((url) => url.includes("access_tier=eq.public")), true);
+  assert.equal(calls.some((url) => url.includes("tier=premium")), false);
+
+  const hidden = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources/premium-study"),
+    env,
+    async (input) => jsonResponse([premiumRow()])
+  );
+  assert.equal(hidden.status, 404);
+
+  const bypass = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/resources?tier=premium"),
+    env,
+    async () => {
+      throw new Error("query should not run");
+    }
+  );
+  assert.equal(bypass.status, 400);
+});
+
+test("staff staging does not create topics from provider labels", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/staff/stage", {
+      method: "POST",
+      headers: { Authorization: "Bearer staff-jwt" },
+      body: JSON.stringify({ externalId: "W2741809807", topicSlugs: ["not-a-topic"] })
+    }),
+    env,
+    async (input, options = {}) => {
+      const url = String(input.url || input);
+      calls.push({ url, method: options.method || "GET" });
+      if (url.endsWith("/auth/v1/user")) return jsonResponse({ id: "admin-1" });
+      if (url.includes("/profiles")) return jsonResponse([{ role: "admin", is_active: true }]);
+      if (url.includes("/research_providers")) return jsonResponse([{ id: "p1", key: "openalex", is_enabled: true }]);
+      if (url.includes("api.openalex.org")) {
+        return jsonResponse({
+          id: "https://openalex.org/W2741809807",
+          display_name: "Imported study",
+          publication_date: "2020-01-01",
+          type: "article",
+          topics: [{ display_name: "Machine learning" }]
+        });
+      }
+      if (url.includes("/research_topics?")) return jsonResponse([]);
+      if (options.method === "POST" && url.includes("/research_works")) return jsonResponse([{ id: "work-1", slug: "imported-study" }]);
+      return jsonResponse([]);
+    }
+  );
+  assert.equal(response.status, 400);
+  assert.equal(calls.some((call) => call.method === "POST" && call.url.includes("/research_topics")), false);
+  assert.equal(calls.some((call) => call.method === "POST" && call.url.includes("/research_works")), false);
+});
+
+test("controlled topic slugs can be attached without creating topics", async () => {
+  const calls = [];
+  const response = await handleResearchRequest(
+    new Request("https://pulse.test/api/research/staff/stage", {
+      method: "POST",
+      headers: { Authorization: "Bearer staff-jwt" },
+      body: JSON.stringify({ externalId: "W2741809807", topicSlugs: ["generative-ai"] })
+    }),
+    env,
+    async (input, options = {}) => {
+      const url = String(input.url || input);
+      calls.push({ url, method: options.method || "GET" });
+      if (url.endsWith("/auth/v1/user")) return jsonResponse({ id: "admin-1" });
+      if (url.includes("/profiles")) return jsonResponse([{ role: "admin", is_active: true }]);
+      if (url.includes("/research_providers")) return jsonResponse([{ id: "p1", key: "openalex", is_enabled: true }]);
+      if (url.includes("api.openalex.org")) {
+        return jsonResponse({
+          id: "https://openalex.org/W2741809807",
+          display_name: "Imported study",
+          publication_date: "2020-01-01",
+          type: "article",
+          topics: [{ display_name: "Generative artificial intelligence" }]
+        });
+      }
+      if (url.includes("/research_topics?")) return jsonResponse([{ id: "topic-1", slug: "generative-ai" }]);
+      if (url.includes("slug=eq.")) return jsonResponse([]);
+      if (options.method === "POST" && url.includes("/research_works")) return jsonResponse([{ id: "work-1", slug: "imported-study" }]);
+      if (options.method === "POST" && url.includes("/research_resource_topics")) return jsonResponse([]);
+      if (options.method === "POST") return jsonResponse([{ id: "row-1" }]);
+      return jsonResponse([]);
+    }
+  );
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.status, "draft");
+  assert.equal(calls.some((call) => call.method === "POST" && call.url.endsWith("/research_topics")), false);
+  assert.equal(calls.some((call) => call.method === "POST" && call.url.includes("/research_resource_topics")), true);
+});
+
 function publishedStudy() {
   return {
     title: "Published study",
     slug: "published-study",
     status: "published",
+    access_tier: "public",
     resource_type: "article",
     publication_date: "2020-01-01",
     source_url: "https://doi.org/10.1000/example",
@@ -456,13 +574,29 @@ function fallbackEnv() {
 }
 
 function catalogResponse(url) {
+  if (url.includes("/rest/v1/research_categories") || url.includes("/rest/v1/research_topics?")) {
+    return jsonResponse([]);
+  }
+  if (url.includes("select=status,access_tier,resource_type")) {
+    return jsonResponse([bertRow()]);
+  }
   if (url.includes("resource_type,research_resource_topics")) {
     return jsonResponse([bertRow()]);
   }
   if (url.includes("slug=eq.")) {
     return jsonResponse(url.includes("bert-pre-training") ? [bertRow(), draftRow()] : [draftRow()]);
   }
-  return jsonResponse([bertRow(), draftRow()], { "content-range": "0-1/1" });
+  return jsonResponse([bertRow(), draftRow(), premiumRow()], { "content-range": "0-0/1" });
+}
+
+function premiumRow() {
+  return {
+    ...bertRow(),
+    title: "Premium study",
+    slug: "premium-study",
+    status: "published",
+    access_tier: "premium"
+  };
 }
 
 function jsonResponse(body, headers = {}) {

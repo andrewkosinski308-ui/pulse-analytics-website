@@ -1,6 +1,7 @@
 const state = {
   q: "",
   type: "",
+  category: "",
   topic: "",
   sort: "publication_date",
   page: 1
@@ -9,6 +10,7 @@ const state = {
 const results = document.getElementById("research-results");
 const status = document.getElementById("research-status");
 const typeFilters = document.getElementById("research-type-filters");
+const categoryFilters = document.getElementById("research-category-filters");
 const topicFilters = document.getElementById("research-topic-filters");
 const pager = document.getElementById("research-pager");
 const search = document.getElementById("research-search");
@@ -52,6 +54,7 @@ async function load() {
   });
   if (state.q) params.set("q", state.q);
   if (state.type) params.set("type", state.type);
+  if (state.category) params.set("category", state.category);
   if (state.topic) params.set("topic", state.topic);
 
   try {
@@ -67,10 +70,14 @@ async function load() {
 
 function renderFilters(facets) {
   renderFilterGroup(typeFilters, facets.types || [], state.type, "type", "Resource type");
-  renderFilterGroup(topicFilters, (facets.topics || []).map((topic) => ({
+  renderFilterGroup(categoryFilters, (facets.categories || []).map((category) => ({
+    value: category.slug,
+    label: category.name
+  })), state.category, "category", "Category");
+  const topics = (facets.topics || []).filter((topic) => !state.category || topic.categorySlug === state.category);
+  renderFilterGroup(topicFilters, topics.map((topic) => ({
     value: topic.slug,
-    label: topic.name,
-    count: topic.count
+    label: topic.name
   })), state.topic, "topic", "Topic");
 }
 
@@ -88,6 +95,7 @@ function renderFilterGroup(container, items, active, key, label) {
   all.textContent = "All";
   all.addEventListener("click", () => {
     state[key] = "";
+    if (key === "category") state.topic = "";
     state.page = 1;
     load();
   });
@@ -99,6 +107,7 @@ function renderFilterGroup(container, items, active, key, label) {
     button.textContent = item.label || item.value;
     button.addEventListener("click", () => {
       state[key] = item.value;
+      if (key === "category") state.topic = "";
       state.page = 1;
       load();
     });
@@ -109,7 +118,7 @@ function renderFilterGroup(container, items, active, key, label) {
 function renderResults(body) {
   const rows = body.results || [];
   if (!rows.length) {
-    status.textContent = state.q || state.type || state.topic
+    status.textContent = state.q || state.type || state.category || state.topic
       ? "No published works match this search."
       : "The Industry Research Library does not have any published works yet.";
     return;

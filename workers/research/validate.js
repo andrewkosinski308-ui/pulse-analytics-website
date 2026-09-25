@@ -1,5 +1,5 @@
 const SORTS = new Set(["publication_date", "title"]);
-const QUERY_KEYS = new Set(["q", "type", "topic", "sort", "page", "pageSize"]);
+const QUERY_KEYS = new Set(["q", "type", "topic", "category", "sort", "page", "pageSize"]);
 
 export function plainText(value, max = 600) {
   return String(value ?? "")
@@ -21,6 +21,7 @@ export function parseListQuery(url) {
   const sort = url.searchParams.get("sort") || "publication_date";
   const type = url.searchParams.get("type") || "";
   const topic = url.searchParams.get("topic") || "";
+  const category = url.searchParams.get("category") || "";
   const q = url.searchParams.get("q") || "";
 
   if (page === null || page < 1 || page > 100) return { error: "invalid_query" };
@@ -28,9 +29,10 @@ export function parseListQuery(url) {
   if (!SORTS.has(sort)) return { error: "invalid_query" };
   if (type && !/^[a-z0-9-]{1,40}$/.test(type)) return { error: "invalid_query" };
   if (topic && !/^[a-z0-9-]{1,60}$/.test(topic)) return { error: "invalid_query" };
+  if (category && !/^[a-z0-9-]{1,60}$/.test(category)) return { error: "invalid_query" };
   if (q.length > 80 || /[<>\\{}()[\];`]/.test(q)) return { error: "invalid_query" };
 
-  return { page, pageSize, sort, type, topic, q: q.trim() };
+  return { page, pageSize, sort, type, topic, category, q: q.trim() };
 }
 
 export function parseSlug(value) {
