@@ -1,7 +1,15 @@
 # Cloudflare Workers Static Assets - Pulse Analytics Group LLC
 # Deploy: npm run build && npx wrangler deploy
-# Worker secrets, set in Cloudflare and never committed:
-# OPENALEX_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY
+#
+# This file is the Worker configuration source of truth for the default
+# production Worker (name = pulse-analytics-website). There is no named
+# Wrangler environment. Plain variables that exist only in the dashboard are
+# removed on deploy. Secrets are not removed and are never stored here.
+#
+# SUPABASE_URL is a non-secret variable.
+# OPENALEX_API_KEY and SUPABASE_ANON_KEY are required Cloudflare secrets.
+# Set or update secret values with `npx wrangler secret put <NAME>`.
+# Do not commit secret values.
 #
 # Preserves the existing GitHub -> Cloudflare static-asset deployment flow.
 # A thin Worker runs first for legacy-domain / legacy-path redirects and the research catalog API.
@@ -15,3 +23,9 @@ directory = "."
 binding = "ASSETS"
 not_found_handling = "404-page"
 run_worker_first = true
+
+[vars]
+SUPABASE_URL = "https://gultqhsccxuqvibymwdg.supabase.co"
+
+[secrets]
+required = ["OPENALEX_API_KEY", "SUPABASE_ANON_KEY"]

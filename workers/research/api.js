@@ -44,27 +44,36 @@ export async function handleResearchRequest(request, env, fetchImpl = fetch) {
 async function listResources(url, env, fetchImpl) {
   const query = parseListQuery(url);
   if (query.error) return json({ error: query.error }, 400);
-  return json(await withCatalogFallback(env, url, fetchImpl, (catalog) => Promise.all([
+  const loaded = await withCatalogFallback(env, url, fetchImpl, (catalog) => Promise.all([
     catalog.list(query),
     catalog.facets()
-  ]).then(([page, facets]) => ({ ...page, facets }))));
+  ]).then(([page, facets]) => ({ ...page, facets })));
+  return json(loaded.result, 200, bindingHeader(env, loaded.source));
 }
 
 async function readResource(rawSlug, env, fetchImpl, requestUrl) {
   const slug = parseSlug(decodeURIComponent(rawSlug));
   if (!slug) return json({ error: "not_found" }, 404);
-  const work = await withCatalogFallback(env, requestUrl, fetchImpl, (catalog) => catalog.getPublished(slug));
-  if (!work) return json({ error: "not_found" }, 404);
-  return json({ result: work });
+  const loaded = await withCatalogFallback(env, requestUrl, fetchImpl, (catalog) => catalog.getPublished(slug));
+  if (!loaded.result) return json({ error: "not_found" }, 404);
+  return json({ result: loaded.result }, 200, bindingHeader(env, loaded.source));
 }
 
+// Worker bindings are the primary catalog configuration.
+// js/supabase-env.js is only a fallback when those bindings are missing
+// or the bound Supabase request fails.
 async function withCatalogFallback(env, requestUrl, fetchImpl, read) {
+  const bound = Boolean(env.SUPABASE_URL && env.SUPABASE_ANON_KEY);
   try {
-    return await read(createCatalog(await catalogEnv(env, requestUrl), fetchImpl));
+    const result = await read(createCatalog(await catalogEnv(env, requestUrl), fetchImpl));
+    return { result, source: bound ? "binding" : "fallback" };
   } catch (error) {
-    if (error.code !== "catalog_unavailable" || !env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) throw error;
+    if (error.code !== "catalog_unavailable" || !bound) throw error;
     const fallback = await readPublicSupabaseConfig(env, requestUrl);
-    return read(createCatalog({ ...env, ...fallback }, fetchImpl));
+    return {
+      result: await read(createCatalog({ ...env, ...fallback }, fetchImpl)),
+      source: "fallback"
+    };
   }
 }
 
@@ -180,14 +189,22 @@ async function readJson(request) {
   }
 }
 
-function json(body, status = 200) {
+function bindingHeader(env, source) {
+  const state = (value) => value ? "present" : "absent";
+  return {
+    "X-Pulse-Bindings": `supabase_url=${state(env.SUPABASE_URL)}; supabase_anon=${state(env.SUPABASE_ANON_KEY)}; openalex=${state(env.OPENALEX_API_KEY)}; source=${source}`
+  };
+}
+
+function json(body, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
       "X-Robots-Tag": "noindex, nofollow",
-      "X-Content-Type-Options": "nosniff"
+      "X-Content-Type-Options": "nosniff",
+      ...extraHeaders
     }
   });
 }

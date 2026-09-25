@@ -233,6 +233,7 @@ test("catalog reads use the deployed publishable config when worker bindings are
   const body = await response.json();
   assert.equal(response.status, 200);
   assert.equal(body.results[0].slug, "published-study");
+  assert.equal(response.headers.get("X-Pulse-Bindings"), "supabase_url=absent; supabase_anon=absent; openalex=absent; source=fallback");
   assert.equal(calls.some((url) => url.startsWith("https://example.supabase.co/rest/v1/research_works")), true);
 });
 
