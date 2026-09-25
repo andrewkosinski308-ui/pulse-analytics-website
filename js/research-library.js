@@ -7,15 +7,26 @@ const state = {
   page: 1
 };
 
+const TYPE_LABELS = {
+  article: "Article",
+  "conference-paper": "Conference Paper",
+  "official-guide": "Official Guide"
+};
+const TYPE_ORDER = ["article", "conference-paper", "official-guide"];
+
 const results = document.getElementById("research-results");
 const status = document.getElementById("research-status");
-const typeFilters = document.getElementById("research-type-filters");
-const categoryFilters = document.getElementById("research-category-filters");
-const topicFilters = document.getElementById("research-topic-filters");
 const pager = document.getElementById("research-pager");
 const search = document.getElementById("research-search");
 const searchButton = document.getElementById("research-search-button");
 const sort = document.getElementById("research-sort");
+const categorySelect = document.getElementById("research-category");
+const topicSelect = document.getElementById("research-topic");
+const typeSelect = document.getElementById("research-type");
+const activeFilters = document.getElementById("research-active-filters");
+const filterPanel = document.getElementById("library-filter-panel");
+const filterToggle = document.getElementById("library-filters-toggle");
+let latestFacets = { types: [], categories: [], topics: [] };
 
 function applySearch() {
   state.q = search.value.trim();
@@ -35,6 +46,32 @@ searchButton.addEventListener("click", (event) => {
   applySearch();
 });
 
+categorySelect.addEventListener("change", () => {
+  state.category = categorySelect.value;
+  if (!topicFits(state.category, state.topic)) state.topic = "";
+  const topics = latestFacets.topics.filter((topic) => !state.category || topic.categorySlug === state.category);
+  state.topic = setOptions(topicSelect, [
+    { value: "", label: "All Topics" },
+    ...topics.map((topic) => ({ value: topic.slug, label: topic.name }))
+  ], state.topic);
+  state.page = 1;
+  load();
+});
+topicSelect.addEventListener("change", () => {
+  state.topic = topicSelect.value;
+  state.page = 1;
+  load();
+});
+typeSelect.addEventListener("change", () => {
+  state.type = typeSelect.value;
+  state.page = 1;
+  load();
+});
+filterToggle.addEventListener("click", () => {
+  const open = filterPanel.classList.toggle("is-open");
+  filterToggle.setAttribute("aria-expanded", String(open));
+});
+
 sort.addEventListener("change", () => {
   state.sort = sort.value;
   state.page = 1;
@@ -47,6 +84,7 @@ async function load() {
   status.textContent = "Loading published research…";
   results.replaceChildren();
   pager.replaceChildren();
+  syncControls();
   const params = new URLSearchParams({
     page: String(state.page),
     pageSize: "12",
@@ -68,51 +106,140 @@ async function load() {
   }
 }
 
-function renderFilters(facets) {
-  renderFilterGroup(typeFilters, facets.types || [], state.type, "type", "Resource type");
-  renderFilterGroup(categoryFilters, (facets.categories || []).map((category) => ({
-    value: category.slug,
-    label: category.name
-  })), state.category, "category", "Category");
-  const topics = (facets.topics || []).filter((topic) => !state.category || topic.categorySlug === state.category);
-  renderFilterGroup(topicFilters, topics.map((topic) => ({
-    value: topic.slug,
-    label: topic.name
-  })), state.topic, "topic", "Topic");
+function topicFits(category, topicSlug) {
+  if (!topicSlug || !category) return true;
+  const topic = (latestFacets.topics || []).find((item) => item.slug === topicSlug);
+  return Boolean(topic && topic.categorySlug === category);
 }
 
-function renderFilterGroup(container, items, active, key, label) {
-  container.replaceChildren();
-  if (!items.length) {
-    container.hidden = true;
+function typeChoices(types) {
+  const present = new Set((types || []).map((item) => item.value));
+  const ordered = TYPE_ORDER.filter((value) => present.has(value)).map((value) => ({
+    value,
+    label: TYPE_LABELS[value]
+  }));
+  (types || []).forEach((item) => {
+    if (!TYPE_ORDER.includes(item.value)) {
+      ordered.push({ value: item.value, label: humanType(item.value) });
+    }
+  });
+  return ordered;
+}
+
+function humanType(value) {
+  if (TYPE_LABELS[value]) return TYPE_LABELS[value];
+  return String(value || "").replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function setOptions(select, options, selected) {
+  const next = options.some((item) => item.value === selected) ? selected : "";
+  select.replaceChildren();
+  options.forEach((item) => {
+    const option = document.createElement("option");
+    option.value = item.value;
+    option.textContent = item.label;
+    select.append(option);
+  });
+  select.value = next;
+  return next;
+}
+
+function facetLabel(kind, value) {
+  if (kind === "category") {
+    return (latestFacets.categories || []).find((item) => item.slug === value)?.name || value;
+  }
+  if (kind === "topic") {
+    return (latestFacets.topics || []).find((item) => item.slug === value)?.name || value;
+  }
+  return humanType(value);
+}
+
+function renderFilters(facets) {
+  latestFacets = {
+    types: facets.types || [],
+    categories: facets.categories || [],
+    topics: facets.topics || []
+  };
+  state.category = setOptions(categorySelect, [
+    { value: "", label: "All Categories" },
+    ...latestFacets.categories.map((category) => ({ value: category.slug, label: category.name }))
+  ], state.category);
+  if (!topicFits(state.category, state.topic)) state.topic = "";
+  const topics = latestFacets.topics.filter((topic) => !state.category || topic.categorySlug === state.category);
+  state.topic = setOptions(topicSelect, [
+    { value: "", label: "All Topics" },
+    ...topics.map((topic) => ({ value: topic.slug, label: topic.name }))
+  ], state.topic);
+  state.type = setOptions(typeSelect, [
+    { value: "", label: "All Types" },
+    ...typeChoices(latestFacets.types)
+  ], state.type);
+  if ([...sort.options].some((option) => option.value === state.sort)) sort.value = state.sort;
+  renderActiveFilters();
+}
+
+function syncControls() {
+  if ([...categorySelect.options].some((option) => option.value === state.category)) {
+    categorySelect.value = state.category;
+  }
+  const topics = latestFacets.topics.filter((topic) => !state.category || topic.categorySlug === state.category);
+  if (latestFacets.topics.length || topicSelect.options.length) {
+    state.topic = setOptions(topicSelect, [
+      { value: "", label: "All Topics" },
+      ...topics.map((topic) => ({ value: topic.slug, label: topic.name }))
+    ], state.topic);
+  }
+  if ([...typeSelect.options].some((option) => option.value === state.type)) {
+    typeSelect.value = state.type;
+  }
+  if ([...sort.options].some((option) => option.value === state.sort)) sort.value = state.sort;
+  renderActiveFilters();
+}
+
+function renderActiveFilters() {
+  activeFilters.replaceChildren();
+  const chips = [];
+  if (state.category) chips.push({ key: "category", label: facetLabel("category", state.category) });
+  if (state.topic) chips.push({ key: "topic", label: facetLabel("topic", state.topic) });
+  if (state.type) chips.push({ key: "type", label: facetLabel("type", state.type) });
+  if (!chips.length) {
+    activeFilters.hidden = true;
     return;
   }
-  container.hidden = false;
-  container.setAttribute("aria-label", label);
-  const all = document.createElement("button");
-  all.type = "button";
-  all.className = `resource-filter${active ? "" : " is-active"}`;
-  all.textContent = "All";
-  all.addEventListener("click", () => {
-    state[key] = "";
-    if (key === "category") state.topic = "";
-    state.page = 1;
-    load();
-  });
-  container.append(all);
-  items.forEach((item) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = `resource-filter${active === item.value ? " is-active" : ""}`;
-    button.textContent = item.label || item.value;
-    button.addEventListener("click", () => {
-      state[key] = item.value;
-      if (key === "category") state.topic = "";
+  activeFilters.hidden = false;
+  const label = document.createElement("span");
+  label.className = "library-active-label";
+  label.textContent = "Filters:";
+  activeFilters.append(label);
+  chips.forEach((chip) => {
+    const item = document.createElement("span");
+    item.className = "library-active-chip";
+    const text = document.createElement("span");
+    text.textContent = chip.label;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.setAttribute("aria-label", `Remove ${chip.label} filter`);
+    remove.textContent = "×";
+    remove.addEventListener("click", () => {
+      state[chip.key] = "";
       state.page = 1;
       load();
     });
-    container.append(button);
+    item.append(text, remove);
+    activeFilters.append(item);
   });
+  const clear = document.createElement("button");
+  clear.type = "button";
+  clear.className = "library-clear-filters";
+  clear.textContent = "Clear all";
+  clear.addEventListener("click", () => {
+    state.category = "";
+    state.topic = "";
+    state.type = "";
+    state.page = 1;
+    load();
+  });
+  activeFilters.append(clear);
 }
 
 function renderResults(body) {

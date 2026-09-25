@@ -64,6 +64,133 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             #scholar-results .resource-card p {
                 overflow-wrap: anywhere;
             }
+            .library-filter-panel {
+                max-width: 1120px;
+                margin: var(--space-3) auto 0;
+                text-align: left;
+            }
+            .library-filters-toggle {
+                display: none;
+            }
+            .library-filter-row {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: .75rem;
+            }
+            .library-filter-field {
+                display: flex;
+                flex-direction: column;
+                gap: .35rem;
+                min-width: 0;
+            }
+            .library-filter-field span {
+                color: var(--primary);
+                font-size: .72rem;
+                font-weight: 700;
+                letter-spacing: .06em;
+                text-transform: uppercase;
+            }
+            .library-filter-field select {
+                width: 100%;
+                min-width: 0;
+                min-height: 46px;
+                padding: .55rem 1.55rem .55rem .75rem;
+                color: var(--text);
+                background-color: var(--light);
+                background-image:
+                    linear-gradient(45deg, transparent 50%, var(--primary) 50%),
+                    linear-gradient(135deg, var(--primary) 50%, transparent 50%);
+                background-position:
+                    calc(100% - 12px) calc(50% - 1px),
+                    calc(100% - 7px) calc(50% - 1px);
+                background-size: 5px 5px, 5px 5px;
+                background-repeat: no-repeat;
+                border: 1px solid var(--border);
+                border-radius: var(--button-radius);
+                appearance: none;
+                cursor: pointer;
+                font-size: .8125rem;
+            }
+            .library-filter-field select:focus {
+                border-color: var(--secondary);
+                box-shadow: 0 0 0 3px rgba(25, 118, 210, .10);
+                outline: none;
+            }
+            .library-active-filters {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: .5rem;
+                margin-top: .85rem;
+            }
+            .library-active-filters[hidden] {
+                display: none;
+            }
+            .library-active-label {
+                color: var(--text-light);
+                font-size: .8rem;
+                font-weight: 600;
+            }
+            .library-active-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: .35rem;
+                max-width: 100%;
+                min-height: 32px;
+                padding: .15rem .45rem .15rem .7rem;
+                color: var(--primary);
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--button-radius);
+                font-size: .8rem;
+                font-weight: 600;
+            }
+            .library-active-chip span {
+                overflow-wrap: anywhere;
+            }
+            .library-active-chip button,
+            .library-clear-filters {
+                color: var(--secondary);
+                font-size: .8rem;
+                font-weight: 600;
+            }
+            .library-active-chip button {
+                font-size: 1rem;
+                line-height: 1;
+                padding: 0 .15rem;
+            }
+            .library-clear-filters {
+                text-decoration: underline;
+                text-underline-offset: .15em;
+            }
+            @media (max-width: 1280px) {
+                .library-filter-row {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+            @media (max-width: 480px) {
+                .library-filters-toggle {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    min-height: 48px;
+                    margin-bottom: .75rem;
+                    color: var(--primary);
+                    background: var(--light);
+                    border: 1px solid var(--border);
+                    border-radius: var(--button-radius);
+                    font-size: .9rem;
+                    font-weight: 600;
+                }
+                .library-filter-row {
+                    display: none;
+                    grid-template-columns: minmax(0, 1fr);
+                }
+                .library-filter-panel.is-open .library-filter-row {
+                    display: grid;
+                }
+            }
         </style>
         <link rel="canonical" href="https://pulseanalyticsgroupllc.com/resources/research-library.html">
         <script type="application/ld+json">
@@ -178,12 +305,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <input id="research-search" class="resource-search" type="search" placeholder="Search published research..." aria-label="Search our library" autocomplete="off">
                             <button type="button" id="research-search-button" class="resource-search-icon" aria-label="Search our library"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
                         </div>
-                        <label class="section-label" for="research-sort">Sort</label>
-                        <select id="research-sort" aria-label="Sort published research">
-                            <option value="publication_date">Publication date</option>
-                            <option value="title">Title</option>
-                        </select>
                     </div>
+                        <div id="library-filter-panel" class="library-filter-panel">
+                            <button type="button" id="library-filters-toggle" class="library-filters-toggle" aria-expanded="false" aria-controls="library-filter-row">Filters</button>
+                            <div id="library-filter-row" class="library-filter-row">
+                                <label class="library-filter-field">
+                                    <span>Category</span>
+                                    <select id="research-category" aria-label="Category">
+                                        <option value="">All Categories</option>
+                                    </select>
+                                </label>
+                                <label class="library-filter-field">
+                                    <span>Topic</span>
+                                    <select id="research-topic" aria-label="Topic">
+                                        <option value="">All Topics</option>
+                                    </select>
+                                </label>
+                                <label class="library-filter-field">
+                                    <span>Resource Type</span>
+                                    <select id="research-type" aria-label="Resource type">
+                                        <option value="">All Types</option>
+                                    </select>
+                                </label>
+                                <label class="library-filter-field">
+                                    <span>Sort</span>
+                                    <select id="research-sort" aria-label="Sort published research">
+                                        <option value="publication_date">Publication date</option>
+                                        <option value="title">Title</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="research-active-filters" class="library-active-filters" hidden></div>
+                        </div>
                 </div>
             </section>
             <section class="resource-section" aria-labelledby="scholar-heading">
@@ -198,13 +351,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </form>
                     <p id="scholar-status" role="status"></p>
                     <div id="scholar-results" class="resource-grid"></div>
-                </div>
-            </section>
-            <section class="resources-filters">
-                <div class="container">
-                    <div id="research-type-filters" class="resource-filter-bar" role="group" hidden></div>
-                    <div id="research-category-filters" class="resource-filter-bar" role="group" hidden></div>
-                    <div id="research-topic-filters" class="resource-filter-bar" role="group" hidden></div>
                 </div>
             </section>
             <section class="resource-section">
