@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKX3TLC3');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Pulse Analytics Group LLC</title>
+    <meta name="description" content="Pulse Analytics Group LLC internal admin portal.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="assetts/images/Pulse%20Analytics%20Favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-app">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <p id="admin-gate" class="admin-gate" role="status">Verifying administrator access…</p>
+
+    <div id="admin-app" class="admin-frame" hidden>
+        <header class="admin-topbar">
+            <div class="admin-topbar-inner">
+                <div class="admin-brand">
+                    <button type="button" class="admin-menu-toggle" id="admin-menu-toggle" aria-controls="admin-sidebar" aria-expanded="false">
+                        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                        <span>Menu</span>
+                    </button>
+                    <img src="assetts/images/transparent-logo-PA.jpeg" alt="Pulse Analytics Group LLC Logo">
+                    <div class="admin-brand-text">
+                        <strong>Pulse Analytics Group LLC</strong>
+                        <span>Admin Portal</span>
+                    </div>
+                </div>
+                <div class="admin-topbar-actions">
+                    <p class="admin-user">
+                        <span class="admin-user-name" id="admin-user-name">Administrator</span>
+                        <span class="admin-user-email" id="admin-user-email"></span>
+                    </p>
+                    <button type="button" class="admin-logout" id="admin-sign-out">Log out</button>
+                </div>
+            </div>
+        </header>
+
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <p class="admin-sidebar-label">Administration</p>
+            <nav class="admin-nav" aria-label="Admin portal">
+                <button type="button" class="admin-nav-link is-current" id="nav-dashboard" aria-current="page">Dashboard</button>
+
+                <button type="button" class="admin-nav-link" id="admin-crm-toggle" aria-expanded="true" aria-controls="admin-nav-crm">
+                    <span>CRM</span>
+                    <span class="admin-soon">Coming soon</span>
+                </button>
+                <div class="admin-nav-children" id="admin-nav-crm">
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Clients</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Leads</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Contacts</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Projects</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Tasks</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Files</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Reports</span><span class="admin-soon">Coming soon</span></button>
+                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Appointments</span><span class="admin-soon">Coming soon</span></button>
+                </div>
+
+                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Blog</span><span class="admin-soon">Coming soon</span></button>
+                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Analytics</span><span class="admin-soon">Coming soon</span></button>
+                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Settings</span><span class="admin-soon">Coming soon</span></button>
+            </nav>
+        </aside>
+        <button type="button" class="admin-backdrop" id="admin-backdrop" hidden aria-label="Close menu"></button>
+
+        <main class="admin-main">
+            <section class="admin-dashboard" id="admin-dashboard" tabindex="-1" aria-labelledby="admin-welcome">
+                <h1 id="admin-welcome">Welcome to Pulse Analytics Group LLC</h1>
+                <p class="admin-lead">This is the internal administration shell for authorized administrators. Dashboard is available now. CRM, Blog, Analytics, and Settings will be added in later releases.</p>
+                <p class="admin-lead-note">No business metrics are shown yet. The cards below are labeled placeholders.</p>
+                <div class="admin-cards">
+                    <article class="admin-card">
+                        <p class="admin-card-label">Placeholder</p>
+                        <h2>CRM</h2>
+                        <p>CRM metrics will appear here.</p>
+                    </article>
+                    <article class="admin-card">
+                        <p class="admin-card-label">Placeholder</p>
+                        <h2>Clients</h2>
+                        <p>Client records will appear here.</p>
+                    </article>
+                    <article class="admin-card">
+                        <p class="admin-card-label">Placeholder</p>
+                        <h2>Blog</h2>
+                        <p>Blog tools will appear here.</p>
+                    </article>
+                    <article class="admin-card">
+                        <p class="admin-card-label">Placeholder</p>
+                        <h2>Analytics</h2>
+                        <p>Analytics will appear here.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/supabase-env.js"></script>
+    <script type="module">
+        import {
+            requireAdminPortal,
+            subscribeAuth,
+            signOut,
+            isAdminPortalEligible
+        } from './js/pulse-auth.js';
+        import { renderAdminIdentity, bindAdminChrome } from './js/admin-portal.js';
+
+        const gate = document.getElementById('admin-gate');
+        const shell = document.getElementById('admin-app');
+        const signOutBtn = document.getElementById('admin-sign-out');
+
+        function reveal(authState) {
+            renderAdminIdentity(authState);
+            gate.hidden = true;
+            shell.hidden = false;
+        }
+
+        try {
+            const authState = await requireAdminPortal();
+            if (authState) {
+                bindAdminChrome();
+                reveal(authState);
+
+                subscribeAuth((next) => {
+                    if (next.loading) return;
+                    if (!next.authenticated) {
+                        window.location.replace('admin-login.html');
+                        return;
+                    }
+                    if (!isAdminPortalEligible(next)) {
+                        window.location.replace('admin-unauthorized.html');
+                        return;
+                    }
+                    renderAdminIdentity(next);
+                });
+            }
+        } catch (err) {
+            gate.textContent = err.message || 'Unable to verify administrator access.';
+        }
+
+        signOutBtn.addEventListener('click', async () => {
+            signOutBtn.disabled = true;
+            signOutBtn.textContent = 'Signing out…';
+            try {
+                await signOut();
+                window.location.replace('admin-login.html');
+            } catch (err) {
+                signOutBtn.disabled = false;
+                signOutBtn.textContent = 'Log out';
+                gate.hidden = false;
+                gate.textContent = err.message || 'Sign-out failed.';
+            }
+        });
+    </script>
+</body>
+</html>

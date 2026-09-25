@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKX3TLC3');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied | Pulse Analytics Admin Portal</title>
+    <meta name="description" content="This account is not authorized for the Pulse Analytics Admin Portal.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="assetts/images/Pulse%20Analytics%20Favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="client-portal.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <header>
+        <div class="container">
+            <div class="header-brand">
+                <div class="header-logo">
+                    <a href="index.html" class="logo">
+                        <img src="assetts/images/transparent-logo-PA.jpeg" alt="Pulse Analytics Group LLC Logo">
+                    </a>
+                </div>
+                <div class="header-branding">
+                    <h1>Pulse Analytics Group LLC</h1>
+                    <p>Admin Portal</p>
+                </div>
+            </div>
+            <div class="header-nav">
+                <nav aria-label="Admin access navigation">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Back to Website</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="client-auth-page">
+        <div class="container">
+            <div class="client-auth-card">
+                <div class="client-auth-brand">
+                    <img src="assetts/images/transparent-logo-PA.jpeg" alt="">
+                    <h1>Access denied</h1>
+                    <p id="denied-lead">Checking your account…</p>
+                </div>
+
+                <div id="auth-alert" class="client-auth-alert" role="alert" aria-live="polite"></div>
+                <p id="denied-account" hidden></p>
+
+                <div class="client-auth-actions" id="denied-actions" hidden>
+                    <a class="primary-button" id="client-portal-link" href="client-portal.html" hidden>Continue to Client Portal</a>
+                    <button type="button" class="secondary-button" id="sign-out-btn">Sign out</button>
+                    <a class="secondary-button" href="index.html">Return to website</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/supabase-env.js"></script>
+    <script type="module">
+        import {
+            initAuth,
+            enforceAdminPersistPreference,
+            getAuthState,
+            isAdminPortalEligible,
+            isClientPortalEligible,
+            signOut
+        } from './js/pulse-auth.js';
+
+        const lead = document.getElementById('denied-lead');
+        const alertEl = document.getElementById('auth-alert');
+        const accountEl = document.getElementById('denied-account');
+        const actions = document.getElementById('denied-actions');
+        const clientLink = document.getElementById('client-portal-link');
+        const signOutBtn = document.getElementById('sign-out-btn');
+
+        function showAlert(message, type = 'error') {
+            alertEl.textContent = message;
+            alertEl.dataset.type = type;
+            alertEl.classList.add('is-visible');
+        }
+
+        try {
+            await initAuth();
+            const ended = await enforceAdminPersistPreference();
+            const authState = getAuthState();
+
+            if (ended || !authState.authenticated) {
+                window.location.replace('admin-login.html');
+            } else if (isAdminPortalEligible(authState)) {
+                window.location.replace('admin-portal.html');
+            } else {
+                const email = authState.profile?.email || authState.user?.email || '';
+                lead.textContent = 'You are signed in, but this account does not have administrator access.';
+                if (email) {
+                    accountEl.hidden = false;
+                    accountEl.textContent = email;
+                }
+                if (authState.error) showAlert(authState.error, 'error');
+                if (authState.profile?.role === 'client') {
+                    clientLink.hidden = false;
+                    clientLink.href = isClientPortalEligible(authState)
+                        ? 'client-portal.html'
+                        : 'client-login.html';
+                }
+                actions.hidden = false;
+            }
+        } catch (err) {
+            lead.textContent = 'Administrator access could not be verified.';
+            showAlert(err.message || 'Unable to initialize authentication.', 'error');
+        }
+
+        signOutBtn.addEventListener('click', async () => {
+            signOutBtn.disabled = true;
+            signOutBtn.textContent = 'Signing out…';
+            try {
+                await signOut();
+                window.location.replace('admin-login.html');
+            } catch (err) {
+                signOutBtn.disabled = false;
+                signOutBtn.textContent = 'Sign out';
+                showAlert(err.message || 'Sign-out failed.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKX3TLC3');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Sign In | Pulse Analytics Group LLC</title>
+    <meta name="description" content="Sign in to the Pulse Analytics Admin Portal.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="assetts/images/Pulse%20Analytics%20Favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="client-portal.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <header>
+        <div class="container">
+            <div class="header-brand">
+                <div class="header-logo">
+                    <a href="index.html" class="logo">
+                        <img src="assetts/images/transparent-logo-PA.jpeg" alt="Pulse Analytics Group LLC Logo">
+                    </a>
+                </div>
+                <div class="header-branding">
+                    <h1>Pulse Analytics Group LLC</h1>
+                    <p>Admin Portal</p>
+                </div>
+            </div>
+            <div class="header-nav">
+                <nav id="primary-navigation" aria-label="Admin sign-in navigation">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Back to Website</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="client-auth-page">
+        <div class="container">
+            <div class="client-auth-card">
+                <div class="client-auth-brand">
+                    <img src="assetts/images/transparent-logo-PA.jpeg" alt="">
+                    <h1>Admin Portal Sign In</h1>
+                    <p>Authorized Pulse Analytics administrators only</p>
+                </div>
+
+                <p id="auth-gate" class="admin-gate">Checking your session…</p>
+                <div id="auth-alert" class="client-auth-alert" role="alert" aria-live="polite"></div>
+
+                <form id="admin-login-form" class="client-auth-form" hidden novalidate>
+                    <div class="admin-field">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" autocomplete="username" required placeholder="you@pulseanalyticsgroupllc.com">
+                    </div>
+                    <div class="admin-field">
+                        <label for="password">Password</label>
+                        <div class="admin-password-row">
+                            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your password">
+                            <button type="button" class="admin-password-toggle" id="toggle-password" aria-controls="password" aria-pressed="false" aria-label="Show password">Show</button>
+                        </div>
+                    </div>
+                    <label class="admin-remember">
+                        <input id="remember" name="remember" type="checkbox" checked>
+                        <span>Keep me signed in on this browser</span>
+                    </label>
+                    <p class="admin-auth-note">Uses the existing Pulse Analytics sign-in session until you sign out. Uncheck to end an administrator session when this browser tab closes.</p>
+                    <div class="client-auth-actions">
+                        <button type="submit" class="primary-button" id="sign-in-btn">Sign In</button>
+                    </div>
+                </form>
+
+                <div class="client-auth-links">
+                    <a href="admin-forgot-password.html">Forgot Password?</a>
+                    <a href="index.html">Return to website</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/supabase-env.js"></script>
+    <script type="module">
+        import {
+            signIn,
+            getAuthState,
+            redirectAuthenticatedAdminFromLogin,
+            isAdminPortalEligible,
+            getAdminPersistPreference,
+            setAdminPersistPreference
+        } from './js/pulse-auth.js';
+        import { bindPasswordToggle } from './js/admin-portal.js';
+
+        const alertEl = document.getElementById('auth-alert');
+        const form = document.getElementById('admin-login-form');
+        const button = document.getElementById('sign-in-btn');
+        const gate = document.getElementById('auth-gate');
+        const remember = document.getElementById('remember');
+
+        function showAlert(message, type = 'error') {
+            alertEl.textContent = message;
+            alertEl.dataset.type = type;
+            alertEl.classList.add('is-visible');
+        }
+
+        function clearAlert() {
+            alertEl.textContent = '';
+            alertEl.classList.remove('is-visible');
+        }
+
+        bindPasswordToggle(document.getElementById('password'), document.getElementById('toggle-password'));
+        remember.checked = getAdminPersistPreference();
+
+        try {
+            const state = await redirectAuthenticatedAdminFromLogin();
+            if (!state) {
+                /* Active admin or a non-admin session is leaving this page. */
+            } else {
+                gate.hidden = true;
+                form.hidden = false;
+            }
+        } catch (err) {
+            gate.hidden = true;
+            form.hidden = false;
+            showAlert(err.message || 'Unable to initialize authentication.', 'error');
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearAlert();
+
+            const email = form.email.value.trim();
+            const password = form.password.value;
+
+            if (!email || !password) {
+                showAlert('Enter your email and password.', 'error');
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = 'Signing in…';
+            let leaving = false;
+
+            try {
+                const authState = await signIn(email, password, 'admin');
+                if (!isAdminPortalEligible(authState)) {
+                    showAlert('This account is not authorized for the Admin Portal.', 'error');
+                    return;
+                }
+                setAdminPersistPreference(remember.checked);
+                leaving = true;
+                window.location.replace('admin-portal.html');
+            } catch (err) {
+                const current = getAuthState();
+                if (current.authenticated && current.profile && !isAdminPortalEligible(current)) {
+                    leaving = true;
+                    window.location.replace('admin-unauthorized.html');
+                    return;
+                }
+                showAlert(err.message || 'Sign-in failed. Check your credentials and try again.', 'error');
+            } finally {
+                if (!leaving) {
+                    button.disabled = false;
+                    button.textContent = 'Sign In';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
