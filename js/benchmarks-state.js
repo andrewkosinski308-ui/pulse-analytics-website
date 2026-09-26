@@ -129,7 +129,7 @@ export function renderBenchmarkCards(metrics) {
       : "";
     const note = metric.note ? `<p class="benchmark-note">${escapeHtml(metric.note)}</p>` : "";
 
-    return `<article class="resource-card benchmark-card">
+    return `<article class="resource-card benchmark-card" data-metric-id="${escapeHtml(metric.id)}">
       <h3>${escapeHtml(metric.name)}</h3>
       ${note}
       ${primary}
