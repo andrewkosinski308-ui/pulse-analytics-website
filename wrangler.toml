@@ -7,7 +7,7 @@
 # removed on deploy. Secrets are not removed and are never stored here.
 #
 # SUPABASE_URL is a non-secret variable.
-# OPENALEX_API_KEY and SUPABASE_ANON_KEY are required Cloudflare secrets.
+# OPENALEX_API_KEY, SUPABASE_ANON_KEY, and CENSUS_API_KEY are required Cloudflare secrets.
 # Set or update secret values with `npx wrangler secret put <NAME>`.
 # Do not commit secret values.
 #
@@ -28,4 +28,4 @@ run_worker_first = true
 SUPABASE_URL = "https://gultqhsccxuqvibymwdg.supabase.co"
 
 [secrets]
-required = ["OPENALEX_API_KEY", "SUPABASE_ANON_KEY"]
+required = ["OPENALEX_API_KEY", "SUPABASE_ANON_KEY", "CENSUS_API_KEY"]

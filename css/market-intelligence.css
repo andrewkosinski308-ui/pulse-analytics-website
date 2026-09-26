@@ -1,0 +1,206 @@
+.market-intelligence {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: left;
+  overflow-x: clip;
+}
+
+.market-intelligence [hidden] {
+  display: none !important;
+}
+
+.mi-section {
+  padding: var(--space-6) 0 var(--space-7);
+}
+
+.mi-fields {
+  display: grid;
+  gap: 1rem;
+}
+
+.mi-field,
+.mi-local {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .4rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.mi-field span,
+.mi-local legend {
+  color: var(--primary);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.mi-local {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.mi-or {
+  margin: 0;
+  color: var(--text-light);
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.market-intelligence select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: .55rem 1.55rem .55rem .75rem;
+  color: var(--text);
+  background-color: var(--light);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--primary) 50%),
+    linear-gradient(135deg, var(--primary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 12px) calc(50% - 1px),
+    calc(100% - 7px) calc(50% - 1px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  border: 1px solid var(--border);
+  border-radius: var(--button-radius);
+  appearance: none;
+  font: inherit;
+  font-size: .8125rem;
+}
+
+.market-intelligence select:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.market-intelligence select:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, .10);
+  outline: none;
+}
+
+.mi-status {
+  min-height: 1.5rem;
+  margin: 1rem 0 0;
+  color: var(--text-light);
+  overflow-wrap: anywhere;
+}
+
+.mi-retry {
+  margin-top: .75rem;
+}
+
+.mi-result {
+  margin-top: 1.25rem;
+}
+
+.mi-card {
+  padding: 1.25rem;
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow-wrap: anywhere;
+}
+
+.mi-card h2,
+.mi-card h3,
+.mi-card p {
+  overflow-wrap: anywhere;
+}
+
+.mi-card h2 {
+  margin: 0 0 .35rem;
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+
+.mi-value {
+  margin: 0 0 .35rem;
+  color: var(--text);
+  font-size: clamp(1.8rem, 8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.mi-geography,
+.mi-meta,
+.mi-statement,
+.mi-note {
+  margin: .35rem 0 0;
+}
+
+.mi-note {
+  color: var(--text-light);
+  font-size: .875rem;
+}
+
+.mi-industry-list {
+  margin: .75rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.mi-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: .35rem .75rem;
+  margin: 1rem 0 0;
+}
+
+.mi-facts dt {
+  margin: 0;
+  color: var(--primary);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.mi-facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.mi-meaning {
+  margin-top: 1rem;
+}
+
+.mi-meaning h3 {
+  margin: 0 0 .25rem;
+  font-size: .95rem;
+}
+
+.mi-meaning p {
+  margin: 0;
+}
+
+@media (max-width: 390px) {
+  .mi-section {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .market-intelligence,
+  .mi-card,
+  .mi-facts,
+  .market-intelligence select,
+  .mi-retry {
+    max-width: 100%;
+  }
+
+  .mi-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mi-fields {
+    display: flex;
+    flex-direction: column;
+  }
+}

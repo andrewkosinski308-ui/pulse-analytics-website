@@ -6,12 +6,14 @@
  * 2. Redirect legacy Pulse domains to the production host (301).
  * 3. Redirect known obsolete/incorrect paths to current production paths (301).
  * 4. Serve the Industry Research Library API from the Pulse catalog.
- * 5. Pass all other requests to static assets (custom 404.html via not_found_handling).
+ * 5. Serve the Market Intelligence API. Census requests stay on the Worker.
+ * 6. Pass all other requests to static assets (custom 404.html via not_found_handling).
  *
  * Does not redirect unknown URLs to the homepage.
  * Does not redirect the canonical HTTPS host to itself.
  */
 
+import { handleMarketIntelligenceRequest } from "./market-intelligence/api.js";
 import { handleResearchRequest } from "./research/api.js";
 
 const PRODUCTION_HOST = "pulseanalyticsgroupllc.com";
@@ -109,6 +111,10 @@ export default {
 
     if (url.pathname.startsWith("/api/research/")) {
       return handleResearchRequest(request, env);
+    }
+
+    if (url.pathname.startsWith("/api/market-intelligence/")) {
+      return handleMarketIntelligenceRequest(request, env);
     }
 
     return env.ASSETS.fetch(request);
