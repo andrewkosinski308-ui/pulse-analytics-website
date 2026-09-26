@@ -1,6 +1,6 @@
-import { EMPTY_MESSAGE } from "../workers/benchmarks/catalog.js";
-
-export { EMPTY_MESSAGE };
+export const LOADING_MESSAGE = "Loading benchmark data...";
+export const ERROR_MESSAGE = "Benchmark data is temporarily unavailable. Please try again.";
+export const EMPTY_MESSAGE = "No benchmark is available for this selection.";
 
 export function filterBenchmarks(catalog, filters = {}) {
   const categoryId = filters.categoryId || "";

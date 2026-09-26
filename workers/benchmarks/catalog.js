@@ -4,8 +4,12 @@
  * averaged, or filled in when a source left it unstated.
  */
 
+import { EMPTY_MESSAGE, ERROR_MESSAGE, LOADING_MESSAGE } from "../../js/benchmarks-state.js";
+
 const NOT_STATED = "Not stated by the source.";
 const DASH = "\u2013";
+
+export { EMPTY_MESSAGE, ERROR_MESSAGE, LOADING_MESSAGE };
 
 export const CATEGORIES = [
   { id: "website-conversion", name: "Website & Conversion" },
@@ -15,10 +19,6 @@ export const CATEGORIES = [
   { id: "social-media", name: "Social Media" },
   { id: "ecommerce", name: "Ecommerce" },
 ];
-
-export const LOADING_MESSAGE = "Loading benchmark data...";
-export const ERROR_MESSAGE = "Benchmark data is temporarily unavailable. Please try again.";
-export const EMPTY_MESSAGE = "No benchmark is available for this selection.";
 
 function observation(metric, index, fields) {
   return {

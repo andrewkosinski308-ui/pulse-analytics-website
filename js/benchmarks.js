@@ -1,5 +1,4 @@
-import { ERROR_MESSAGE, LOADING_MESSAGE } from "../workers/benchmarks/catalog.js";
-import { filterBenchmarks, filterOptions, renderBenchmarkCards, selectionMessage } from "./benchmarks-state.js";
+import { ERROR_MESSAGE, LOADING_MESSAGE, filterBenchmarks, filterOptions, renderBenchmarkCards, selectionMessage } from "./benchmarks-state.js";
 
 const status = document.querySelector("#benchmark-status");
 const results = document.querySelector("#benchmark-results");
