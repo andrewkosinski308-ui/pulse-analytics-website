@@ -1,0 +1,206 @@
+.benchmarks-page .resources-hero h1 {
+    text-transform: uppercase;
+}
+
+.benchmarks {
+    padding-bottom: var(--space-5);
+}
+
+.benchmark-filters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: .75rem;
+    margin: 0 0 var(--space-3);
+}
+
+.benchmark-filter {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    min-width: 0;
+}
+
+.benchmark-filter span {
+    color: var(--primary);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.benchmark-filter select {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: .55rem 1.55rem .55rem .75rem;
+    color: var(--text);
+    background-color: var(--light);
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--primary) 50%),
+        linear-gradient(135deg, var(--primary) 50%, transparent 50%);
+    background-position:
+        calc(100% - 12px) calc(50% - 1px),
+        calc(100% - 7px) calc(50% - 1px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    border: 1px solid var(--border);
+    border-radius: var(--button-radius);
+    appearance: none;
+    cursor: pointer;
+    font-size: .8125rem;
+}
+
+.benchmark-filter select:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, .10);
+    outline: none;
+}
+
+.benchmark-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem .75rem;
+    margin: 0 0 var(--space-3);
+}
+
+.benchmark-categories button {
+    padding: 0;
+    color: var(--primary);
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.benchmark-categories button[aria-pressed="true"] {
+    border-bottom-color: var(--secondary);
+}
+
+.benchmark-status {
+    min-height: 1.5rem;
+    margin: 0 0 var(--space-3);
+}
+
+.benchmarks .resource-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+.benchmark-card,
+.benchmark-card h3,
+.benchmark-card p,
+.benchmark-card a,
+.benchmark-card li,
+.benchmark-card dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.benchmark-note,
+.benchmark-statement,
+.benchmark-definition {
+    margin: 0 0 .85rem;
+}
+
+.benchmark-figure {
+    margin: 0 0 .85rem;
+    color: var(--primary);
+    font-size: clamp(1.75rem, 4vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.benchmark-caption {
+    display: block;
+    margin-top: .3rem;
+    color: var(--text);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.benchmark-group + .benchmark-group {
+    margin-top: .75rem;
+}
+
+.benchmark-group p {
+    margin: 0 0 .25rem;
+    font-weight: 700;
+}
+
+.benchmark-values {
+    margin: 0 0 .85rem;
+    padding: 0;
+    list-style: none;
+}
+
+.benchmark-values li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .75rem;
+    align-items: baseline;
+    padding: .35rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.benchmark-values small {
+    display: block;
+    color: var(--text);
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+.benchmark-meta p {
+    margin: 0 0 .35rem;
+}
+
+.benchmark-meta span,
+.benchmark-details dt {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.benchmark-details {
+    margin-top: .85rem;
+}
+
+.benchmark-details summary {
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.benchmark-details dl {
+    margin: .75rem 0 0;
+}
+
+.benchmark-details dd {
+    margin: 0 0 .65rem;
+}
+
+.benchmark-details h4 {
+    margin: .85rem 0 .35rem;
+}
+
+@media (max-width: 700px) {
+    .benchmark-filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 390px) {
+    .benchmarks-page {
+        overflow-x: hidden;
+    }
+
+    .benchmark-filters,
+    .benchmarks .resource-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .benchmark-values li {
+        grid-template-columns: minmax(0, 1fr);
+        gap: .15rem;
+    }
+}

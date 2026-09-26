@@ -7,12 +7,14 @@
  * 3. Redirect known obsolete/incorrect paths to current production paths (301).
  * 4. Serve the Industry Research Library API from the Pulse catalog.
  * 5. Serve the Market Intelligence API. Census requests stay on the Worker.
- * 6. Pass all other requests to static assets (custom 404.html via not_found_handling).
+ * 6. Serve the Marketing Benchmarks catalog.
+ * 7. Pass all other requests to static assets (custom 404.html via not_found_handling).
  *
  * Does not redirect unknown URLs to the homepage.
  * Does not redirect the canonical HTTPS host to itself.
  */
 
+import { handleBenchmarksRequest } from "./benchmarks/api.js";
 import { handleMarketIntelligenceRequest } from "./market-intelligence/api.js";
 import { handleResearchRequest } from "./research/api.js";
 
@@ -115,6 +117,10 @@ export default {
 
     if (url.pathname.startsWith("/api/market-intelligence/")) {
       return handleMarketIntelligenceRequest(request, env);
+    }
+
+    if (url.pathname.startsWith("/api/benchmarks")) {
+      return handleBenchmarksRequest(request);
     }
 
     return env.ASSETS.fetch(request);
