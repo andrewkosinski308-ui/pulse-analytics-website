@@ -7895,15 +7895,24 @@ body:has(.about-hero) #footer #backToTop{
     line-height:1.7;
 }
 
-/* Social media cards share one set of rows so the divider and price
-   line up when the positioning line, name, or description wraps. */
+/* Social media cards share one set of rows so the product name, divider,
+   and price line up when the positioning line, name, or description wraps. */
 #social-media .pricing-card{
 
     display:grid;
 
     grid-template-rows:subgrid;
 
-    grid-row:span 4;
+    grid-row:span 6;
+}
+
+#social-media .pricing-card-header{
+
+    display:grid;
+
+    grid-template-rows:subgrid;
+
+    grid-row:span 3;
 }
 
 @media (max-width:576px){
@@ -7911,6 +7920,14 @@ body:has(.about-hero) #footer #backToTop{
     #social-media .pricing-card{
 
         display:flex;
+
+        grid-row:auto;
+
+    }
+
+    #social-media .pricing-card-header{
+
+        display:block;
 
         grid-row:auto;
 
