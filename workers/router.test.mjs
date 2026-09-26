@@ -154,6 +154,19 @@ test("sitemap lists the canonical homepage and not the http or www variants", ()
   assert.equal(xml.includes("www.pulseanalyticsgroupllc.com"), false);
 });
 
+test("checkout sessions are handled by the worker and not static assets", async () => {
+  const mock = assets();
+  const response = await worker.fetch(new Request("https://pulseanalyticsgroupllc.com/api/checkout/session", {
+    method: "POST",
+    headers: { Origin: "https://pulseanalyticsgroupllc.com", "Content-Type": "application/json" },
+    body: JSON.stringify({ items: [{ id: "website-startup", quantity: 1 }] })
+  }), mock.env);
+  const body = await response.json();
+  assert.equal(response.status, 503);
+  assert.equal(mock.calls.length, 0);
+  assert.equal(JSON.stringify(body).includes("sk_"), false);
+});
+
 test("research and admin routes stay on the canonical host", async () => {
   const research = await route("https://pulseanalyticsgroupllc.com/api/research/resources?page=1&pageSize=12&sort=publication_date");
   assert.notEqual(research.response.status, 301);

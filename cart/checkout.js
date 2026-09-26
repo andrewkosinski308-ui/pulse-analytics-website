@@ -274,11 +274,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-         * There is nothing to purchase.
-         * Return the customer to the cart page.
-         */
-
         window.location.href = "cart.html";
 
         return true;
@@ -286,80 +281,194 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* ==========================================
-       PAYMENT BUTTON
-    ========================================== */
+    function showAlert(message) {
 
-    function setupPaymentButton() {
-
-        const paymentButton =
-            document.getElementById(
-                "completePaymentButton"
-            );
+        const alertElement =
+            document.getElementById("checkoutAlert");
 
 
-        if (!paymentButton) {
+        if (!alertElement) {
 
             return;
 
         }
 
 
-        /*
-         * Payment remains disabled until
-         * a payment processor is connected.
-         */
+        alertElement.hidden = false;
 
-        paymentButton.disabled = true;
-
-
-        paymentButton.addEventListener(
-            "click",
-            (event) => {
-
-                event.preventDefault();
-
-                console.warn(
-                    "Payment processing has not been connected yet."
-                );
-
-            }
-        );
+        alertElement.textContent = message;
 
     }
 
 
-    /* ==========================================
-       CHECKOUT FORM
-    ========================================== */
+    function showSuccess() {
 
-    function setupCheckoutForm() {
+        const successElement =
+            document.getElementById("checkoutSuccess");
 
         const checkoutForm =
-            document.getElementById(
-                "checkoutForm"
+            document.getElementById("checkoutForm");
+
+
+        if (successElement) {
+
+            successElement.hidden = false;
+
+        }
+
+
+        if (checkoutForm) {
+
+            checkoutForm.hidden = true;
+
+        }
+
+    }
+
+
+    function checkoutPayload(cart) {
+
+        return {
+            items: cart.map((item) => ({
+                id: item.id,
+                quantity: item.quantity || 1
+            }))
+        };
+
+    }
+
+
+    async function loadStripeJs() {
+
+        if (window.Stripe) {
+
+            return window.Stripe;
+
+        }
+
+
+        await new Promise((resolve, reject) => {
+
+            const script = document.createElement("script");
+
+            script.src = "https://js.stripe.com/v3/";
+
+            script.async = true;
+
+            script.onload = resolve;
+
+            script.onerror = reject;
+
+            document.head.appendChild(script);
+
+        });
+
+
+        return window.Stripe;
+
+    }
+
+
+    async function confirmReturnedCheckout(sessionId) {
+
+        const response = await fetch(
+            `/api/checkout/session?session_id=${encodeURIComponent(sessionId)}`
+        );
+
+        const payload = await response.json().catch(() => null);
+
+
+        if (!response.ok || !payload) {
+
+            showAlert(
+                "We couldn't confirm this payment. Please contact Pulse Analytics if you were charged."
+            );
+
+            return false;
+
+        }
+
+
+        if (payload.complete) {
+
+            showSuccess();
+
+            localStorage.removeItem(CART_STORAGE_KEY);
+
+            return true;
+
+        }
+
+
+        showAlert(
+            "Your payment was not completed. Your cart is still available."
+        );
+
+        return false;
+
+    }
+
+
+    async function mountEmbeddedCheckout(cart) {
+
+        const statusElement =
+            document.getElementById("checkoutStatus");
+
+        const mountElement =
+            document.getElementById("embedded-checkout");
+
+
+        const response = await fetch("/api/checkout/session", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(checkoutPayload(cart))
+        });
+
+        const payload = await response.json().catch(() => null);
+
+
+        if (
+            !response.ok ||
+            !payload?.clientSecret ||
+            !payload?.publishableKey
+        ) {
+
+            showAlert(
+                payload?.error ||
+                "We couldn't start checkout. Please try again or contact Pulse Analytics."
             );
 
 
-        if (!checkoutForm) {
+            if (statusElement) {
+
+                statusElement.hidden = true;
+
+            }
 
             return;
 
         }
 
 
-        checkoutForm.addEventListener(
-            "submit",
-            (event) => {
+        const Stripe = await loadStripeJs();
 
-                event.preventDefault();
+        const stripe = Stripe(payload.publishableKey);
 
-                console.log(
-                    "Checkout form submitted."
-                );
+        const checkout = await stripe.initEmbeddedCheckout({
+            clientSecret: payload.clientSecret
+        });
 
-            }
-        );
+
+        if (statusElement) {
+
+            statusElement.hidden = true;
+
+        }
+
+
+        checkout.mount(mountElement || "#embedded-checkout");
 
     }
 
@@ -368,7 +477,77 @@ document.addEventListener("DOMContentLoaded", () => {
        INITIALIZE CHECKOUT
     ========================================== */
 
+    const checkoutForm =
+        document.getElementById("checkoutForm");
+
+
+    if (checkoutForm) {
+
+        checkoutForm.addEventListener(
+            "submit",
+            (event) => {
+
+                event.preventDefault();
+
+            }
+        );
+
+    }
+
+
+    const params = new URLSearchParams(window.location.search);
+
+    const sessionId = params.get("session_id");
+
     const cart = getCart();
+
+
+    if (sessionId) {
+
+        if (cart.length) {
+
+            renderCheckoutItems(cart);
+
+            updateCheckoutTotals(cart);
+
+        }
+
+
+        confirmReturnedCheckout(sessionId)
+            .then((completed) => {
+
+                if (completed) {
+
+                    return;
+
+                }
+
+
+                if (handleEmptyCart(cart)) {
+
+                    return;
+
+                }
+
+
+                renderCheckoutItems(cart);
+
+                updateCheckoutTotals(cart);
+
+                return mountEmbeddedCheckout(cart);
+
+            })
+            .catch(() => {
+
+                showAlert(
+                    "We couldn't confirm this payment. Please contact Pulse Analytics if you were charged."
+                );
+
+            });
+
+        return;
+
+    }
 
 
     if (handleEmptyCart(cart)) {
@@ -382,8 +561,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateCheckoutTotals(cart);
 
-    setupPaymentButton();
 
-    setupCheckoutForm();
+    mountEmbeddedCheckout(cart).catch(() => {
+
+        showAlert(
+            "We couldn't start checkout. Please try again or contact Pulse Analytics."
+        );
+
+    });
 
 });

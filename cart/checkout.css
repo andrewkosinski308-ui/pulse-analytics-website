@@ -1,1 +1,21 @@
-/* Checkout page supplemental styles - placeholder */
+.checkout-alert {
+    margin-bottom: 1.25rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    background: #fff7f7;
+    color: #991b1b;
+}
+
+.checkout-success p {
+    margin: 0 0 1.25rem;
+}
+
+.checkout-status {
+    margin: 0 0 1rem;
+    color: #64748b;
+}
+
+#embedded-checkout {
+    min-height: 420px;
+}

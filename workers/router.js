@@ -8,13 +8,15 @@
  * 4. Serve the Industry Research Library API from the Pulse catalog.
  * 5. Serve the Market Intelligence API. Census requests stay on the Worker.
  * 6. Serve the Marketing Benchmarks catalog.
- * 7. Pass all other requests to static assets (custom 404.html via not_found_handling).
+ * 7. Create and confirm Stripe Embedded Checkout sessions.
+ * 8. Pass all other requests to static assets (custom 404.html via not_found_handling).
  *
  * Does not redirect unknown URLs to the homepage.
  * Does not redirect the canonical HTTPS host to itself.
  */
 
 import { handleBenchmarksRequest } from "./benchmarks/api.js";
+import { handleCheckoutRequest } from "./checkout/api.js";
 import { handleMarketIntelligenceRequest } from "./market-intelligence/api.js";
 import { handleResearchRequest } from "./research/api.js";
 
@@ -121,6 +123,10 @@ export default {
 
     if (url.pathname.startsWith("/api/benchmarks")) {
       return handleBenchmarksRequest(request);
+    }
+
+    if (url.pathname.startsWith("/api/checkout/")) {
+      return handleCheckoutRequest(request, env);
     }
 
     return env.ASSETS.fetch(request);

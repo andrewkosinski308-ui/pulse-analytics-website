@@ -449,14 +449,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                         <div class="checkout-details">
 
-                            <form id="checkoutForm">
+                            <div
+                                id="checkoutAlert"
+                                class="checkout-alert"
+                                role="alert"
+                                hidden
+                            ></div>
+
+                            <div
+                                id="checkoutSuccess"
+                                class="checkout-card checkout-success"
+                                hidden
+                            >
+
+                                <div class="checkout-card-header">
+
+                                    <span class="checkout-step">
+                                        <i class="fa-solid fa-check"></i>
+                                    </span>
+
+                                    <div>
+
+                                        <p class="section-label">
+                                            PAYMENT RECEIVED
+                                        </p>
+
+                                        <h2>
+                                            Thank you for your order
+                                        </h2>
+
+                                    </div>
+
+                                </div>
+
+                                <p>
+                                    Your payment was completed. Pulse Analytics
+                                    will follow up using the email address
+                                    collected during checkout.
+                                </p>
+
+                                <a class="btn-primary" href="../index.html">
+                                    Return home
+                                </a>
+
+                            </div>
+
+                            <form id="checkoutForm" novalidate>
 
 
                                 <!-- ==========================================
                                     CONTACT INFORMATION
                                 ========================================== -->
 
-                                <div class="checkout-card">
+                                <div class="checkout-card" hidden>
 
                                     <div class="checkout-card-header">
 
@@ -573,7 +618,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     BILLING INFORMATION
                                 ========================================== -->
 
-                                <div class="checkout-card">
+                                <div class="checkout-card" hidden>
 
                                     <div class="checkout-card-header">
 
@@ -723,40 +768,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     </div>
 
 
-                                    <div
-                                        class="payment-placeholder"
-                                        id="paymentElement"
+                                    <p
+                                        class="checkout-status"
+                                        id="checkoutStatus"
                                     >
+                                        Preparing secure checkout…
+                                    </p>
 
-                                        <div class="payment-placeholder-icon">
+                                    <div id="embedded-checkout"></div>
 
-                                            <i class="fa-solid fa-credit-card"></i>
-
-                                        </div>
-
-                                        <h3>
-                                            Payment Processing
-                                        </h3>
-
-                                        <p>
-                                            Payment processing will be
-                                            connected when the Pulse Analytics
-                                            backend and payment system are ready.
-                                        </p>
-
-                                        <span class="payment-security-note">
-
-                                            <i class="fa-solid fa-lock"></i>
-
-                                            Your payment information will be
-                                            handled securely.
-
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="checkout-terms">
+                                    <div class="checkout-terms" hidden>
 
                                         <label class="checkbox-label">
 
@@ -788,7 +809,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                         type="submit"
                                         class="btn-primary checkout-submit"
                                         id="completePaymentButton"
-                                        disabled
+                                        hidden
                                     >
 
                                         Complete Payment
@@ -802,9 +823,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                                         <i class="fa-solid fa-shield-halved"></i>
 
-                                        Secure checkout. Payment processing
-                                        will be activated when the payment
-                                        system is connected.
+                                        Secure checkout. Card details are
+                                        collected by Stripe and are not stored
+                                        on this website.
 
                                     </p>
 
