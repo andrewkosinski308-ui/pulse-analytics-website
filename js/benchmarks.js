@@ -156,11 +156,14 @@ results.addEventListener("click", async (event) => {
     button.disabled = true;
     button.textContent = COMPARING_LABEL;
     await new Promise((resolve) => {
-      if (document.hidden) {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
         resolve();
-        return;
-      }
-      requestAnimationFrame(() => resolve());
+      };
+      setTimeout(finish, 50);
+      if (!document.hidden) requestAnimationFrame(finish);
     });
     try {
       const observation = selectedObservation(metric, panel);
