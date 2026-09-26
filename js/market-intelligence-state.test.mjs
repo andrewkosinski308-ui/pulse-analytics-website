@@ -11,6 +11,8 @@ import {
   geographyLoads,
   initialSelection,
   loadingPlan,
+  messageForError,
+  openBreadcrumb,
   reduceSelection,
   sectorChoices
 } from "./market-intelligence-state.js";
@@ -70,6 +72,7 @@ test("loading states name the request in progress", () => {
   assert.equal(loadingPlan("subdivisions").message, "Loading townships...");
   assert.equal(loadingPlan("data").message, "Loading market data...");
   assert.equal(loadingPlan("industries").message, "Loading industries...");
+  assert.deepEqual(loadingPlan("industries").disable, ["mi-naics-all"]);
   assert.equal(COPY.emptyLocations, MESSAGES.emptyLocations);
   assert.equal(COPY.emptyData, MESSAGES.emptyData);
   assert.equal(COPY.unavailable, MESSAGES.unavailable);
@@ -118,6 +121,46 @@ test("a newer market-data request does not keep an older overlapping call", asyn
   assert.equal(second.isCurrent(), true);
   assert.equal(first.isCurrent(), false);
   assert.deepEqual(seen, ["population", "households"]);
+});
+
+test("a selected NAICS code stays in market state and breadcrumb navigation returns to that parent", () => {
+  const breadcrumb = [
+    { code: "54", title: "Professional, Scientific, and Technical Services" },
+    { code: "541", title: "Professional, Scientific, and Technical Services" },
+    { code: "541511", title: "Custom Computer Programming Services" }
+  ];
+  let selection = reduceSelection(initialSelection(), { type: "metric", metric: "businesses" });
+  selection = reduceSelection(selection, {
+    type: "naics",
+    code: "541511",
+    title: breadcrumb[2].title,
+    version: "2017",
+    dataset: "2023-cbp",
+    breadcrumb
+  });
+  assert.equal(selection.naicsCode, "541511");
+  assert.equal(selection.naicsVersion, "2017");
+  assert.equal(effectiveQuery(selection).naics_code, "541511");
+  const opened = openBreadcrumb(selection.breadcrumb, 0);
+  selection = reduceSelection(selection, {
+    type: "naics",
+    code: opened.code,
+    title: opened.title,
+    version: "2017",
+    dataset: "2023-cbp",
+    breadcrumb: opened.breadcrumb
+  });
+  assert.equal(selection.naicsCode, "54");
+  assert.deepEqual(selection.breadcrumb.map((item) => item.code), ["54"]);
+  assert.equal(opened.parent, "54");
+});
+
+test("industry data is not requested until a NAICS code is selected", () => {
+  const selection = reduceSelection(initialSelection(), { type: "metric", metric: "industry" });
+  assert.equal(effectiveQuery(selection), null);
+  assert.equal(messageForError({ error: { code: "NAICS_CODE_REQUIRED" } }), "Select an industry to view business data.");
+  assert.equal(messageForError({ error: { code: "AMBIGUOUS_NAICS_CROSSWALK" } }), "A comparable business value is not available for this industry in this dataset.");
+  assert.equal(messageForError({ error: { code: "MYSTERY" } }), COPY.unavailable);
 });
 
 test("industry choices stay inside the Census hierarchy", () => {

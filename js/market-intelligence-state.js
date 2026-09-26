@@ -9,7 +9,33 @@ export const COPY = {
   emptyData: "No data is available for this selection.",
   unavailable: "Market Intelligence is temporarily unavailable. Please try again.",
   businessUnavailable: "Business data is not available from this Census dataset at this geography.",
-  metricUnavailable: "This metric is not available for the selected geography."
+  metricUnavailable: "This metric is not available for the selected geography.",
+  selectIndustry: "Select an industry to view business data.",
+  invalidIndustry: "The selected industry is not available in this dataset.",
+  industryDataset: "This industry is not available in the selected business dataset.",
+  ambiguousIndustry: "A comparable business value is not available for this industry in this dataset.",
+  unsupportedGeography: "Business data is not available from this Census dataset at this geography.",
+  vintageUnavailable: "This data year is not currently available.",
+  notDisclosed: "Not disclosed",
+  notAvailable: "Not available",
+  notApplicable: "Not applicable"
+};
+
+export const ERROR_TEXT = {
+  NAICS_CODE_REQUIRED: COPY.selectIndustry,
+  INVALID_NAICS_CODE: COPY.invalidIndustry,
+  NAICS_NOT_AVAILABLE_FOR_DATASET: COPY.industryDataset,
+  AMBIGUOUS_NAICS_CROSSWALK: COPY.ambiguousIndustry,
+  UNSUPPORTED_GEOGRAPHY: COPY.businessUnavailable,
+  DATASET_VINTAGE_UNAVAILABLE: COPY.vintageUnavailable,
+  NO_DATA: COPY.emptyData,
+  INVALID_GEOGRAPHY: COPY.metricUnavailable,
+  INVALID_GEOGRAPHY_RELATIONSHIP: COPY.metricUnavailable,
+  INVALID_METRIC: COPY.metricUnavailable,
+  CENSUS_UPSTREAM_UNAVAILABLE: COPY.unavailable,
+  CENSUS_RATE_LIMITED: COPY.unavailable,
+  MARKET_DATA_UNAVAILABLE: COPY.unavailable,
+  MARKET_DATA_METADATA_UNAVAILABLE: COPY.unavailable
 };
 
 const LOADING = {
@@ -18,7 +44,7 @@ const LOADING = {
   places: { message: COPY.loadingPlaces, disable: ["mi-place"] },
   subdivisions: { message: COPY.loadingTownships, disable: ["mi-subdivision"] },
   data: { message: COPY.loadingData, disable: ["mi-metric"] },
-  industries: { message: COPY.loadingIndustries, disable: ["mi-sector", "mi-detail"] }
+  industries: { message: COPY.loadingIndustries, disable: ["mi-naics-all"] }
 };
 
 export function initialSelection() {
@@ -28,8 +54,21 @@ export function initialSelection() {
     placeCode: "",
     subdivisionCode: "",
     metric: "population",
-    naics: "00"
+    naicsCode: "",
+    naicsTitle: "",
+    naicsVersion: "",
+    naicsDataset: "",
+    breadcrumb: []
   };
+}
+
+export function messageForError(body) {
+  const code = body?.error?.code;
+  if (code === "NO_DATA" && body.error.message) return body.error.message;
+  if (code && ERROR_TEXT[code]) return ERROR_TEXT[code];
+  if (code) return COPY.unavailable;
+  if (body?.message) return body.message;
+  return COPY.unavailable;
 }
 
 export function reduceSelection(state, action) {
@@ -68,14 +107,41 @@ export function reduceSelection(state, action) {
     return { ...state, metric: action.metric || "population" };
   }
   if (action.type === "naics") {
-    return { ...state, naics: action.naics || "00" };
+    return {
+      ...state,
+      naicsCode: action.code || "",
+      naicsTitle: action.title || "",
+      naicsVersion: action.version || "2017",
+      naicsDataset: action.dataset || "2023-cbp",
+      breadcrumb: Array.isArray(action.breadcrumb) ? action.breadcrumb : []
+    };
   }
   return state;
 }
 
+export function openBreadcrumb(breadcrumb, index) {
+  const next = breadcrumb.slice(0, index + 1);
+  const crumb = next[index];
+  if (!crumb?.code) return null;
+  return {
+    code: crumb.code,
+    title: crumb.title,
+    breadcrumb: next,
+    parent: crumb.code
+  };
+}
+
+export function isBusinessMetric(metric) {
+  return metric === "businesses" || metric === "industry" || metric === "payroll";
+}
+
 export function effectiveQuery(selection) {
+  if (selection.metric === "industry" && !selection.naicsCode) return null;
   const query = { metric: selection.metric };
-  if (selection.metric === "industry") query.naics = selection.naics || "00";
+  if (isBusinessMetric(selection.metric) && selection.naicsCode) {
+    query.naics_code = selection.naicsCode;
+    if (selection.naicsVersion) query.naics_version = selection.naicsVersion;
+  }
   if (selection.placeCode && selection.stateCode) {
     return {
       ...query,
@@ -198,7 +264,7 @@ export function createDataLoader(fetchData) {
 
 export function dataQueryString(query) {
   const params = new URLSearchParams();
-  const keys = ["geography_type", "geography_code", "state", "county", "metric", "naics"];
+  const keys = ["geography_type", "geography_code", "state", "county", "metric", "naics", "naics_code", "naics_version"];
   for (const key of keys) {
     if (query[key]) params.set(key, query[key]);
   }

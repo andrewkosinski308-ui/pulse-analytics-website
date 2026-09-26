@@ -3,13 +3,14 @@ import {
   createDataLoader,
   createFlightMap,
   dataQueryString,
-  detailChoices,
   effectiveQuery,
   geographyLoads,
   initialSelection,
+  isBusinessMetric,
   loadingPlan,
-  reduceSelection,
-  sectorChoices
+  messageForError,
+  openBreadcrumb,
+  reduceSelection
 } from "./market-intelligence-state.js";
 
 document.querySelector("#market-intelligence").addEventListener("submit", (event) => {
@@ -22,8 +23,10 @@ const placeSelect = document.querySelector("#mi-place");
 const subdivisionSelect = document.querySelector("#mi-subdivision");
 const metricSelect = document.querySelector("#mi-metric");
 const industryFields = document.querySelector("#mi-industry-fields");
-const sectorSelect = document.querySelector("#mi-sector");
-const detailSelect = document.querySelector("#mi-detail");
+const naicsSelected = document.querySelector("#mi-naics-selected");
+const naicsCrumbs = document.querySelector("#mi-naics-crumbs");
+const naicsList = document.querySelector("#mi-naics-list");
+const naicsAll = document.querySelector("#mi-naics-all");
 const statusNode = document.querySelector("#mi-status");
 const resultNode = document.querySelector("#mi-result");
 const retryButton = document.querySelector("#mi-retry");
@@ -31,8 +34,6 @@ const retryButton = document.querySelector("#mi-retry");
 const flights = createFlightMap();
 const dataLoader = createDataLoader((query, signal) => requestData(query, signal));
 let selection = initialSelection();
-let industries = [];
-let industriesLoaded = false;
 const statusStack = [];
 
 stateSelect.addEventListener("change", () => {
@@ -76,34 +77,17 @@ subdivisionSelect.addEventListener("change", () => {
 metricSelect.addEventListener("change", () => {
   selection = reduceSelection(selection, { type: "metric", metric: metricSelect.value });
   clearResult();
-  if (selection.metric === "industry") {
-    loadIndustries().then(() => loadMarketData());
-    return;
-  }
-  industryFields.hidden = true;
+  syncIndustryBrowser();
   loadMarketData();
 });
 
-sectorSelect.addEventListener("change", () => {
-  fillDetails(sectorSelect.value);
-  selection = reduceSelection(selection, { type: "naics", naics: sectorSelect.value || "00" });
-  clearResult();
-  loadMarketData();
-});
-
-detailSelect.addEventListener("change", () => {
-  const naics = detailSelect.value || sectorSelect.value || "00";
-  selection = reduceSelection(selection, { type: "naics", naics });
-  clearResult();
-  loadMarketData();
+naicsAll.addEventListener("click", () => {
+  chooseNaics("00");
 });
 
 retryButton.addEventListener("click", () => {
   clearResult();
-  if (selection.metric === "industry" && !industriesLoaded) {
-    loadIndustries().then(() => loadMarketData());
-    return;
-  }
+  if (isBusinessMetric(selection.metric) && !naicsList.childElementCount) loadNaicsLevel("");
   loadMarketData();
 });
 
@@ -160,32 +144,132 @@ function loadGeographies() {
   }
 }
 
-function loadIndustries() {
-  industryFields.hidden = false;
-  if (industriesLoaded) {
-    fillSectors();
-    return Promise.resolve();
-  }
+function syncIndustryBrowser() {
+  const business = isBusinessMetric(selection.metric);
+  industryFields.hidden = !business;
+  if (!business) return;
+  renderNaicsState();
+  if (!naicsList.childElementCount) loadNaicsLevel(selection.breadcrumb.at(-1)?.code && selection.naicsCode !== "00"
+    ? parentBrowseCode()
+    : "");
+}
+
+function parentBrowseCode() {
+  const crumbs = selection.breadcrumb;
+  if (crumbs.length > 1) return crumbs.at(-2).code;
+  return "";
+}
+
+function loadNaicsLevel(parent) {
+  const params = new URLSearchParams({ dataset: "cbp" });
+  if (parent) params.set("parent", parent);
+  const key = params.toString();
   begin("industries");
-  sectorSelect.disabled = true;
-  detailSelect.disabled = true;
-  return flights.run("industries", () => getJson("/api/market-intelligence/industries"))
+  naicsAll.disabled = true;
+  return flights.run(key, () => getJson(`/api/market-intelligence/naics?${key}`))
     .then((body) => {
-      industries = Array.isArray(body.industries) ? body.industries : [];
-      industriesLoaded = industries.length > 0;
-      fillSectors();
-      if (!industriesLoaded) showStatus(COPY.unavailable);
+      if (body?.error?.code) {
+        showStatus(messageForError(body));
+        return;
+      }
+      renderNaicsItems(body.items || []);
+      if (!(body.items || []).length && !parent) showStatus(COPY.emptyData);
     })
     .catch(() => showStatus(COPY.unavailable))
     .finally(() => {
-      sectorSelect.disabled = false;
-      detailSelect.disabled = sectorSelect.value === "00" || !sectorSelect.value;
+      naicsAll.disabled = false;
+      end("industries");
+      if (!statusStack.length && resultNode.hidden && selection.metric === "industry" && !selection.naicsCode) {
+        statusNode.textContent = COPY.selectIndustry;
+      }
+    });
+}
+
+function chooseNaics(code) {
+  begin("industries");
+  naicsAll.disabled = true;
+  const key = `naics-code:${code}`;
+  return flights.run(key, () => getJson(`/api/market-intelligence/naics?dataset=cbp&code=${encodeURIComponent(code)}`))
+    .then((body) => {
+      if (body?.error?.code || !body?.code) {
+        showStatus(messageForError(body || {}));
+        return;
+      }
+      selection = reduceSelection(selection, {
+        type: "naics",
+        code: body.code,
+        title: body.title,
+        version: body.naics_version,
+        dataset: body.dataset,
+        breadcrumb: body.breadcrumb
+      });
+      renderNaicsState();
+      clearResult();
+      if (body.has_children) return loadNaicsLevel(body.code).then(() => loadMarketData());
+      loadMarketData();
+    })
+    .catch(() => showStatus(COPY.unavailable))
+    .finally(() => {
+      naicsAll.disabled = false;
       end("industries");
     });
 }
 
+function renderNaicsState() {
+  naicsSelected.textContent = selection.naicsCode
+    ? `${selection.naicsCode} — ${selection.naicsTitle}`
+    : "Browse industries to select a NAICS code.";
+  naicsCrumbs.replaceChildren();
+  selection.breadcrumb.forEach((crumb, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "mi-naics-button";
+    button.textContent = `${crumb.code} — ${crumb.title}`;
+    button.addEventListener("click", () => {
+      const opened = openBreadcrumb(selection.breadcrumb, index);
+      if (!opened) return;
+      selection = reduceSelection(selection, {
+        type: "naics",
+        code: opened.code,
+        title: opened.title,
+        version: selection.naicsVersion,
+        dataset: selection.naicsDataset,
+        breadcrumb: opened.breadcrumb
+      });
+      renderNaicsState();
+      clearResult();
+      loadNaicsLevel(opened.code);
+      loadMarketData();
+    });
+    naicsCrumbs.append(button);
+  });
+}
+
+function renderNaicsItems(items) {
+  naicsList.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "mi-note";
+    empty.textContent = "No industries are available for this selection.";
+    naicsList.append(empty);
+    return;
+  }
+  for (const item of items) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "mi-naics-button";
+    button.textContent = `${item.title} (${item.code})`;
+    button.addEventListener("click", () => chooseNaics(item.code));
+    naicsList.append(button);
+  }
+}
+
 function loadMarketData() {
   const query = effectiveQuery(selection);
+  if (!query) {
+    showStatus(COPY.selectIndustry);
+    return;
+  }
   begin("data");
   metricSelect.disabled = true;
   const ticket = dataLoader.load(query);
@@ -211,55 +295,18 @@ function requestData(query, signal) {
   return getJson(`/api/market-intelligence/data?${dataQueryString(query)}`, signal);
 }
 
-function fillSectors() {
-  const current = selection.naics || "00";
-  const sectors = sectorChoices(industries);
-  sectorSelect.replaceChildren();
-  sectorSelect.append(option("00", "All Industries"));
-  for (const item of sectors) sectorSelect.append(option(item.naics, item.selector_label || item.label));
-  const sector = sectors.some((item) => item.naics === current) ? current : ancestorSector(current);
-  sectorSelect.value = sector || "00";
-  fillDetails(sectorSelect.value, current);
-}
-
-function fillDetails(sectorNaics, selected = "") {
-  const details = detailChoices(industries, sectorNaics);
-  detailSelect.replaceChildren();
-  detailSelect.append(option("", "Entire sector"));
-  for (const item of details) detailSelect.append(option(item.naics, item.selector_label || item.label));
-  detailSelect.hidden = !details.length;
-  detailSelect.disabled = !details.length;
-  if (detailSelect.parentElement) detailSelect.parentElement.hidden = !details.length;
-  if (selected && selected !== sectorNaics && details.some((item) => item.naics === selected)) {
-    detailSelect.value = selected;
-    selection = reduceSelection(selection, { type: "naics", naics: selected });
-  } else {
-    detailSelect.value = "";
-    selection = reduceSelection(selection, { type: "naics", naics: sectorNaics || "00" });
-  }
-}
-
-function ancestorSector(naics) {
-  const match = industries.find((item) => item.naics === naics);
-  let parent = match?.parent;
-  const seen = new Set();
-  while (parent && !seen.has(parent)) {
-    if (parent === "00") return naics.length === 2 || naics.includes("-") ? naics : "";
-    const item = industries.find((entry) => entry.naics === parent);
-    if (item?.parent === "00") return item.naics;
-    seen.add(parent);
-    parent = item?.parent;
-  }
-  return "00";
-}
-
 function renderBody(body) {
-  if (body?.industry || body?.formatted_value != null) {
+  if (body?.error?.code) {
+    showStatus(messageForError(body));
+    retryButton.hidden = messageForError(body) !== COPY.unavailable;
+    return;
+  }
+  if (body?.industry || body?.formatted_value != null || body?.available === false) {
     renderResult(body);
     return;
   }
   showStatus(body?.message || COPY.emptyData);
-  retryButton.hidden = body?.message !== COPY.unavailable;
+  retryButton.hidden = true;
 }
 
 function renderResult(body) {
@@ -279,20 +326,19 @@ function renderResult(body) {
     addText(card, "p", `NAICS ${body.industry.naics}`, "mi-meta");
     const list = document.createElement("ul");
     list.className = "mi-industry-list";
-    if (body.industry.formatted_establishments != null) {
-      addItem(list, `Establishments: ${body.industry.formatted_establishments}`);
-    }
-    if (body.industry.formatted_employees != null) {
-      addItem(list, `Employees: ${body.industry.formatted_employees}`);
-    }
-    if (body.industry.formatted_annual_payroll != null) {
-      addItem(list, `Annual payroll: ${body.industry.formatted_annual_payroll}`);
-    }
+    addIndustryLine(list, "Establishments", body.industry.establishments, body.industry.formatted_establishments);
+    addIndustryLine(list, "Employees", body.industry.employees, body.industry.formatted_employees);
+    addIndustryLine(list, "Annual payroll", body.industry.annual_payroll, body.industry.formatted_annual_payroll);
     card.append(list);
+    const noise = [body.industry.establishments_noise_code, body.industry.employees_noise_code, body.industry.annual_payroll_noise_code]
+      .filter(Boolean)
+      .join(", ");
+    if (noise) addText(card, "p", `Census noise indicator: ${noise}.`, "mi-note");
     if (body.industry.unit_note) addText(card, "p", body.industry.unit_note, "mi-note");
   } else {
     addText(card, "p", body.formatted_value, "mi-value");
   }
+  if (body.noise_code) addText(card, "p", `Census noise indicator: ${body.noise_code}.`, "mi-note");
   if (body.unit_note) addText(card, "p", body.unit_note, "mi-note");
   addText(card, "p", body.geography?.name || "", "mi-geography");
   addText(card, "p", body.display_dataset || body.dataset || "", "mi-meta");
@@ -300,6 +346,10 @@ function renderResult(body) {
   facts.className = "mi-facts";
   addFact(facts, "Geography", body.geography?.name || "");
   addFact(facts, "Reference year", body.reference_year ?? body.year ?? "");
+  if (body.data_year) addFact(facts, "Data year", body.data_year);
+  if (body.naics_code) addFact(facts, "NAICS", `${body.naics_code} — ${body.naics_title || ""}`.trim());
+  if (body.naics_version) addFact(facts, "NAICS vintage", body.naics_version);
+  if (body.requested_naics_code) addFact(facts, "Requested NAICS", body.requested_naics_code);
   addFact(facts, "Dataset", body.display_dataset || body.dataset || "");
   addFact(facts, "Source", body.source || "U.S. Census Bureau");
   card.append(facts);
@@ -344,6 +394,14 @@ function addItem(list, text) {
   const item = document.createElement("li");
   item.textContent = text;
   list.append(item);
+}
+
+function addIndustryLine(list, label, raw, formatted) {
+  if (raw && typeof raw === "object" && raw.display_value) {
+    addItem(list, `${label}: ${raw.display_value}`);
+    return;
+  }
+  if (formatted != null) addItem(list, `${label}: ${formatted}`);
 }
 
 function addFact(list, label, value) {
@@ -394,10 +452,9 @@ function getJson(path, signal) {
     } catch {
       body = null;
     }
-    if (response.status === 400) {
-      return body?.message ? body : { message: COPY.metricUnavailable };
+    if (!body || typeof body !== "object") {
+      return { error: { code: "CENSUS_UPSTREAM_UNAVAILABLE", message: COPY.unavailable } };
     }
-    if (!response.ok) return { message: body?.message || COPY.unavailable };
-    return body || {};
+    return body;
   });
 }

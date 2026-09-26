@@ -13,8 +13,10 @@ import {
   metricConfig,
   payrollDollars
 } from "./metrics.js";
+import { CBP_NAICS, datasetNaicsVersion } from "./naics.js";
+import { parseBusinessMeasure, payrollFromMeasure } from "./suppression.js";
 
-const CBP_GET = "NAME,NAICS2017,NAICS2017_LABEL,ESTAB,PAYANN,PAYQTR1,EMP";
+const CBP_GET = "NAME,NAICS2017,NAICS2017_LABEL,ESTAB,ESTAB_F,EMP,EMP_F,EMP_N_F,PAYANN,PAYANN_F,PAYANN_N_F,PAYQTR1,PAYQTR1_F";
 const NAICS_CODE = /^(00|\d{2}|\d{2}-\d{2}|\d{3,6})$/;
 const RANGE_PARENT = {
   31: "31-33",
@@ -37,7 +39,7 @@ export function buildDataRequest(query, key) {
     const params = [["get", `NAME,${metric.variable}`], ...dataClauses(query)];
     return buildRequest(ACS_DATASET, params, key);
   }
-  const naics = query.metric === "industry" ? query.naics : "00";
+  const naics = query.naics || "00";
   const params = [
     ["get", CBP_GET],
     ...dataClauses(query),
@@ -78,7 +80,9 @@ export function normalizeGeographies(level, query, table) {
 
 export function normalizeAcsData(query, table) {
   const metric = metricConfig(query.metric);
-  const row = matchingRow(query, table);
+  const located = locateRow(query, table);
+  if (located.relationship) return { kind: "relationship" };
+  const row = located.row;
   if (!row) return { kind: "empty" };
   const parsed = parseNumber(row[metric.variable]);
   if (parsed.missing) return { kind: parsed.unavailable ? "unavailable" : "empty" };
@@ -110,25 +114,26 @@ export function normalizeAcsData(query, table) {
 
 export function normalizeCbpData(query, table, naicsLabels) {
   const metric = metricConfig(query.metric);
-  const row = matchingRow(query, table);
+  const located = locateRow(query, table);
+  if (located.relationship) return { kind: "relationship" };
+  const row = located.row;
   if (!row) return { kind: "empty" };
   const geography = geographyIdentity(query, row);
   if (!geography) return { kind: "rejected" };
-  const requestedNaics = query.metric === "industry" ? query.naics : "00";
+  const requestedNaics = query.naics || "00";
   if (String(row.NAICS2017 || "") !== requestedNaics) return { kind: "empty" };
 
   if (query.metric === "industry") {
     return normalizeIndustry(query, row, geography, naicsLabels);
   }
 
-  const parsed = parseNumber(row[metric.variable]);
-  if (parsed.missing) return { kind: parsed.unavailable ? "unavailable" : "empty" };
-  const value = query.metric === "payroll" ? payrollDollars(parsed.number) : parsed.number;
+  const measure = businessMeasure(row, metric.variable);
+  if (measure.missing) return { kind: "empty" };
+  const censusTitle = naicsTitle(query, row, naicsLabels);
   const body = {
+    ...cbpIdentity(query, censusTitle),
     metric: query.metric,
     label: metric.title,
-    value,
-    formatted_value: formatByUnit(metric.unit, value),
     unit: metric.unit,
     definition: metric.definition,
     geography,
@@ -136,6 +141,7 @@ export function normalizeCbpData(query, table, naicsLabels) {
     display_dataset: CBP_DATASET_NAME,
     year: CBP_YEAR,
     reference_year: CBP_YEAR,
+    data_year: CBP_YEAR,
     source: SOURCE,
     source_url: buildDataRequest(query, "").sourceUrl,
     variable: metric.variable,
@@ -143,8 +149,21 @@ export function normalizeCbpData(query, table, naicsLabels) {
     retrieved_at: new Date().toISOString()
   };
   if (metric.statement) body.statement = metric.statement;
+  if (measure.available === false) {
+    body.available = false;
+    body.suppression_code = measure.suppression_code;
+    body.display_value = measure.display_value;
+    body.formatted_value = measure.display_value;
+    return { kind: "value", body };
+  }
+  const value = query.metric === "payroll" ? payrollFromMeasure(measure) : measure.value;
+  if (value == null) return { kind: "empty" };
+  body.available = true;
+  body.value = value;
+  body.formatted_value = formatByUnit(metric.unit, value);
+  if (measure.noise_code) body.noise_code = measure.noise_code;
   if (query.metric === "payroll") {
-    body.source_value = parsed.number;
+    body.source_value = measure.value;
     body.source_unit = "thousands of dollars";
     body.unit_note = PAYROLL_NOTE;
   }
@@ -188,37 +207,36 @@ export function tableRows(table) {
 }
 
 function normalizeIndustry(query, row, geography, naicsLabels) {
-  const establishments = parseNumber(row.ESTAB);
-  const employees = parseNumber(row.EMP);
-  const payroll = parseNumber(row.PAYANN);
+  const establishments = businessMeasure(row, "ESTAB");
+  const employees = businessMeasure(row, "EMP");
+  const payroll = businessMeasure(row, "PAYANN");
   if (establishments.missing && employees.missing && payroll.missing) return { kind: "empty" };
-  const censusLabel = cleanName(row.NAICS2017_LABEL) || naicsLabels.get(query.naics) || "";
+  const censusLabel = naicsTitle(query, row, naicsLabels);
   const industry = {
     name: query.naics === "00" ? "All Industries" : censusLabel,
     census_label: censusLabel,
-    naics: query.naics
+    naics: query.naics,
+    naics_version: datasetNaicsVersion()
   };
-  if (!establishments.missing) {
-    industry.establishments = establishments.number;
-    industry.formatted_establishments = formatCount(establishments.number);
-  }
-  if (!employees.missing) {
-    industry.employees = employees.number;
-    industry.formatted_employees = formatCount(employees.number);
-  }
-  if (!payroll.missing) {
-    industry.annual_payroll = payrollDollars(payroll.number);
-    industry.formatted_annual_payroll = formatCurrency(industry.annual_payroll);
-    industry.source_payann = payroll.number;
+  assignMeasure(industry, "establishments", establishments, false);
+  assignMeasure(industry, "employees", employees, false);
+  assignMeasure(industry, "annual_payroll", payroll, true);
+  const payrollDollarsValue = payrollFromMeasure(payroll);
+  if (payrollDollarsValue != null) {
+    industry.source_payann = payroll.value;
     industry.unit_note = PAYROLL_NOTE;
   }
   return {
     kind: "value",
     body: {
+      ...cbpIdentity(query, censusLabel),
       metric: "industry",
       label: "Industry",
-      value: establishments.missing ? null : establishments.number,
-      formatted_value: establishments.missing ? null : formatCount(establishments.number),
+      available: establishments.available !== false,
+      value: establishments.available === true ? establishments.value : null,
+      formatted_value: establishments.available === true
+        ? formatCount(establishments.value)
+        : establishments.display_value || null,
       unit: "count",
       definition: metricConfig("industry").definition,
       industry,
@@ -227,6 +245,7 @@ function normalizeIndustry(query, row, geography, naicsLabels) {
       display_dataset: CBP_DATASET_NAME,
       year: CBP_YEAR,
       reference_year: CBP_YEAR,
+      data_year: CBP_YEAR,
       source: SOURCE,
       source_url: buildDataRequest(query, "").sourceUrl,
       variable: "NAICS2017",
@@ -234,6 +253,45 @@ function normalizeIndustry(query, row, geography, naicsLabels) {
       retrieved_at: new Date().toISOString()
     }
   };
+}
+
+function assignMeasure(target, key, measure, payroll) {
+  if (measure.missing) return;
+  if (measure.available === false) {
+    target[key] = {
+      available: false,
+      suppression_code: measure.suppression_code,
+      display_value: measure.display_value
+    };
+    return;
+  }
+  const value = payroll ? payrollDollars(measure.value) : measure.value;
+  if (value == null) return;
+  target[key] = value;
+  target[`formatted_${key}`] = payroll ? formatCurrency(value) : formatCount(value);
+  if (measure.noise_code) target[`${key}_noise_code`] = measure.noise_code;
+}
+
+function businessMeasure(row, variable) {
+  return parseBusinessMeasure(row[variable], row[`${variable}_F`], row[`${variable}_N_F`]);
+}
+
+function naicsTitle(query, row, naicsLabels) {
+  return cleanName(row.NAICS2017_LABEL) || naicsLabels.get(query.naics) || "";
+}
+
+function cbpIdentity(query, title) {
+  const identity = {
+    naics_code: query.naics || "00",
+    naics_title: title,
+    naics_version: datasetNaicsVersion(),
+    dataset_id: CBP_NAICS.dataset
+  };
+  if (query.requestedNaics) {
+    identity.requested_naics_code = query.requestedNaics;
+    identity.requested_naics_version = query.requestedNaicsVersion || "2022";
+  }
+  return identity;
 }
 
 function geographyClauses(level, query) {
@@ -275,8 +333,14 @@ function encodeCensus(value) {
   return encodeURIComponent(value).replace(/%3A/g, ":").replace(/%2A/g, "*");
 }
 
-function matchingRow(query, table) {
-  return tableRows(table).find((row) => parentMatches(dataLevel(query.geographyType), query, row) && codeMatches(query, row)) || null;
+function locateRow(query, table) {
+  const rows = tableRows(table);
+  const level = dataLevel(query.geographyType);
+  const matched = rows.find((row) => parentMatches(level, query, row) && codeMatches(query, row));
+  if (matched) return { row: matched };
+  const related = rows.find((row) => codeMatches(query, row) && !parentMatches(level, query, row));
+  if (related) return { relationship: true };
+  return { row: null };
 }
 
 function dataLevel(geographyType) {

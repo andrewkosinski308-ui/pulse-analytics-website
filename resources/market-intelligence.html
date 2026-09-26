@@ -183,18 +183,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                 </select>
                             </label>
                             <div id="mi-industry-fields" hidden>
-                                <label class="mi-field" for="mi-sector">
-                                    <span>Industry</span>
-                                    <select id="mi-sector" name="sector">
-                                        <option value="00">All Industries</option>
-                                    </select>
-                                </label>
-                                <label class="mi-field" id="mi-detail-field" for="mi-detail">
-                                    <span>Industry detail</span>
-                                    <select id="mi-detail" name="detail">
-                                        <option value="">Entire sector</option>
-                                    </select>
-                                </label>
+                                <div class="mi-naics">
+                                    <p class="mi-naics-label">Browse Industries</p>
+                                    <p id="mi-naics-selected" class="mi-naics-selected">Browse industries to select a NAICS code.</p>
+                                    <div id="mi-naics-crumbs" class="mi-naics-crumbs"></div>
+                                    <div id="mi-naics-list" class="mi-naics-list"></div>
+                                    <button type="button" id="mi-naics-all" class="mi-naics-button">All Industries</button>
+                                </div>
                             </div>
                         </div>
                         <p id="mi-status" class="mi-status" role="status"></p>

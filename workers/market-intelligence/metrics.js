@@ -112,5 +112,8 @@ export function cbpSupported(geographyType) {
 }
 
 export function payrollDollars(payann) {
-  return payann * 1000;
+  if (typeof payann === "string" && /^[DSNXGHJ]$/i.test(payann.trim())) return null;
+  const number = typeof payann === "number" ? payann : Number(String(payann ?? "").trim());
+  if (!Number.isFinite(number)) return null;
+  return number * 1000;
 }

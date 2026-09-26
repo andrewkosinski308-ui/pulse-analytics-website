@@ -7,6 +7,8 @@ import worker from "../router.js";
 import { handleResearchRequest } from "../research/api.js";
 import { handleMarketIntelligenceRequest, resetMarketIntelligenceCache } from "./api.js";
 import { METRICS, MESSAGES, payrollDollars } from "./metrics.js";
+import { datasetNaicsVersion, preferredNaicsVintage } from "./naics.js";
+import { calculationValue, parseBusinessMeasure, payrollFromMeasure } from "./suppression.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const SECRET = "census-test-key-9f3a";
@@ -218,7 +220,7 @@ test("industry validates NAICS selections", async () => {
     throw new Error("should not fetch");
   });
   assert.equal(rejected.response.status, 400);
-  assert.equal((await json(rejected.response)).error, "invalid_naics");
+  assert.equal((await json(rejected.response)).error.code, "INVALID_NAICS_CODE");
   assert.equal(rejected.calls.length, 0);
 
   const unknown = await request(
@@ -229,7 +231,8 @@ test("industry validates NAICS selections", async () => {
     }
   );
   assert.equal(unknown.response.status, 400);
-  assert.equal((await json(unknown.response)).error, "invalid_naics");
+  assert.equal((await json(unknown.response)).error.code, "INVALID_NAICS_CODE");
+  assert.equal(unknown.calls.some((url) => url.includes("NAICS2017=999999")), false);
 });
 
 test("industry returns the requested NAICS data", async () => {
@@ -305,8 +308,9 @@ test("CBP place requests return the proper unavailable response", async () => {
     throw new Error("county fallback");
   });
   const body = await json(response);
-  assert.equal(response.status, 200);
-  assert.equal(body.message, MESSAGES.businessUnavailable);
+  assert.equal(response.status, 422);
+  assert.equal(body.error.code, "UNSUPPORTED_GEOGRAPHY");
+  assert.equal(body.error.message, MESSAGES.businessUnavailable);
   assert.equal(calls.length, 0);
 });
 
@@ -321,7 +325,9 @@ test("CBP county-subdivision requests return the proper unavailable response", a
     throw new Error("county fallback");
   });
   const body = await json(response);
-  assert.equal(body.message, MESSAGES.businessUnavailable);
+  assert.equal(response.status, 422);
+  assert.equal(body.error.code, "UNSUPPORTED_GEOGRAPHY");
+  assert.equal(body.error.message, MESSAGES.businessUnavailable);
   assert.equal(calls.length, 0);
 });
 
@@ -373,7 +379,7 @@ test("browser cannot specify arbitrary Census variables", async () => {
     }
   );
   assert.equal(response.status, 400);
-  assert.equal((await json(response)).error, "invalid_request");
+  assert.equal((await json(response)).error.code, "INVALID_METRIC");
   assert.equal(calls.length, 0);
 });
 
@@ -391,7 +397,7 @@ test("browser cannot specify arbitrary NAICS codes", async () => {
 test("invalid geography is rejected", async () => {
   const tract = await request("/api/market-intelligence/data?geography_type=tract&geography_code=000100&metric=population");
   assert.equal(tract.response.status, 400);
-  assert.equal((await json(tract.response)).error, "invalid_geography");
+  assert.equal((await json(tract.response)).error.code, "INVALID_GEOGRAPHY");
   const fips = await request("/api/market-intelligence/geographies?level=counties&state=4");
   assert.equal(fips.response.status, 400);
   const missing = await request("/api/market-intelligence/data?geography_type=county&geography_code=049&metric=population");
@@ -402,7 +408,7 @@ test("invalid geography is rejected", async () => {
 test("invalid metric is rejected", async () => {
   const { response, calls } = await request("/api/market-intelligence/data?geography_type=us&geography_code=1&metric=jobs");
   assert.equal(response.status, 400);
-  assert.equal((await json(response)).error, "invalid_metric");
+  assert.equal((await json(response)).error.code, "INVALID_METRIC");
   assert.equal(calls.length, 0);
 });
 
@@ -413,7 +419,8 @@ test("Census API failure returns a controlled error", async () => {
   const body = await json(response);
   const text = JSON.stringify(body);
   assert.equal(response.status, 503);
-  assert.equal(body.message, MESSAGES.unavailable);
+  assert.equal(body.error.code, "CENSUS_UPSTREAM_UNAVAILABLE");
+  assert.equal(body.error.message, MESSAGES.unavailable);
   assert.equal(text.includes(SECRET), false);
   assert.equal(text.includes("boom"), false);
   assert.equal(text.includes("stack"), false);
@@ -424,7 +431,9 @@ test("empty result returns the correct empty state", async () => {
     return table(["NAME", "DP05_0001E", "us"]);
   });
   const body = await json(response);
-  assert.equal(body.message, MESSAGES.emptyData);
+  assert.equal(response.status, 200);
+  assert.equal(body.error.code, "NO_DATA");
+  assert.equal(body.error.message, MESSAGES.emptyData);
   assert.equal(body.formatted_value, undefined);
 });
 
@@ -442,7 +451,8 @@ test("a suppressed Census value is not displayed as a number", async () => {
     return acs("DP03_0062E", "United States", "-666666666", { us: "1" });
   });
   const body = await json(response);
-  assert.equal(body.message, MESSAGES.metricUnavailable);
+  assert.equal(body.error.code, "NO_DATA");
+  assert.equal(body.error.message, MESSAGES.metricUnavailable);
   assert.equal(JSON.stringify(body).includes("-666666666"), false);
 });
 
@@ -454,7 +464,8 @@ test("a mismatched parent geography is not returned", async () => {
     metric: "population"
   }), () => acs("DP05_0001E", "Other County, Ohio", "999", { state: "39", county: "049" }));
   const body = await json(response);
-  assert.equal(body.message, MESSAGES.emptyData);
+  assert.equal(response.status, 400);
+  assert.equal(body.error.code, "INVALID_GEOGRAPHY_RELATIONSHIP");
   assert.equal(JSON.stringify(body).includes("Other County"), false);
 });
 
@@ -500,7 +511,9 @@ test("market intelligence does not call Census without the server key", async ()
     }
   );
   assert.equal(called, false);
-  assert.equal((await response.json()).message, MESSAGES.unavailable);
+  const missingKey = await response.json();
+  assert.equal(missingKey.error.code, "MARKET_DATA_UNAVAILABLE");
+  assert.equal(missingKey.error.message, MESSAGES.unavailable);
 });
 
 test("the router serves market intelligence and still serves research", async () => {
@@ -511,7 +524,7 @@ test("the router serves market intelligence and still serves research", async ()
   );
   assert.equal(assets, 0);
   assert.equal(response.headers.get("content-type").includes("application/json"), true);
-  assert.equal((await response.json()).message, MESSAGES.unavailable);
+  assert.equal((await response.json()).error.code, "MARKET_DATA_UNAVAILABLE");
   const source = readFileSync(join(root, "workers", "router.js"), "utf8");
   assert.equal(source.includes('"/api/research/"'), true);
   assert.equal(source.includes("handleResearchRequest"), true);
@@ -645,6 +658,241 @@ test("market intelligence page does not call Census from the browser", () => {
   assert.equal(sitemap.includes("market-intelligence.html?"), false);
 });
 
+test("root NAICS hierarchy loads for 2023 CBP as 2017 sectors", async () => {
+  const { response, calls } = await request("/api/market-intelligence/naics?dataset=cbp", () => hierarchyPayload());
+  const body = await json(response);
+  assert.equal(response.status, 200);
+  assert.equal(body.dataset, "2023-cbp");
+  assert.equal(body.data_year, 2023);
+  assert.equal(body.naics_version, "2017");
+  assert.equal(body.level, "sector");
+  assert.equal(body.items.some((item) => item.code === "54" && item.level === "sector" && item.has_children), true);
+  assert.equal(body.items.some((item) => item.code === "00"), false);
+  assert.equal(calls.some((url) => url.includes("NAICS2017.json")), true);
+  assert.equal(calls.some((url) => url.includes("for=")), false);
+});
+
+test("child NAICS hierarchy loads beneath a sector", async () => {
+  const { response } = await request("/api/market-intelligence/naics?dataset=cbp&parent=54", () => hierarchyPayload());
+  const body = await json(response);
+  assert.deepEqual(body.items.map((item) => item.code), ["541"]);
+  assert.equal(body.items[0].title, "Professional, Scientific, and Technical Services");
+  assert.equal(body.items[0].level, "subsector");
+  assert.equal(body.items[0].has_children, true);
+});
+
+test("multiple NAICS hierarchy levels work", async () => {
+  const group = await json((await request("/api/market-intelligence/naics?dataset=cbp&parent=541", () => hierarchyPayload())).response);
+  const industry = await json((await request("/api/market-intelligence/naics?dataset=cbp&parent=5415", () => hierarchyPayload())).response);
+  const national = await json((await request("/api/market-intelligence/naics?dataset=cbp&parent=54151", () => hierarchyPayload())).response);
+  assert.equal(group.items[0].code, "5415");
+  assert.equal(group.items[0].level, "industry-group");
+  assert.equal(industry.items[0].level, "naics-industry");
+  assert.equal(national.items[0].code, "541511");
+  assert.equal(national.items[0].level, "national-industry");
+  assert.equal(national.items[0].has_children, false);
+});
+
+test("selected NAICS code returns a breadcrumb from Census labels", async () => {
+  const { response } = await request("/api/market-intelligence/naics?dataset=cbp&code=541511", () => hierarchyPayload());
+  const body = await json(response);
+  assert.equal(body.code, "541511");
+  assert.equal(body.title, "Custom Computer Programming Services");
+  assert.equal(body.level, "national-industry");
+  assert.equal(body.naics_version, "2017");
+  assert.deepEqual(body.breadcrumb.map((item) => item.code), ["54", "541", "5415", "54151", "541511"]);
+});
+
+test("2023 CBP reports 2017 NAICS and a newer supported vintage would be preferred", () => {
+  assert.equal(datasetNaicsVersion(), "2017");
+  assert.equal(preferredNaicsVintage(["2017", "2022"]), "2022");
+  assert.equal(preferredNaicsVintage(["2012", "2017"]), "2017");
+});
+
+test("an exact 2022 to 2017 crosswalk is used and the 2022 code is not sent to Census", async () => {
+  const { response, calls } = await request(dataPath({
+    geography_type: "county",
+    geography_code: "049",
+    state: "42",
+    metric: "businesses",
+    naics_code: "513210",
+    naics_version: "2022"
+  }), (url) => {
+    if (url.includes("NAICS2017.json")) return hierarchyPayload();
+    assert.equal(url.includes("NAICS2017=511210"), true);
+    assert.equal(url.includes("513210"), false);
+    return cbp("Erie County, Pennsylvania", "511210", "Software Publishers", "15", "20", "5", "40", {
+      state: "42",
+      county: "049"
+    });
+  });
+  const body = await json(response);
+  assert.equal(response.status, 200);
+  assert.equal(body.naics_code, "511210");
+  assert.equal(body.naics_title, "Software Publishers");
+  assert.equal(body.naics_version, "2017");
+  assert.equal(body.requested_naics_code, "513210");
+  assert.equal(body.dataset_id, "2023-cbp");
+  assert.equal(calls.some((url) => url.includes("NAICS2017=513210")), false);
+});
+
+test("an ambiguous NAICS crosswalk is rejected", async () => {
+  const { response, calls } = await request(dataPath({
+    geography_type: "us",
+    geography_code: "1",
+    metric: "businesses",
+    naics_code: "212114",
+    naics_version: "2022"
+  }), (url) => {
+    assert.equal(url.includes("NAICS2017=212114"), false);
+    return hierarchyPayload();
+  });
+  const body = await json(response);
+  assert.equal(response.status, 409);
+  assert.equal(body.error.code, "AMBIGUOUS_NAICS_CROSSWALK");
+  assert.equal(body.error.message, "A comparable business value could not be determined for this industry.");
+  assert.equal(body.source_vintage, "2022");
+  assert.equal(body.dataset_vintage, "2017");
+  assert.equal(calls.some((url) => url.includes("/data/2023/cbp?")), false);
+});
+
+test("a missing industry code is rejected and a code outside the dataset is not queried", async () => {
+  const missing = await request("/api/market-intelligence/data?geography_type=us&geography_code=1&metric=industry", () => {
+    throw new Error("should not fetch");
+  });
+  assert.equal(missing.response.status, 400);
+  assert.equal((await json(missing.response)).error.code, "NAICS_CODE_REQUIRED");
+  assert.equal(missing.calls.length, 0);
+
+  const unavailable = await request(dataPath({
+    geography_type: "us",
+    geography_code: "1",
+    metric: "businesses",
+    naics_code: "921110"
+  }), (url) => {
+    assert.equal(url.includes("NAICS2017=921110"), false);
+    return hierarchyPayload();
+  });
+  const body = await json(unavailable.response);
+  assert.equal(unavailable.response.status, 409);
+  assert.equal(body.error.code, "NAICS_NOT_AVAILABLE_FOR_DATASET");
+});
+
+test("NAICS titles come from Census labels", () => {
+  const source = readFileSync(join(root, "workers", "market-intelligence", "naics.js"), "utf8");
+  assert.equal(source.includes("Custom Computer Programming Services"), false);
+  assert.equal(source.includes("Software Publishers"), false);
+});
+
+test("an unavailable dataset vintage returns a typed error", async () => {
+  const { response, calls } = await request("/api/market-intelligence/naics?dataset=2022-cbp", () => {
+    throw new Error("should not fetch");
+  });
+  const body = await json(response);
+  assert.equal(response.status, 404);
+  assert.equal(body.error.code, "DATASET_VINTAGE_UNAVAILABLE");
+  assert.equal(body.error.message, "This data year is not currently available.");
+  assert.equal(calls.length, 0);
+});
+
+test("market intelligence errors use a code and message and hide upstream failures", async () => {
+  const invalid = await json((await request("/api/market-intelligence/data?geography_type=us&geography_code=1&metric=jobs")).response);
+  assert.equal(typeof invalid.error.code, "string");
+  assert.equal(typeof invalid.error.message, "string");
+  assert.equal(JSON.stringify(invalid).includes(SECRET), false);
+
+  const outage = await request("/api/market-intelligence/data?geography_type=us&geography_code=1&metric=population", () => {
+    throw new Error(`stack ${SECRET} census exploded`);
+  });
+  const body = await json(outage.response);
+  assert.equal(outage.response.status, 503);
+  assert.equal(body.error.code, "CENSUS_UPSTREAM_UNAVAILABLE");
+  assert.equal(body.error.message, MESSAGES.unavailable);
+  assert.equal(JSON.stringify(body).includes(SECRET), false);
+  assert.equal(JSON.stringify(body).includes("exploded"), false);
+
+  const limited = await request("/api/market-intelligence/data?geography_type=us&geography_code=1&metric=households", () => {
+    return new Response("slow down", { status: 429 });
+  });
+  const limitBody = await json(limited.response);
+  assert.equal(limited.response.status, 503);
+  assert.equal(limitBody.error.code, "CENSUS_RATE_LIMITED");
+  assert.equal(JSON.stringify(limitBody).includes("slow down"), false);
+});
+
+test("Census suppression codes stay distinct from zero and payroll conversion", () => {
+  assert.equal(parseBusinessMeasure("0").value, 0);
+  assert.deepEqual(parseBusinessMeasure("D"), { available: false, suppression_code: "D", display_value: "Not disclosed" });
+  assert.deepEqual(parseBusinessMeasure("0", "S"), { available: false, suppression_code: "S", display_value: "Not disclosed" });
+  assert.equal(parseBusinessMeasure("N").display_value, "Not available");
+  assert.equal(parseBusinessMeasure("X").display_value, "Not applicable");
+  assert.deepEqual(parseBusinessMeasure("12345", "", "G"), { available: true, value: 12345, noise_code: "G" });
+  assert.equal(parseBusinessMeasure("80", "", "H").value, 80);
+  assert.equal(parseBusinessMeasure("80", "", "J").noise_code, "J");
+  assert.equal(calculationValue(parseBusinessMeasure("D")), null);
+  assert.equal(calculationValue(parseBusinessMeasure("0")), 0);
+  assert.equal(payrollFromMeasure(parseBusinessMeasure("D")), null);
+  assert.equal(payrollDollars("D"), null);
+  assert.equal(payrollFromMeasure(parseBusinessMeasure("123456")), 123456000);
+  const values = [parseBusinessMeasure("D"), parseBusinessMeasure("12")].map(calculationValue);
+  assert.equal(values.some((value) => value == null), true);
+});
+
+test("partial Census suppression returns the available business fields", async () => {
+  const { response } = await request(dataPath({
+    geography_type: "county",
+    geography_code: "049",
+    state: "42",
+    metric: "industry",
+    naics: "541"
+  }), (url) => {
+    if (url.includes("NAICS2017.json")) return hierarchyPayload();
+    return table(
+      ["NAME", "NAICS2017", "NAICS2017_LABEL", "ESTAB", "ESTAB_F", "EMP", "EMP_F", "EMP_N_F", "PAYANN", "PAYANN_F", "state", "county"],
+      [["Erie County, Pennsylvania", "541", "Professional, Scientific, and Technical Services", "12", "", "85", "", "G", "0", "D", "42", "049"]]
+    );
+  });
+  const body = await json(response);
+  assert.equal(response.status, 200);
+  assert.equal(body.industry.establishments, 12);
+  assert.equal(body.industry.employees, 85);
+  assert.equal(body.industry.employees_noise_code, "G");
+  assert.equal(body.industry.annual_payroll.display_value, "Not disclosed");
+  assert.equal(body.industry.annual_payroll.suppression_code, "D");
+  assert.equal(JSON.stringify(body.industry.annual_payroll).includes("0"), false);
+  assert.equal(body.naics_version, "2017");
+  assert.equal(body.data_year, 2023);
+});
+
+test("a suppressed payroll value is not converted from thousands", async () => {
+  const { response } = await request(dataPath({
+    geography_type: "us",
+    geography_code: "1",
+    metric: "payroll"
+  }), () => table(
+    ["NAME", "NAICS2017", "NAICS2017_LABEL", "ESTAB", "PAYANN", "PAYANN_F", "PAYQTR1", "EMP", "us"],
+    [["United States", "00", "Total for all sectors", "10", "0", "D", "1", "10", "1"]]
+  ));
+  const body = await json(response);
+  assert.equal(body.available, false);
+  assert.equal(body.display_value, "Not disclosed");
+  assert.equal(body.suppression_code, "D");
+  assert.equal(body.value, undefined);
+  assert.equal(body.source_value, undefined);
+});
+
+test("a Census business zero remains zero", async () => {
+  const { response } = await request(dataPath({
+    geography_type: "us",
+    geography_code: "1",
+    metric: "businesses"
+  }), () => cbp("United States", "00", "Total for all sectors", "0", "0", "0", "0", { us: "1" }));
+  const body = await json(response);
+  assert.equal(body.value, 0);
+  assert.equal(body.formatted_value, "0");
+  assert.equal(body.available, true);
+});
+
 async function assertAcs(metric, variable, raw, formatted, unit) {
   const { response, calls } = await request(dataPath({
     geography_type: "us",
@@ -719,6 +967,22 @@ function cbp(name, naics, label, estab, payann, payqtr, emp, geo) {
     ["NAME", "NAICS2017", "NAICS2017_LABEL", "ESTAB", "PAYANN", "PAYQTR1", "EMP", ...keys],
     [[name, naics, label, estab, payann, payqtr, emp, ...keys.map((key) => geo[key])]]
   );
+}
+
+function hierarchyPayload() {
+  return jsonResponse({
+    values: {
+      item: {
+        "00": "Total for all sectors",
+        "54": "Professional, Scientific, and Technical Services",
+        "541": "Professional, Scientific, and Technical Services",
+        "5415": "Computer Systems Design and Related Services",
+        "54151": "Computer Systems Design and Related Services",
+        "541511": "Custom Computer Programming Services",
+        "511210": "Software Publishers"
+      }
+    }
+  });
 }
 
 function naicsPayload() {
