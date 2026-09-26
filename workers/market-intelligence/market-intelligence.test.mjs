@@ -668,6 +668,7 @@ test("root NAICS hierarchy loads for 2023 CBP as 2017 sectors", async () => {
   assert.equal(body.level, "sector");
   assert.equal(body.items.some((item) => item.code === "54" && item.level === "sector" && item.has_children), true);
   assert.equal(body.items.some((item) => item.code === "00"), false);
+  assert.equal(body.items.some((item) => item.code === "000000" || item.code === "949999"), false);
   assert.equal(calls.some((url) => url.includes("NAICS2017.json")), true);
   assert.equal(calls.some((url) => url.includes("for=")), false);
 });
@@ -979,7 +980,9 @@ function hierarchyPayload() {
         "5415": "Computer Systems Design and Related Services",
         "54151": "Computer Systems Design and Related Services",
         "541511": "Custom Computer Programming Services",
-        "511210": "Software Publishers"
+        "511210": "Software Publishers",
+        "000000": "Industry total",
+        "949999": "Other auxiliary establishments"
       }
     }
   });

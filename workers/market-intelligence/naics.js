@@ -70,7 +70,7 @@ export function browseNaics(industries, query) {
     .filter((item) => {
       const parent = item.parent && item.parent !== "00" ? item.parent : "";
       if (query.parent) return parent === query.parent;
-      return parent === "";
+      return parent === "" && naicsLevel(item.naics) === "sector";
     })
     .filter((item) => !query.level || naicsLevel(item.naics) === query.level)
     .map((item) => naicsItem(item, childCodes.has(item.naics)))
