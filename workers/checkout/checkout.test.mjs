@@ -149,6 +149,74 @@ test("payment-only carts create a customer and do not call Stripe when configura
   assert.match(body.error, /couldn't start checkout/i);
 });
 
+test("secret credentials accept sk_ and rk_ prefixes and reject other values", async () => {
+  const publishable = "pk_test_catalog_only_not_a_real_key";
+  const accepted = [
+    "sk_live_catalog_only_not_a_real_key",
+    "sk_test_catalog_only_not_a_real_key",
+    "rk_live_catalog_only_not_a_real_key",
+    "rk_test_catalog_only_not_a_real_key"
+  ];
+  for (const secret of accepted) {
+    let called = false;
+    const request = new Request("https://pulseanalyticsgroupllc.com/api/checkout/session", {
+      method: "POST",
+      headers: { Origin: "https://pulseanalyticsgroupllc.com", "Content-Type": "application/json" },
+      body: JSON.stringify({ items: [{ id: "seo-startup", quantity: 1, price: 1, name: "Tampered" }] })
+    });
+    const response = await handleCheckoutRequest(request, {
+      STRIPE_SECRET_KEY: secret,
+      STRIPE_PUBLISHABLE_KEY: publishable
+    }, async () => {
+      called = true;
+      return new Response(JSON.stringify({ id: "cs_test_prefix", client_secret: "cs_test_prefix_secret" }), { status: 200 });
+    });
+    const body = await response.json();
+    assert.equal(response.status, 200, secret.slice(0, 3));
+    assert.equal(called, true);
+    assert.equal(JSON.stringify(body).includes(secret), false);
+    assert.equal(body.clientSecret, "cs_test_prefix_secret");
+  }
+
+  const rejected = [
+    "pk_live_catalog_only_not_a_real_key",
+    "pk_test_catalog_only_not_a_real_key",
+    "whsec_catalog_only_not_a_real",
+    "mk_catalog_only_not_a_real",
+    "",
+    "not-a-stripe-key"
+  ];
+  for (const secret of rejected) {
+    let called = false;
+    const request = new Request("https://pulseanalyticsgroupllc.com/api/checkout/session", {
+      method: "POST",
+      headers: { Origin: "https://pulseanalyticsgroupllc.com", "Content-Type": "application/json" },
+      body: JSON.stringify({ items: [{ id: "seo-startup", quantity: 1, price: 1, name: "Tampered" }] })
+    });
+    const response = await handleCheckoutRequest(request, {
+      STRIPE_SECRET_KEY: secret,
+      STRIPE_PUBLISHABLE_KEY: publishable
+    }, async () => {
+      called = true;
+      return new Response("{}", { status: 500 });
+    });
+    assert.equal(response.status, 503, secret.slice(0, 6));
+    assert.equal(called, false);
+  }
+
+  let missingCalled = false;
+  const missing = await handleCheckoutRequest(new Request("https://pulseanalyticsgroupllc.com/api/checkout/session", {
+    method: "POST",
+    headers: { Origin: "https://pulseanalyticsgroupllc.com", "Content-Type": "application/json" },
+    body: JSON.stringify({ items: [{ id: "seo-startup", quantity: 1 }] })
+  }), { STRIPE_PUBLISHABLE_KEY: publishable }, async () => {
+    missingCalled = true;
+    return new Response("{}", { status: 500 });
+  });
+  assert.equal(missing.status, 503);
+  assert.equal(missingCalled, false);
+});
+
 test("completed sessions are confirmed without returning the Stripe session payload", async () => {
   const request = new Request("https://pulseanalyticsgroupllc.com/api/checkout/session?session_id=cs_test_complete", {
     headers: { Origin: "https://pulseanalyticsgroupllc.com" }

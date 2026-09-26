@@ -22,7 +22,7 @@ function publishableKey(env) {
 
 function secretKey(env) {
   const key = env?.STRIPE_SECRET_KEY;
-  if (typeof key !== "string" || !key.startsWith("sk_")) return "";
+  if (typeof key !== "string" || !(key.startsWith("sk_") || key.startsWith("rk_"))) return "";
   return key;
 }
 
@@ -126,7 +126,9 @@ export async function handleCheckoutRequest(request, env, fetchImpl = fetch) {
     if (!/^cs_[A-Za-z0-9_]+$/.test(sessionId)) {
       return json({ error: "We couldn't confirm this payment." }, 400);
     }
-    if (!secret) return json({ error: CUSTOMER_ERROR }, 503);
+    if (!secret) {
+      return json({ error: CUSTOMER_ERROR }, 503);
+    }
     try {
       const result = await readStripeCheckoutSession(secret, sessionId, fetchImpl);
       if (!result.ok) return json({ error: result.error }, result.status);
@@ -138,7 +140,9 @@ export async function handleCheckoutRequest(request, env, fetchImpl = fetch) {
   }
 
   if (request.method === "POST" && url.pathname === "/api/checkout/session") {
-    if (!secret || !publishable) return json({ error: CUSTOMER_ERROR }, 503);
+    if (!secret || !publishable) {
+      return json({ error: CUSTOMER_ERROR }, 503);
+    }
     let body;
     try {
       body = await request.json();
