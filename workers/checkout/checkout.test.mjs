@@ -123,6 +123,7 @@ test("session request uses Stripe price ids and does not return the secret", asy
   assert.equal(params.get("return_url").includes("{CHECKOUT_SESSION_ID}"), true);
   assert.equal(captured.options.headers.Authorization, `Bearer ${SECRET}`);
   assert.equal(params.has("line_items[0][price_data][unit_amount]"), false);
+  assert.equal(params.has("metadata[client_id]"), false);
 });
 
 test("payment-only carts create a customer and do not call Stripe when configuration is missing", async () => {
@@ -215,6 +216,50 @@ test("secret credentials accept sk_ and rk_ prefixes and reject other values", a
   });
   assert.equal(missing.status, 503);
   assert.equal(missingCalled, false);
+});
+
+test("authenticated checkout uses the server client and ignores a posted client id", async () => {
+  const clientId = "22222222-2222-4222-8222-222222222222";
+  const posted = "33333333-3333-4333-8333-333333333333";
+  let params = null;
+  const fetchImpl = async (url, options = {}) => {
+    const href = String(url);
+    if (href.endsWith("/auth/v1/user")) {
+      return new Response(JSON.stringify({ id: "11111111-1111-4111-8111-111111111111" }), { status: 200 });
+    }
+    if (href.includes("/client_members")) {
+      return new Response(JSON.stringify([{ client_id: clientId, created_at: "2026-01-01T00:00:00Z" }]), { status: 200 });
+    }
+    if (href.includes("/clients?")) {
+      return new Response(JSON.stringify([{ id: clientId, name: "Portal Test Co", stripe_customer_id: "cus_portal" }]), { status: 200 });
+    }
+    params = new URLSearchParams(options.body);
+    return new Response(JSON.stringify({ id: "cs_test_auth", client_secret: "cs_test_auth_secret" }), { status: 200 });
+  };
+  const request = new Request("https://pulseanalyticsgroupllc.com/api/checkout/session", {
+    method: "POST",
+    headers: {
+      Origin: "https://pulseanalyticsgroupllc.com",
+      "Content-Type": "application/json",
+      Authorization: "Bearer user-jwt"
+    },
+    body: JSON.stringify({
+      items: [{ id: "website-startup", quantity: 1 }],
+      client_id: posted,
+      clientId: posted
+    })
+  });
+  const response = await handleCheckoutRequest(request, {
+    STRIPE_SECRET_KEY: SECRET,
+    STRIPE_PUBLISHABLE_KEY: PUBLISHABLE,
+    SUPABASE_URL: "https://example.supabase.co",
+    SUPABASE_ANON_KEY: "anon-key-value-not-secret"
+  }, fetchImpl);
+  assert.equal(response.status, 200);
+  assert.equal(params.get("metadata[client_id]"), clientId);
+  assert.equal(params.get("customer"), "cus_portal");
+  assert.equal(params.has("customer_creation"), false);
+  assert.equal(params.get("metadata[client_id]") === posted, false);
 });
 
 test("completed sessions are confirmed without returning the Stripe session payload", async () => {

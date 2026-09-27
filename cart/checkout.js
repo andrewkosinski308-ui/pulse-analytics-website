@@ -326,6 +326,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    function existingAccessToken() {
+
+        try {
+
+            for (let index = 0; index < localStorage.length; index += 1) {
+
+                const key = localStorage.key(index);
+
+                if (!key || !key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
+
+                const parsed = JSON.parse(localStorage.getItem(key) || "");
+
+                const token = parsed?.access_token;
+
+                if (typeof token === "string" && token.split(".").length === 3) return token;
+
+            }
+
+        } catch (error) {
+
+            console.error("Unable to read the portal session:", error);
+
+        }
+
+        return "";
+
+    }
+
+
     function checkoutPayload(cart) {
 
         return {
@@ -418,11 +447,15 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("embedded-checkout");
 
 
+        const headers = {
+            "Content-Type": "application/json"
+        };
+        const accessToken = existingAccessToken();
+        if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+
         const response = await fetch("/api/checkout/session", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify(checkoutPayload(cart))
         });
 

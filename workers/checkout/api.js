@@ -1,4 +1,5 @@
 import { resolveCheckoutItems } from "./catalog.js";
+import { resolveCheckoutIdentity } from "./identity.js";
 
 const STRIPE_API = "https://api.stripe.com/v1/checkout/sessions";
 const STRIPE_VERSION = "2025-03-31.basil";
@@ -36,8 +37,9 @@ function sameOrigin(request) {
  * @param {string} returnUrl
  * @param {"payment" | "subscription"} mode
  * @param {{ priceId: string, quantity: number }[]} lineItems
+ * @param {{ clientId?: string, customerId?: string } | null} [identity]
  */
-export function checkoutSessionBody(returnUrl, mode, lineItems) {
+export function checkoutSessionBody(returnUrl, mode, lineItems, identity = null) {
   const params = new URLSearchParams();
   params.set("mode", mode);
   params.set("ui_mode", "embedded");
@@ -46,7 +48,12 @@ export function checkoutSessionBody(returnUrl, mode, lineItems) {
   params.set("automatic_tax[enabled]", "true");
   params.set("tax_id_collection[enabled]", "true");
   params.set("name_collection[individual][enabled]", "true");
-  if (mode === "payment") {
+  if (identity?.clientId) {
+    params.set("metadata[client_id]", identity.clientId);
+  }
+  if (identity?.customerId) {
+    params.set("customer", identity.customerId);
+  } else if (mode === "payment") {
     params.set("customer_creation", "always");
     params.set("saved_payment_method_options[payment_method_save]", "enabled");
   }
@@ -153,7 +160,8 @@ export async function handleCheckoutRequest(request, env, fetchImpl = fetch) {
     if (!resolved.ok) return json({ error: resolved.error }, resolved.status);
 
     const returnUrl = `${url.origin}/cart/checkout.html?session_id={CHECKOUT_SESSION_ID}`;
-    const params = checkoutSessionBody(returnUrl, resolved.mode, resolved.lineItems);
+    const identity = await resolveCheckoutIdentity(request, env, fetchImpl);
+    const params = checkoutSessionBody(returnUrl, resolved.mode, resolved.lineItems, identity);
     try {
       const created = await createStripeCheckoutSession(secret, params, fetchImpl);
       if (!created.ok) return json({ error: created.error }, created.status);

@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin.css?v=20260927d">
 </head>
 <body class="admin-app">
 <!-- Google Tag Manager (noscript) -->
@@ -56,24 +56,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p class="admin-sidebar-label">Administration</p>
             <nav class="admin-nav" aria-label="Admin portal">
                 <button type="button" class="admin-nav-link is-current" id="nav-dashboard" aria-current="page">Dashboard</button>
-
-                <button type="button" class="admin-nav-link" id="admin-crm-toggle" aria-expanded="true" aria-controls="admin-nav-crm">
-                    <span>CRM</span>
-                    <span class="admin-soon">Coming soon</span>
-                </button>
-                <div class="admin-nav-children" id="admin-nav-crm">
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Clients</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Leads</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Contacts</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Projects</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Tasks</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Files</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Reports</span><span class="admin-soon">Coming soon</span></button>
-                    <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Appointments</span><span class="admin-soon">Coming soon</span></button>
-                </div>
-
+                <button type="button" class="admin-nav-link" id="nav-clients">Clients</button>
+                <button type="button" class="admin-nav-link" id="nav-projects">Projects</button>
+                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Tasks</span><span class="admin-soon">Coming soon</span></button>
+                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Files</span><span class="admin-soon">Coming soon</span></button>
+                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Reports</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Blog</span><span class="admin-soon">Coming soon</span></button>
-                <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Analytics</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Settings</span><span class="admin-soon">Coming soon</span></button>
             </nav>
         </aside>
@@ -82,31 +70,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <main class="admin-main">
             <section class="admin-dashboard" id="admin-dashboard" tabindex="-1" aria-labelledby="admin-welcome">
                 <h1 id="admin-welcome">Welcome to Pulse Analytics Group LLC</h1>
-                <p class="admin-lead">This is the internal administration shell for authorized administrators. Dashboard is available now. CRM, Blog, Analytics, and Settings will be added in later releases.</p>
-                <p class="admin-lead-note">No business metrics are shown yet. The cards below are labeled placeholders.</p>
+                <p class="admin-lead">This is the internal administration shell for authorized administrators. Dashboard, Clients, and Projects are available now. Tasks, Files, Reports, Blog, and Settings will be added in later releases.</p>
+                <p><button type="button" class="secondary-button" id="admin-open-clients">Clients</button> <button type="button" class="secondary-button" id="admin-open-projects">Projects</button></p>
+                <p class="admin-lead-note">No business metrics are shown yet. Client file exchange is available to assigned staff.</p>
+                <p><a class="primary-button" href="staff-workspace.html">Client files and support</a></p>
                 <div class="admin-cards">
                     <article class="admin-card">
                         <p class="admin-card-label">Placeholder</p>
-                        <h2>CRM</h2>
-                        <p>CRM metrics will appear here.</p>
-                    </article>
-                    <article class="admin-card">
-                        <p class="admin-card-label">Placeholder</p>
                         <h2>Clients</h2>
-                        <p>Client records will appear here.</p>
+                        <p>Open Clients to review accounts, engagements, and history.</p>
                     </article>
                     <article class="admin-card">
                         <p class="admin-card-label">Placeholder</p>
                         <h2>Blog</h2>
                         <p>Blog tools will appear here.</p>
                     </article>
-                    <article class="admin-card">
-                        <p class="admin-card-label">Placeholder</p>
-                        <h2>Analytics</h2>
-                        <p>Analytics will appear here.</p>
-                    </article>
                 </div>
             </section>
+            <section class="admin-clients" id="admin-clients" hidden tabindex="-1" aria-labelledby="admin-clients-title"></section>
+            <section class="admin-projects" id="admin-projects" hidden tabindex="-1" aria-labelledby="admin-projects-title"></section>
         </main>
     </div>
 
@@ -118,7 +100,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             signOut,
             isAdminPortalEligible
         } from './js/pulse-auth.js';
-        import { renderAdminIdentity, bindAdminChrome } from './js/admin-portal.js';
+        import { renderAdminIdentity, bindAdminChrome } from './js/admin-portal.js?v=20260927d';
+        import { mountAdminProjects } from './js/admin-projects.js?v=20260927d';
+        import { mountAdminClients } from './js/admin-clients.js?v=20260927d';
 
         const gate = document.getElementById('admin-gate');
         const shell = document.getElementById('admin-app');
@@ -134,6 +118,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const authState = await requireAdminPortal();
             if (authState) {
                 bindAdminChrome();
+                mountAdminProjects();
+                mountAdminClients();
                 reveal(authState);
 
                 subscribeAuth((next) => {

@@ -8,6 +8,9 @@
 #
 # SUPABASE_URL is a non-secret variable.
 # OPENALEX_API_KEY, SUPABASE_ANON_KEY, CENSUS_API_KEY, and STRIPE_SECRET_KEY are required Cloudflare secrets.
+# STRIPE_WEBHOOK_SECRET verifies live Stripe billing webhooks.
+# STRIPE_WEBHOOK_SECRET_TEST verifies Sandbox webhook signatures. It does not replace the live secret.
+# SUPABASE_SERVICE_ROLE_KEY lets the Worker sync billing rows. Never expose it to the browser.
 # STRIPE_PUBLISHABLE_KEY is also a required Cloudflare secret so it survives deploy.
 # It is a publishable key and is returned to the browser for Stripe.js. Do not put STRIPE_SECRET_KEY in [vars].
 # Set or update secret values with `npx wrangler secret put <NAME>`.
@@ -31,3 +34,4 @@ SUPABASE_URL = "https://gultqhsccxuqvibymwdg.supabase.co"
 
 [secrets]
 required = ["OPENALEX_API_KEY", "SUPABASE_ANON_KEY", "CENSUS_API_KEY", "STRIPE_SECRET_KEY", "STRIPE_PUBLISHABLE_KEY"]
+# Also set STRIPE_WEBHOOK_SECRET and SUPABASE_SERVICE_ROLE_KEY before client billing sync will succeed.

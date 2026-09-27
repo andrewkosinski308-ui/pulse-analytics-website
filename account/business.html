@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKX3TLC3');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business information | Pulse Analytics</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assetts/images/Pulse%20Analytics%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/account-onboarding.css?v=20260927b">
+</head>
+<body data-onboarding-step="2">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="onboard-scene" aria-hidden="true">
+  <div class="onboard-gradient"></div>
+  <div class="onboard-grid"></div>
+  <div class="onboard-orb onboard-orb-a"></div>
+  <div class="onboard-orb onboard-orb-b"></div>
+  <div class="onboard-orb onboard-orb-c"></div>
+  <canvas id="onboard-field"></canvas>
+</div>
+<div class="onboard-app">
+  <header class="onboard-top">
+    <a class="onboard-brand" href="/index.html">
+      <img src="/assetts/images/transparent-logo-PA.jpeg" alt="">
+      <span><strong>Pulse Analytics</strong><span>Client account</span></span>
+    </a>
+    <button type="button" class="onboard-signout" id="onboard-signout" hidden>Sign out</button>
+  </header>
+  <div class="onboard-layout">
+    <aside class="onboard-progress">
+      <p class="onboard-kicker">Step 02</p>
+      <h1>Tell us about the business.</h1>
+      <ol class="onboard-steps">
+        <li class="is-done"><a href="/account/create"><span class="onboard-index">01</span>Account</a></li>
+        <li><span aria-current="step"><span class="onboard-index">02</span>Business</span></li>
+        <li><span><span class="onboard-index">03</span>Discovery</span></li>
+        <li><span><span class="onboard-index">04</span>Services</span></li>
+      </ol>
+    </aside>
+    <main class="onboard-panel">
+      <p id="onboard-status" role="status">Checking your account…</p>
+      <div id="onboard-alert" class="onboard-alert" role="alert"></div>
+      <div id="onboard-body" hidden>
+        <h2>Business information</h2>
+        <p class="onboard-lead">This is the organization the portal will represent. Every field is required.</p>
+        <form class="onboard-form" data-onboarding-form novalidate>
+          <label>Full business name
+            <input name="business_name" autocomplete="organization" maxlength="160">
+          </label>
+          <p class="onboard-error" data-error-for="business_name" hidden></p>
+          <label>Street address
+            <input name="address_line" autocomplete="address-line1" maxlength="160">
+          </label>
+          <p class="onboard-error" data-error-for="address_line" hidden></p>
+          <div class="onboard-grid-3">
+            <label>City
+              <input name="city" autocomplete="address-level2" maxlength="80">
+            </label>
+            <label>State
+              <select name="region" autocomplete="address-level1"></select>
+            </label>
+            <label>ZIP code
+              <input name="postal_code" autocomplete="postal-code" inputmode="numeric" maxlength="10">
+            </label>
+          </div>
+          <p class="onboard-error" data-error-for="city" hidden></p>
+          <p class="onboard-error" data-error-for="region" hidden></p>
+          <p class="onboard-error" data-error-for="postal_code" hidden></p>
+          <label>Business phone
+            <input name="phone" type="tel" autocomplete="tel" maxlength="30">
+          </label>
+          <p class="onboard-error" data-error-for="phone" hidden></p>
+          <div class="onboard-actions">
+            <button class="onboard-back" type="button" data-back="/account/create">Back</button>
+            <button class="onboard-continue" type="submit">Continue</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="/js/supabase-env.js"></script>
+<script type="module" src="/js/account-onboarding.js?v=20260927e"></script>
+</body>
+</html>

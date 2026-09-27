@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Files | Pulse Analytics Group LLC</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="assetts/images/Pulse%20Analytics%20Favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="client-portal.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-brand">
+                <div class="header-logo">
+                    <a href="index.html" class="logo">
+                        <img src="assetts/images/transparent-logo-PA.jpeg" alt="Pulse Analytics Group LLC Logo">
+                    </a>
+                </div>
+                <div class="header-branding">
+                    <h1>Pulse Analytics Group LLC</h1>
+                    <p>Staff file exchange</p>
+                </div>
+            </div>
+            <div class="header-nav">
+                <nav aria-label="Site">
+                    <ul class="nav-links">
+                        <li><a href="admin-portal.html">Admin</a></li>
+                        <li><a href="index.html">Website</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="client-portal-shell">
+        <div class="container">
+            <p id="staff-alert" class="portal-alert" role="alert" hidden></p>
+            <section id="staff-login" class="client-auth-card">
+                <div class="client-auth-brand">
+                    <h2>Staff sign in</h2>
+                    <p>Assigned administrators and employees can exchange client files here.</p>
+                </div>
+                <form id="staff-login-form" class="client-auth-form">
+                    <label>Email<input name="email" type="email" autocomplete="username" required></label>
+                    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+                    <button class="primary-button" type="submit">Sign in</button>
+                </form>
+            </section>
+            <section id="staff-app" class="portal-layout" hidden>
+                <nav class="portal-nav" id="staff-tabs" aria-label="Staff workspace">
+                    <button type="button" data-tab="files">Files</button>
+                    <button type="button" data-tab="reports">Reports</button>
+                    <button type="button" data-tab="support">Support</button>
+                    <button type="button" id="staff-sign-out" class="portal-sign-out">Sign out</button>
+                </nav>
+                <div class="portal-main" id="staff-panel"></div>
+            </section>
+        </div>
+    </main>
+    <script src="js/supabase-env.js"></script>
+    <script type="module">
+        import { startStaffWorkspace } from "./js/staff-workspace.js";
+        startStaffWorkspace();
+    </script>
+</body>
+</html>

@@ -16,8 +16,10 @@
  */
 
 import { handleBenchmarksRequest } from "./benchmarks/api.js";
+import { handleBillingRequest } from "./billing/api.js";
 import { handleCheckoutRequest } from "./checkout/api.js";
 import { handleMarketIntelligenceRequest } from "./market-intelligence/api.js";
+import { handleOnboardingRequest } from "./onboarding/gate.js";
 import { handleResearchRequest } from "./research/api.js";
 
 const PRODUCTION_HOST = "pulseanalyticsgroupllc.com";
@@ -128,6 +130,13 @@ export default {
     if (url.pathname.startsWith("/api/checkout/")) {
       return handleCheckoutRequest(request, env);
     }
+
+    if (url.pathname.startsWith("/api/billing/") || url.pathname === "/api/stripe/webhook") {
+      return handleBillingRequest(request, env);
+    }
+
+    const onboarding = await handleOnboardingRequest(request, env);
+    if (onboarding) return onboarding;
 
     return env.ASSETS.fetch(request);
   },

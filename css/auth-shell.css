@@ -1,0 +1,91 @@
+/* Sign-in layout on top of the account-creation scene. */
+
+[hidden] { display: none !important; }
+
+.auth-layout {
+  grid-template-columns: minmax(240px, 380px) minmax(0, 520px);
+}
+
+.auth-support {
+  margin: 0;
+  max-width: 34rem;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.auth-security {
+  margin: 1.1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(174, 182, 191, 0.35);
+  color: var(--silver);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.auth-remember {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-weight: 500;
+}
+
+.auth-remember input {
+  width: 1.15rem;
+  height: 1.15rem;
+  min-width: 1.15rem;
+  min-height: 1.15rem;
+  margin-top: 0.15rem;
+  padding: 0;
+  accent-color: var(--royal);
+}
+
+.auth-note,
+.auth-gate,
+.auth-status {
+  margin: 0;
+  color: #526277;
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.auth-note { font-size: 0.85rem; }
+
+.onboard-alert[data-type="success"],
+.onboard-alert[data-type="info"] {
+  background: #e7f6f0;
+  color: var(--ok);
+}
+
+.auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+}
+
+.auth-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+}
+
+.auth-actions .onboard-continue,
+.auth-actions .onboard-back,
+.auth-actions .onboard-portal {
+  margin-left: 0;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .auth-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .auth-actions .onboard-continue,
+  .auth-actions .onboard-back,
+  .auth-actions .onboard-portal {
+    width: 100%;
+  }
+}

@@ -87,6 +87,11 @@ body:not(.admin-app) main.client-auth-page {
   text-align: center;
 }
 
+.admin-gate[hidden],
+.admin-frame[hidden] {
+  display: none;
+}
+
 /* Application shell ---------------------------------------------------- */
 
 body.admin-app {
@@ -291,19 +296,6 @@ body.admin-app header.admin-topbar {
   display: none;
 }
 
-.admin-nav-children {
-  display: grid;
-  gap: 0.15rem;
-  margin: 0.15rem 0 0.35rem 0.65rem;
-  padding-left: 0.65rem;
-  border-left: 1px solid rgba(174, 182, 191, 0.35);
-}
-
-.admin-nav-children .admin-nav-link {
-  min-height: 40px;
-  font-size: 0.92rem;
-}
-
 .admin-backdrop {
   display: none;
 }
@@ -440,5 +432,428 @@ body.admin-app header.admin-topbar {
 
   .admin-main {
     padding: 1.25rem 1rem 2.5rem;
+  }
+}
+
+.admin-projects {
+  max-width: 1100px;
+  min-width: 0;
+}
+
+.admin-projects h1 {
+  margin: 0;
+  color: var(--primary);
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-weight: 600;
+}
+
+.admin-projects-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.admin-projects-head .primary-button,
+.admin-project-form .primary-button,
+.admin-projects-head .secondary-button {
+  width: auto;
+  max-width: 100%;
+}
+
+.admin-text-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--secondary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-projects-note {
+  margin: 0 0 1rem;
+  color: var(--text-light);
+}
+
+.admin-project-filters,
+.admin-project-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  min-width: 0;
+}
+
+.admin-project-filters label,
+.admin-project-form label {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-project-filters input,
+.admin-project-filters select,
+.admin-project-form input,
+.admin-project-form select {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--button-radius);
+  background: var(--light);
+  font: inherit;
+}
+
+.admin-project-groups {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.4rem;
+}
+
+.admin-filter {
+  min-height: 42px;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--button-radius);
+  background: var(--light);
+  color: var(--primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-filter.is-current {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-white);
+}
+
+.admin-project-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-project-card {
+  cursor: pointer;
+}
+
+.admin-project-card:hover,
+.admin-project-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  outline: 2px solid rgba(25, 118, 210, 0.35);
+  outline-offset: 2px;
+}
+
+.admin-project-card dl,
+.admin-project-detail p {
+  margin: 0.75rem 0 0;
+}
+
+.admin-project-card dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.55rem 0.8rem;
+}
+
+.admin-project-card dt {
+  color: #5C6770;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-project-card dd {
+  margin: 0.15rem 0 0;
+  color: var(--text);
+}
+
+.admin-project-form {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--light);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-project-form h2,
+.admin-project-form fieldset {
+  grid-column: 1 / -1;
+}
+
+.admin-project-form fieldset {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.admin-project-form fieldset label {
+  font-weight: 500;
+}
+
+.admin-project-detail {
+  margin-top: 0.75rem;
+}
+
+.admin-clients {
+  max-width: 1100px;
+  min-width: 0;
+}
+
+.admin-clients h1,
+.admin-clients h2 {
+  margin: 0 0 0.35rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.admin-clients h1 {
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+}
+
+.admin-clients h2 {
+  font-size: 1.05rem;
+}
+
+.admin-clients h3 {
+  margin: 0 0 0.35rem;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.admin-clients-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.admin-client-filters {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.admin-client-filters label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-client-filters input,
+.admin-client-filters select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.admin-client-list,
+.admin-client-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-client-card,
+.admin-client-stack .admin-card,
+.admin-clients > .admin-card {
+  min-width: 0;
+}
+
+.admin-client-open {
+  display: grid;
+  gap: 0.15rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-client-open:focus-visible,
+.admin-filter:focus-visible,
+.admin-client-pager button:focus-visible,
+.admin-text-button:focus-visible {
+  outline: 2px solid #1976D2;
+  outline-offset: 3px;
+}
+
+.admin-client-name {
+  color: #0A2E6F;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.admin-client-contact {
+  color: #3E4C59;
+  font-size: 0.92rem;
+}
+
+.admin-client-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: 0.65rem 1rem;
+  margin: 0.75rem 0 0;
+}
+
+.admin-client-meta div {
+  min-width: 0;
+}
+
+.admin-client-meta dt {
+  color: #5C6770;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-client-meta dd {
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.7rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid #0A2E6F;
+  border-radius: 999px;
+  color: #0A2E6F;
+  background: #FFFFFF;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.admin-status-mark {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 2px solid currentColor;
+  background: transparent;
+}
+
+.admin-status-lead .admin-status-mark {
+  border-radius: 999px;
+}
+
+.admin-status-active {
+  background: #0A2E6F;
+  color: #FFFFFF;
+}
+
+.admin-status-active .admin-status-mark {
+  border-radius: 2px;
+  background: #33A1FF;
+  border-color: #33A1FF;
+}
+
+.admin-status-onboarding .admin-status-mark {
+  transform: rotate(45deg);
+}
+
+.admin-status-paused {
+  background: #EEF1F4;
+  border-style: dashed;
+}
+
+.admin-status-paused .admin-status-mark {
+  border-radius: 0;
+  background: #AEB6BF;
+}
+
+.admin-status-churned {
+  color: #3E4C59;
+  border-color: #AEB6BF;
+}
+
+.admin-status-churned .admin-status-mark {
+  border-radius: 0;
+  background: transparent;
+}
+
+.admin-client-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.admin-client-pager p {
+  margin: 0;
+  color: #3E4C59;
+}
+
+.admin-client-pager .secondary-button,
+.admin-client-actions .secondary-button,
+.admin-clients-head .secondary-button {
+  width: auto;
+}
+
+.admin-client-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.75rem 0;
+}
+
+.admin-client-actions a.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.admin-clients-note {
+  margin: 0.35rem 0 0;
+  color: #3E4C59;
+}
+
+.admin-client-records {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.admin-client-records li {
+  margin: 0.25rem 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .admin-client-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-client-pager {
+    align-items: stretch;
+  }
+
+  .admin-client-pager .secondary-button {
+    width: 100%;
   }
 }

@@ -19,9 +19,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="client-portal.css">
+    <link rel="stylesheet" href="client-portal.css?v=20260926i">
 </head>
-<body>
+<body class="client-portal-page">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -39,51 +39,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <p>Client Portal</p>
                 </div>
             </div>
-            <div class="header-nav">
-                <nav aria-label="Client portal navigation">
-                    <ul class="nav-links">
-                        <li><a href="index.html">Website</a></li>
-                        <li><a href="contact.html">Support</a></li>
-                    </ul>
-                </nav>
-            </div>
+            <button type="button" class="portal-menu" id="portal-menu" aria-expanded="false" aria-controls="portal-nav" aria-label="Open navigation">
+                <span class="portal-menu-icon" aria-hidden="true"></span>
+                Menu
+            </button>
         </div>
     </header>
 
     <main class="client-portal-shell">
         <div class="container">
             <div id="portal-loading" class="client-portal-loading">Verifying your session…</div>
-
-            <div id="portal-panel" class="client-portal-panel" hidden>
-                <h1 id="welcome-title">Welcome</h1>
-                <p class="portal-subtitle">You are signed in to the Pulse Analytics Client Portal.</p>
-
-                <div class="client-portal-meta" aria-live="polite">
-                    <div class="meta-row">
-                        <div class="meta-label">Name</div>
-                        <div class="meta-value" id="meta-name">—</div>
-                    </div>
-                    <div class="meta-row">
-                        <div class="meta-label">Company</div>
-                        <div class="meta-value" id="meta-company">—</div>
-                    </div>
-                    <div class="meta-row">
-                        <div class="meta-label">Email</div>
-                        <div class="meta-value" id="meta-email">—</div>
-                    </div>
-                    <div class="meta-row">
-                        <div class="meta-label">Account role</div>
-                        <div class="meta-value" id="meta-role">—</div>
-                    </div>
-                    <div class="meta-row">
-                        <div class="meta-label">Membership</div>
-                        <div class="meta-value" id="meta-membership">—</div>
-                    </div>
+            <div id="portal-app" class="portal-layout" hidden>
+                <div class="portal-identity">
+                    <p id="portal-who" class="portal-who"></p>
                 </div>
-
-                <div class="client-portal-actions">
-                    <button type="button" class="secondary-button" id="sign-out-btn">Sign Out</button>
-                    <a class="primary-button" href="index.html">Visit Website</a>
+                <nav class="portal-nav" id="portal-nav" aria-label="Client portal">
+                    <button type="button" data-view="dashboard">Dashboard</button>
+                    <button type="button" data-view="projects">Projects</button>
+                    <button type="button" data-view="files">Files</button>
+                    <button type="button" data-view="reports">Reports</button>
+                    <button type="button" data-view="billing">Billing</button>
+                    <button type="button" data-view="support">Support</button>
+                    <button type="button" data-view="notifications">Notifications <span id="unread-count" class="portal-badge" hidden></span></button>
+                    <button type="button" data-view="account">Account</button>
+                    <div class="portal-nav-footer">
+                        <a class="portal-website" href="index.html">Website</a>
+                        <button type="button" id="portal-sign-out" class="portal-sign-out">Sign Out</button>
+                    </div>
+                </nav>
+                <div class="portal-main">
+                    <p id="portal-alert" class="portal-alert" role="alert" hidden></p>
+                    <div id="portal-view" tabindex="-1"></div>
                 </div>
             </div>
         </div>
@@ -91,76 +77,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <script src="js/supabase-env.js"></script>
     <script type="module">
-        import {
-            initAuth,
-            subscribeAuth,
-            signOut,
-            isClientPortalEligible,
-            getSiteRootPrefix
-        } from './js/pulse-auth.js';
-
-        const loadingEl = document.getElementById('portal-loading');
-        const panelEl = document.getElementById('portal-panel');
-        const signOutBtn = document.getElementById('sign-out-btn');
-        const loginHref = `${getSiteRootPrefix()}client-login.html`;
-
-        function renderPortal(authState) {
-            const name =
-                authState.profile?.full_name?.trim() ||
-                authState.user?.email?.split('@')[0] ||
-                'Client';
-
-            document.getElementById('welcome-title').textContent = `Welcome, ${name}`;
-            document.getElementById('meta-name').textContent = name;
-            document.getElementById('meta-company').textContent = authState.client?.name || '—';
-            document.getElementById('meta-email').textContent =
-                authState.profile?.email || authState.user?.email || '—';
-            document.getElementById('meta-role').textContent = 'Client Account';
-            document.getElementById('meta-membership').textContent =
-                authState.membership?.member_role
-                    ? String(authState.membership.member_role).replace(/^./, (c) => c.toUpperCase())
-                    : '—';
-
-            loadingEl.hidden = true;
-            panelEl.hidden = false;
-        }
-
-        try {
-            await initAuth();
-
-            subscribeAuth((authState) => {
-                if (authState.loading) {
-                    loadingEl.hidden = false;
-                    loadingEl.textContent = 'Verifying your session…';
-                    panelEl.hidden = true;
-                    return;
-                }
-
-                if (!isClientPortalEligible(authState)) {
-                    window.location.replace(loginHref);
-                    return;
-                }
-
-                renderPortal(authState);
-            });
-        } catch (err) {
-            loadingEl.textContent = err.message || 'Unable to load the Client Portal.';
-            setTimeout(() => window.location.replace(loginHref), 1500);
-        }
-
-        signOutBtn.addEventListener('click', async () => {
-            signOutBtn.disabled = true;
-            signOutBtn.textContent = 'Signing out…';
-            try {
-                await signOut();
-                window.location.replace('client-login.html');
-            } catch (err) {
-                signOutBtn.disabled = false;
-                signOutBtn.textContent = 'Sign Out';
-                loadingEl.hidden = false;
-                loadingEl.textContent = err.message || 'Sign-out failed.';
-            }
-        });
+        import { startClientPortal } from './js/client-portal.js?v=20260926g';
+        startClientPortal();
     </script>
 </body>
 </html>

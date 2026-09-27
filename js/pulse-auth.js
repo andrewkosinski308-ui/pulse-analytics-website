@@ -1,8 +1,11 @@
 /**
- * Pulse Analytics — central Supabase Auth + client context for the static site.
+ * Pulse Analytics — shared Supabase Auth for the static site.
+ * The Client Portal and the Admin Portal both use this module:
+ * one Supabase client, one persisted session, and profiles.role for authorization.
  * Uses the publishable anon key only. RLS remains the authorization authority.
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm';
+import { ONBOARDING_PAGES } from './onboarding-catalog.js';
 
 /** @typedef {'admin' | 'employee' | 'client'} AppRole */
 
@@ -39,6 +42,11 @@ const listeners = new Set();
 
 let initPromise = null;
 let handlingAuthChange = false;
+
+/** Preference only — never a password or token. '0' means end an admin session with the browser tab. */
+const ADMIN_PERSIST_KEY = 'pulse-admin-persist';
+const ADMIN_TAB_KEY = 'pulse-admin-tab';
+const ACCESS_COOKIE = 'pulse-access';
 
 function getConfig() {
   const cfg = window.PULSE_SUPABASE;
@@ -165,7 +173,7 @@ export async function loadClientContext() {
 
   const { data: clientRow, error: clientError } = await client
     .from('clients')
-    .select('id, name, website, industry, status')
+    .select('id, name, website, industry, status, onboarding_step')
     .eq('id', membership.client_id)
     .maybeSingle();
 
@@ -194,6 +202,17 @@ async function applySession(session, eventName) {
   } else {
     await clearClientContext();
   }
+  writeAccessCookie(session);
+}
+
+function writeAccessCookie(session) {
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  if (!session?.access_token) {
+    document.cookie = `${ACCESS_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax${secure}`;
+    return;
+  }
+  const maxAge = Math.max(120, Number(session.expires_at || 0) - Math.floor(Date.now() / 1000));
+  document.cookie = `${ACCESS_COOKIE}=${encodeURIComponent(session.access_token)}; Max-Age=${maxAge}; Path=/; SameSite=Lax${secure}`;
 }
 
 export function initAuth() {
@@ -253,11 +272,123 @@ export function isClientPortalEligible(authState = getAuthState()) {
     authState.authenticated &&
       authState.profile?.role === 'client' &&
       authState.client?.id &&
+      authState.profile?.is_active !== false &&
+      Number(authState.client?.onboarding_step) === 5
+  );
+}
+
+export function onboardingResumePath(authState = getAuthState()) {
+  const step = Number(authState.client?.onboarding_step);
+  return ONBOARDING_PAGES[step] || ONBOARDING_PAGES[1];
+}
+
+/** Portal for a finished client, the current onboarding step for an unfinished client, or null. */
+export function clientEntryPath(authState = getAuthState()) {
+  if (isClientPortalEligible(authState)) return '/client-portal.html';
+  if (
+    authState.authenticated &&
+    authState.profile?.role === 'client' &&
+    authState.profile?.is_active !== false &&
+    authState.client?.id &&
+    Number(authState.client?.onboarding_step) < 5
+  ) {
+    return onboardingResumePath(authState);
+  }
+  return null;
+}
+
+function signupFailure(error) {
+  const message = String(error?.message || '').toLowerCase();
+  if (message.includes('already') || error?.code === 'user_already_exists') {
+    return 'An account with this email already exists. Sign in to continue.';
+  }
+  if (message.includes('password')) return 'Choose a stronger password.';
+  if (message.includes('email') || message.includes('invalid')) return 'Enter a valid email address.';
+  return 'We could not create the account. Try again.';
+}
+
+/**
+ * Create the Supabase auth user. The database trigger creates the client record.
+ * Returns needsEmailConfirmation when Auth withholds a session until the mailbox is confirmed.
+ */
+export async function signUpClient({ fullName, email, password }) {
+  const client = getSupabase();
+  const { data, error } = await client.auth.signUp({
+    email: String(email).trim(),
+    password,
+    options: {
+      data: {
+        full_name: String(fullName).trim(),
+        signup_intent: 'portal_client'
+      },
+      emailRedirectTo: `${getSiteOriginBase()}/account/business`
+    }
+  });
+  if (error) throw new Error(signupFailure(error));
+  if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+    throw new Error('An account with this email already exists. Sign in to continue.');
+  }
+  if (!data.session) {
+    return { needsEmailConfirmation: true, email: String(email).trim() };
+  }
+  await applySession(data.session, 'SIGNED_IN');
+  state.loading = false;
+  notify();
+  return { needsEmailConfirmation: false, auth: getAuthState() };
+}
+
+/** Active administrator on the existing profiles.role column. Employees and clients are not administrators. */
+export function isAdminPortalEligible(authState = getAuthState()) {
+  return Boolean(
+    authState.authenticated &&
+      authState.profile?.role === 'admin' &&
       authState.profile?.is_active !== false
   );
 }
 
-export async function signIn(email, password) {
+export function getAdminPersistPreference() {
+  try {
+    return localStorage.getItem(ADMIN_PERSIST_KEY) !== '0';
+  } catch (_) {
+    return true;
+  }
+}
+
+/**
+ * Remember-me uses the existing Supabase localStorage session.
+ * Unchecked: the same session ends when this browser tab session ends.
+ */
+export function setAdminPersistPreference(remember) {
+  try {
+    localStorage.setItem(ADMIN_PERSIST_KEY, remember ? '1' : '0');
+    if (remember) sessionStorage.removeItem(ADMIN_TAB_KEY);
+    else sessionStorage.setItem(ADMIN_TAB_KEY, '1');
+  } catch (_) {
+    /* Storage unavailable; the shared Supabase session still applies. */
+  }
+}
+
+/**
+ * Signs out an administrator who chose not to keep the session, once the tab session is gone.
+ * Does not sign out client accounts.
+ * @returns {Promise<boolean>} true when an admin session was ended
+ */
+export async function enforceAdminPersistPreference() {
+  let remember = true;
+  let tabAlive = false;
+  try {
+    remember = localStorage.getItem(ADMIN_PERSIST_KEY) !== '0';
+    tabAlive = sessionStorage.getItem(ADMIN_TAB_KEY) === '1';
+  } catch (_) {
+    return false;
+  }
+  if (remember || tabAlive) return false;
+  if (getAuthState().profile?.role !== 'admin') return false;
+  await signOut();
+  return true;
+}
+
+async function establishSession(email, password) {
   const client = getSupabase();
   const { data, error } = await client.auth.signInWithPassword({
     email: String(email).trim(),
@@ -270,38 +401,110 @@ export async function signIn(email, password) {
   await applySession(data.session, 'SIGNED_IN');
   state.loading = false;
   notify();
+  return getAuthState();
+}
 
-  const current = getAuthState();
+async function assertClientPortalAccess(current) {
   if (!current.profile) {
-    await client.auth.signOut();
-    await applySession(null, 'SIGNED_OUT');
-    notify();
-    throw new Error(current.error || 'Your account profile was not found.');
+    const message = current.error || 'Your account profile was not found.';
+    await signOut();
+    throw new Error(message);
   }
 
   if (current.profile.role !== 'client') {
-    await client.auth.signOut();
-    await applySession(null, 'SIGNED_OUT');
-    notify();
+    await signOut();
     const role = current.profile.role;
-    if (role === 'admin' || role === 'employee') {
+    if (role === 'admin') {
       throw new Error(
-        'This account is a staff account. The Client Portal is for client users only. Staff dashboards will be available in a future release.'
+        'This account is an administrator account. Sign in through the Admin Portal.'
+      );
+    }
+    if (role === 'employee') {
+      throw new Error(
+        'This account is a staff account. Open the staff file workspace instead of the Client Portal.'
       );
     }
     throw new Error('This account is not authorized for the Client Portal.');
   }
 
+  if (current.profile.is_active === false) {
+    await signOut();
+    throw new Error('This client account is inactive. Contact Pulse Analytics support.');
+  }
+
   if (!current.client) {
-    await client.auth.signOut();
-    await applySession(null, 'SIGNED_OUT');
-    notify();
+    await signOut();
     throw new Error(
       'Your login succeeded, but no client organization is linked to this account. Contact Pulse Analytics support.'
     );
   }
 
   return current;
+}
+
+export function isStaffWorkspaceEligible(authState = getAuthState()) {
+  const role = authState.profile?.role;
+  return Boolean(
+    authState.authenticated &&
+      authState.profile?.is_active !== false &&
+      (role === 'admin' || role === 'employee')
+  );
+}
+
+async function assertStaffWorkspaceAccess(current) {
+  if (!current.profile) {
+    const message = current.error || 'Your account profile was not found.';
+    await signOut();
+    throw new Error(message);
+  }
+  if (current.profile.is_active === false) {
+    await signOut();
+    throw new Error('This staff account is inactive.');
+  }
+  if (current.profile.role === 'client') {
+    await signOut();
+    throw new Error('This account uses the Client Portal, not the staff file workspace.');
+  }
+  if (!isStaffWorkspaceEligible(current)) {
+    await signOut();
+    throw new Error('This account is not authorized for staff file exchange.');
+  }
+  return current;
+}
+
+async function assertAdminPortalAccess(current) {
+  if (!current.profile) {
+    const message = current.error || 'Your account profile was not found.';
+    await signOut();
+    throw new Error(message);
+  }
+
+  if (current.profile.role === 'admin' && current.profile.is_active === false) {
+    await signOut();
+    throw new Error('This administrator account is inactive. Contact Pulse Analytics support.');
+  }
+
+  if (!isAdminPortalEligible(current)) {
+    if (current.profile.role === 'client') {
+      throw new Error(
+        'This account is a client account. The Admin Portal is for administrators only.'
+      );
+    }
+    throw new Error('This account is not authorized for the Admin Portal.');
+  }
+
+  return current;
+}
+
+/**
+ * Sign in with the shared Supabase Auth client.
+ * @param {'client' | 'admin' | 'staff'} [portal='client'] Client Portal rules stay the default.
+ */
+export async function signIn(email, password, portal = 'client') {
+  const current = await establishSession(email, password);
+  if (portal === 'admin') return assertAdminPortalAccess(current);
+  if (portal === 'staff') return assertStaffWorkspaceAccess(current);
+  return assertClientPortalAccess(current);
 }
 
 export async function signOut() {
@@ -315,9 +518,9 @@ export async function signOut() {
   notify();
 }
 
-export async function resetPassword(email) {
+export async function resetPassword(email, redirectPage = 'client-update-password.html') {
   const client = getSupabase();
-  const redirectTo = authPageUrl('client-update-password.html');
+  const redirectTo = authPageUrl(redirectPage);
   const { error } = await client.auth.resetPasswordForEmail(String(email).trim(), {
     redirectTo
   });
@@ -341,12 +544,15 @@ export async function updatePassword(newPassword) {
 }
 
 export function requireClientPortalOrRedirect() {
-  const prefix = getSiteRootPrefix();
-  const loginHref = `${prefix}client-login.html`;
-  const portalHref = `${prefix}client-portal.html`;
+  const loginHref = '/client-login.html';
 
   return initAuth().then((authState) => {
     if (authState.loading) return authState;
+    const destination = clientEntryPath(authState);
+    if (destination && destination !== '/client-portal.html') {
+      window.location.replace(destination);
+      return null;
+    }
     if (!isClientPortalEligible(authState)) {
       window.location.replace(loginHref);
       return null;
@@ -356,14 +562,49 @@ export function requireClientPortalOrRedirect() {
 }
 
 export function redirectAuthenticatedClientAwayFromLogin() {
-  const prefix = getSiteRootPrefix();
-  const portalHref = `${prefix}client-portal.html`;
-
   return initAuth().then((authState) => {
-    if (isClientPortalEligible(authState)) {
-      window.location.replace(portalHref);
+    const destination = clientEntryPath(authState);
+    if (destination) {
+      window.location.replace(destination);
       return null;
     }
     return authState;
   });
+}
+
+function adminPage(filename) {
+  return `${getSiteRootPrefix()}${filename}`;
+}
+
+/** No session → admin login. Signed-in non-admin → access denied. Active admin → allow. */
+export async function requireAdminPortal() {
+  await initAuth();
+  const ended = await enforceAdminPersistPreference();
+  const current = getAuthState();
+  if (ended || !current.authenticated) {
+    window.location.replace(adminPage('admin-login.html'));
+    return null;
+  }
+  if (!isAdminPortalEligible(current)) {
+    window.location.replace(adminPage('admin-unauthorized.html'));
+    return null;
+  }
+  return current;
+}
+
+/** Active admin leaves the login page. Any other signed-in account is denied, without ending a client session. */
+export async function redirectAuthenticatedAdminFromLogin() {
+  await initAuth();
+  const ended = await enforceAdminPersistPreference();
+  if (ended) return getAuthState();
+  const current = getAuthState();
+  if (isAdminPortalEligible(current)) {
+    window.location.replace(adminPage('admin-portal.html'));
+    return null;
+  }
+  if (current.authenticated) {
+    window.location.replace(adminPage('admin-unauthorized.html'));
+    return null;
+  }
+  return current;
 }

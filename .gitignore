@@ -2,3 +2,7 @@
 .env.local
 .tmp-migrations/
 js/supabase-env.js
+node_modules/
+.wrangler/
+.cursor/
+supabase/.temp/

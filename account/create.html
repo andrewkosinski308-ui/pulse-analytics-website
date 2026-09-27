@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKX3TLC3');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create your account | Pulse Analytics</title>
+<meta name="description" content="Create a Pulse Analytics client account.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assetts/images/Pulse%20Analytics%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/account-onboarding.css?v=20260927b">
+</head>
+<body data-onboarding-step="1">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="onboard-scene" aria-hidden="true">
+  <div class="onboard-gradient"></div>
+  <div class="onboard-grid"></div>
+  <div class="onboard-orb onboard-orb-a"></div>
+  <div class="onboard-orb onboard-orb-b"></div>
+  <div class="onboard-orb onboard-orb-c"></div>
+  <canvas id="onboard-field"></canvas>
+</div>
+<div class="onboard-app">
+  <header class="onboard-top">
+    <a class="onboard-brand" href="/index.html">
+      <img src="/assetts/images/transparent-logo-PA.jpeg" alt="">
+      <span><strong>Pulse Analytics</strong><span>Client account</span></span>
+    </a>
+    <a class="onboard-top-link" href="/index.html">Back to website</a>
+    <button type="button" class="onboard-signout" id="onboard-signout" hidden>Sign out</button>
+  </header>
+  <div class="onboard-layout">
+    <aside class="onboard-progress">
+      <p class="onboard-kicker">Account setup</p>
+      <h1>Start with the person who will use this account.</h1>
+      <ol class="onboard-steps">
+        <li><span aria-current="step"><span class="onboard-index">01</span>Account</span></li>
+        <li><span><span class="onboard-index">02</span>Business</span></li>
+        <li><span><span class="onboard-index">03</span>Discovery</span></li>
+        <li><span><span class="onboard-index">04</span>Services</span></li>
+      </ol>
+    </aside>
+    <main class="onboard-panel">
+      <p id="onboard-status" role="status">Checking your account…</p>
+      <div id="onboard-alert" class="onboard-alert" role="alert"></div>
+      <div id="onboard-body" hidden>
+        <h2>Create your account</h2>
+        <p class="onboard-lead" id="create-copy">This sign-in belongs to you. The business profile comes next.</p>
+        <div id="confirm-panel" hidden>
+          <h2>Confirm your email</h2>
+          <p>We sent a confirmation link to <strong id="confirm-email"></strong>. Open that email to continue. After you confirm, sign in and we will return you to the next step.</p>
+          <p class="onboard-links"><a href="/client-login.html">Go to sign in</a></p>
+        </div>
+        <form class="onboard-form" data-onboarding-form novalidate>
+          <label>Full name
+            <input name="full_name" autocomplete="name" maxlength="120">
+          </label>
+          <p class="onboard-error" data-error-for="full_name" hidden></p>
+          <label>Email address
+            <input name="email" type="email" autocomplete="username" maxlength="254">
+          </label>
+          <p class="onboard-error" data-error-for="email" hidden></p>
+          <div id="password-fields" class="onboard-stack">
+            <label class="password-row">Password
+              <input id="password" name="password" type="password" autocomplete="new-password">
+              <button type="button" class="password-toggle" data-toggle-password="password" aria-pressed="false">Show</button>
+            </label>
+            <p class="onboard-error" data-error-for="password" hidden></p>
+            <label class="password-row">Confirm password
+              <input id="confirm" name="confirm" type="password" autocomplete="new-password">
+              <button type="button" class="password-toggle" data-toggle-password="confirm" aria-pressed="false">Show</button>
+            </label>
+            <p class="onboard-error" data-error-for="confirm" hidden></p>
+          </div>
+          <div class="onboard-actions">
+            <button class="onboard-continue" type="submit">Continue</button>
+          </div>
+        </form>
+        <p class="onboard-links">Already have an account? <a href="/client-login.html">Sign in</a></p>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="/js/supabase-env.js"></script>
+<script type="module" src="/js/account-onboarding.js?v=20260927e"></script>
+</body>
+</html>

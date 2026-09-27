@@ -167,6 +167,20 @@ test("checkout sessions are handled by the worker and not static assets", async 
   assert.equal(JSON.stringify(body).includes("sk_"), false);
 });
 
+test("billing routes are handled by the worker and not static assets", async () => {
+  const mock = assets();
+  const response = await worker.fetch(new Request("https://pulseanalyticsgroupllc.com/api/billing/summary"), mock.env);
+  assert.equal(response.status, 401);
+  assert.equal(mock.calls.length, 0);
+});
+
+test("an unsigned onboarding step redirects to account creation", async () => {
+  const { response, calls } = await route("https://pulseanalyticsgroupllc.com/account/services");
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get("location"), "https://pulseanalyticsgroupllc.com/account/create");
+  assert.equal(calls.length, 0);
+});
+
 test("research and admin routes stay on the canonical host", async () => {
   const research = await route("https://pulseanalyticsgroupllc.com/api/research/resources?page=1&pageSize=12&sort=publication_date");
   assert.notEqual(research.response.status, 301);

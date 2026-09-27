@@ -98,14 +98,14 @@ pulse-analytics-website/
 
 ## Planned Features
 
-- Client Portal
+- Client Portal workspace (dashboard, reports, projects, files, billing, support, appointments, account, notifications)
 - Blog
 - Resource Center
 - Case Studies
 - Interactive Pricing Calculator
 - AI Website Audit
 - Online Appointment Scheduling
-- Client Dashboard
+- Client Dashboard (included in the Client Portal)
 - Live Chat
 - Knowledge Base
 
