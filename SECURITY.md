@@ -19,7 +19,7 @@ If you discover a security vulnerability affecting the Pulse Analytics website, 
 
 ### Contact
 
-Email: **pulseanalyticsgroupllc@gmail.com**
+Email: **contact@pulseanalyticsgroupllc.com**
 
 ### Please Include
 

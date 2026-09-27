@@ -127,7 +127,7 @@ This project follows modern accessibility practices including:
 
 Security vulnerabilities may be reported privately to:
 
-**pulseanalyticsgroupllc@gmail.com**
+**contact@pulseanalyticsgroupllc.com**
 
 See the repository's `SECURITY.md` for additional information.
 
@@ -148,7 +148,7 @@ This repository and its contents are proprietary and may not be copied, redistri
 **Pulse Analytics Group LLC**
 
 Email:
-pulseanalyticsgroupllc@gmail.com
+contact@pulseanalyticsgroupllc.com
 
 GitHub:
 https://github.com/andrewkosinski308-ui
