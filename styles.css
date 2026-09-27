@@ -11928,11 +11928,6 @@ body:has(.pricing-hero) #footer #backToTop{
    FAQ — FULL-WIDTH AGENCY QUESTIONS SECTION
 =================================================== */
 
-#questions-agencies {
-    width: calc(100% + 240px + var(--space-5));
-    margin-left: calc(-1 * (240px + var(--space-5)));
-}
-
 #questions-agencies .faq-category-header {
     max-width: 900px;
     margin-left: auto;
@@ -11970,16 +11965,6 @@ body:has(.pricing-hero) #footer #backToTop{
 
 
 /* ---------- Responsive ---------- */
-
-@media (max-width: 1000px) {
-
-    #questions-agencies {
-        width: 100%;
-        margin-left: 0;
-    }
-
-}
-
 
 @media (max-width: 700px) {
 
