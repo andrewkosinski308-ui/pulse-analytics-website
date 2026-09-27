@@ -55,7 +55,7 @@ if (backToTop) {
     if (!document.querySelector('link[href*="client-portal.css"]')) {
         const css = document.createElement("link");
         css.rel = "stylesheet";
-        css.href = rootPrefix + "client-portal.css";
+        css.href = rootPrefix + "client-portal.css?v=20260927h";
         document.head.appendChild(css);
     }
 
@@ -81,7 +81,23 @@ if (backToTop) {
         '<span class="portal-label">Client Portal</span>';
 
     portal.appendChild(link);
+
+    const admin = document.createElement("div");
+    admin.className = "header-portal";
+    admin.id = "admin-portal-entry";
+
+    const adminLink = document.createElement("a");
+    adminLink.id = "admin-portal-link";
+    adminLink.href = rootPrefix + "admin-login.html";
+    adminLink.setAttribute("aria-label", "Admin Portal sign in");
+    adminLink.title = "Admin Portal";
+    adminLink.innerHTML =
+        '<i class="fa-solid fa-user-shield" aria-hidden="true"></i>' +
+        '<span class="portal-label">Admin Portal</span>';
+
+    admin.appendChild(adminLink);
     actions.insertBefore(portal, cart);
+    actions.insertBefore(admin, cart);
 
     // Upgrade href to portal when an eligible client session exists.
     const envScript = document.createElement("script");
