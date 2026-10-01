@@ -101,6 +101,8 @@ test("service interests and market focus stay on the owner's client and do not c
   const interests = between(sql, "CREATE OR REPLACE FUNCTION public.save_client_service_interests", "CREATE OR REPLACE FUNCTION public.save_client_market_focus");
   assert.match(interests, /public\.is_admin\(\) OR public\.is_client_owner\(p_client_id\)/);
   assert.match(interests, /client_service_interests/);
+  assert.match(interests, /jsonb_array_elements\(p_interests\) interest/);
+  assert.doesNotMatch(interests, /jsonb_array_elements\(p_interests\) item/);
   assert.doesNotMatch(interests, /client_subscriptions|client_invoices|projects|NEW\.status/);
   const markets = between(sql, "CREATE OR REPLACE FUNCTION public.save_client_market_focus", "REVOKE ALL ON FUNCTION public.save_client_service_interests");
   assert.match(markets, /client_market_focus/);

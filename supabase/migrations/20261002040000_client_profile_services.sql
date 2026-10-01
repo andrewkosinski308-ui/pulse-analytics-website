@@ -221,10 +221,10 @@ BEGIN
   INSERT INTO public.client_service_interests (client_id, slug, is_primary)
   SELECT p_client_id, entry.slug, entry.is_primary
   FROM (
-    SELECT DISTINCT ON (item ->> 'slug')
-      item ->> 'slug' AS slug,
-      coalesce((item ->> 'is_primary')::boolean, false) AS is_primary
-    FROM jsonb_array_elements(p_interests) item
+    SELECT DISTINCT ON (interest ->> 'slug')
+      interest ->> 'slug' AS slug,
+      coalesce((interest ->> 'is_primary')::boolean, false) AS is_primary
+    FROM jsonb_array_elements(p_interests) interest
   ) entry;
 END;
 $$;
