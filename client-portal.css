@@ -409,7 +409,19 @@
   font-weight: 600;
 }
 
-.portal-form input,
+.portal-form label:has(input[type="checkbox"]),
+.portal-form label:has(input[type="radio"]) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.portal-form input:not([type="checkbox"]):not([type="radio"]),
 .portal-form select,
 .portal-form textarea {
   width: 100%;
@@ -418,6 +430,45 @@
   border: 1px solid var(--border);
   border-radius: var(--button-radius);
   font: inherit;
+}
+
+.portal-form input[type="checkbox"],
+.portal-form input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  min-height: 1.125rem;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  accent-color: var(--secondary);
+}
+
+.portal-form fieldset {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.portal-form fieldset legend {
+  padding: 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.portal-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem 1.5rem;
+  min-width: 0;
+}
+
+.portal-form.portal-choices {
+  gap: 0.45rem;
 }
 
 .portal-form textarea {
@@ -972,20 +1023,29 @@ body.client-portal-page .portal-form {
   margin: 0;
 }
 
+body.client-portal-page .portal-form.portal-choices {
+  gap: 0.45rem;
+}
+
 body.client-portal-page .portal-form label {
   color: var(--text);
   font-size: 0.92rem;
   font-weight: 600;
 }
 
-body.client-portal-page .portal-form input,
+body.client-portal-page .portal-form label:has(input[type="checkbox"]),
+body.client-portal-page .portal-form label:has(input[type="radio"]) {
+  font-weight: 500;
+}
+
+body.client-portal-page .portal-form input:not([type="checkbox"]):not([type="radio"]),
 body.client-portal-page .portal-form select,
 body.client-portal-page .portal-form textarea {
   color: var(--text);
   background: var(--light);
 }
 
-body.client-portal-page .portal-form input:focus,
+body.client-portal-page .portal-form input:not([type="checkbox"]):not([type="radio"]):focus,
 body.client-portal-page .portal-form select:focus,
 body.client-portal-page .portal-form textarea:focus {
   outline: 2px solid rgba(25, 118, 210, 0.35);

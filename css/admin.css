@@ -397,7 +397,7 @@ body.admin-app header.admin-topbar {
     transform: translateX(0);
   }
 
-  .admin-backdrop {
+  .admin-sidebar.is-open + .admin-backdrop:not([hidden]) {
     display: block;
     position: fixed;
     inset: 73px 0 0 0;
@@ -497,9 +497,21 @@ body.admin-app header.admin-topbar {
   font-weight: 600;
 }
 
-.admin-project-filters input,
+.admin-project-form label:has(input[type="checkbox"]),
+.admin-project-form label:has(input[type="radio"]) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.admin-project-filters input:not([type="checkbox"]):not([type="radio"]),
 .admin-project-filters select,
-.admin-project-form input,
+.admin-project-form input:not([type="checkbox"]):not([type="radio"]),
 .admin-project-form select {
   width: 100%;
   min-width: 0;
@@ -509,6 +521,37 @@ body.admin-app header.admin-topbar {
   border-radius: var(--button-radius);
   background: var(--light);
   font: inherit;
+}
+
+.admin-project-form input[type="checkbox"],
+.admin-project-form input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  min-height: 1.125rem;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  accent-color: var(--secondary);
+}
+
+.admin-project-form .portal-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem 1.5rem;
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.admin-project-form.portal-choices {
+  gap: 0.45rem;
+}
+
+.admin-project-form.portal-choices > p,
+.admin-project-form.portal-choices > button,
+.admin-project-form.portal-choices > label {
+  grid-column: 1 / -1;
 }
 
 .admin-project-groups {
@@ -856,4 +899,102 @@ body.admin-app header.admin-topbar {
   .admin-client-pager .secondary-button {
     width: 100%;
   }
+}
+
+#admin-account-body {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+}
+
+#admin-account-body .portal-card {
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem 1.35rem;
+}
+
+#admin-account-body .portal-card h3 {
+  margin: 0 0 0.4rem;
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+#admin-account-body .portal-card p {
+  margin: 0 0 0.75rem;
+  color: var(--text-light);
+  font-size: 0.92rem;
+}
+
+#admin-account-body .portal-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+#admin-account-body .portal-form label {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+#admin-account-body .portal-form label:has(input[type="checkbox"]),
+#admin-account-body .portal-form label:has(input[type="radio"]) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#admin-account-body .portal-form input:not([type="checkbox"]):not([type="radio"]),
+#admin-account-body .portal-form select,
+#admin-account-body .portal-form textarea {
+  width: 100%;
+  min-height: 42px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--button-radius);
+  background: var(--surface, var(--light));
+  color: var(--text);
+  font: inherit;
+}
+
+#admin-account-body .portal-form input[type="checkbox"],
+#admin-account-body .portal-form input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  min-height: 1.125rem;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  accent-color: var(--secondary);
+}
+
+#admin-account-body .portal-form fieldset {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+#admin-account-body .portal-form fieldset legend {
+  padding: 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+#admin-account-body .primary-button,
+#admin-account-body .secondary-button {
+  width: auto;
+  justify-self: start;
 }

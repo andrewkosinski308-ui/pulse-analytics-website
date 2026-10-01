@@ -781,11 +781,11 @@ async function renderAccount() {
     <article class="portal-card portal-card-static">
       <h3>Service interests</h3>
       <p>Interests describe what you want to explore. They do not purchase a service or change billing.</p>
-      ${owner ? `<form id="interest-form" class="portal-form">${interestFieldsHtml(interests)}<button class="primary-button" type="submit">Save interests</button></form>` : `<p class="portal-empty">The client owner can edit service interests.</p>`}
+      ${owner ? `<form id="interest-form" class="portal-form portal-choices">${interestFieldsHtml(interests)}<button class="primary-button" type="submit">Save interests</button></form>` : `<p class="portal-empty">The client owner can edit service interests.</p>`}
     </article>
     <article class="portal-card portal-card-static">
       <h3>Market focus</h3>
-      ${owner ? `<form id="market-form" class="portal-form">${marketFieldsHtml(markets)}<button class="primary-button" type="submit">Save market focus</button></form>` : `<p class="portal-empty">The client owner can edit market focus.</p>`}
+      ${owner ? `<form id="market-form" class="portal-form portal-choices">${marketFieldsHtml(markets)}<button class="primary-button" type="submit">Save market focus</button></form>` : `<p class="portal-empty">The client owner can edit market focus.</p>`}
     </article>
     <article class="portal-card portal-card-static">
       <h3>Active services</h3>

@@ -152,8 +152,7 @@ export function businessFieldsHtml(client = {}) {
 
 export function interestFieldsHtml(selected = []) {
   const chosen = new Map(selected.map((item) => [item.slug, Boolean(item.is_primary)]));
-  return INTERESTS.map((item) => `<label><input type="checkbox" name="interest" value="${esc(item.id)}"${chosen.has(item.id) ? " checked" : ""}> ${esc(item.label)}</label>
-    <label><input type="radio" name="primary_interest" value="${esc(item.id)}"${chosen.get(item.id) ? " checked" : ""}> Primary</label>`).join("");
+  return INTERESTS.map((item) => `<div class="portal-choice"><label><input type="checkbox" name="interest" value="${esc(item.id)}"${chosen.has(item.id) ? " checked" : ""}> ${esc(item.label)}</label><label><input type="radio" name="primary_interest" value="${esc(item.id)}"${chosen.get(item.id) ? " checked" : ""}> Primary</label></div>`).join("");
 }
 
 export function marketFieldsHtml(selected = []) {

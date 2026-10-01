@@ -201,13 +201,13 @@ export function mountAdminClients() {
         ${businessFieldsHtml(state.detail)}
         <button class="primary-button" type="submit">Save business information</button>
       </form>
-      <form class="admin-project-form" id="admin-client-interests">
+      <form class="admin-project-form portal-choices" id="admin-client-interests">
         <h2>Service interests</h2>
         <p>Interests do not purchase a service or change billing.</p>
         ${interestFieldsHtml(state.detail.interests || [])}
         <button class="secondary-button" type="submit">Save interests</button>
       </form>
-      <form class="admin-project-form" id="admin-client-markets">
+      <form class="admin-project-form portal-choices" id="admin-client-markets">
         <h2>Market focus</h2>
         ${marketFieldsHtml(state.detail.markets || [])}
         <button class="secondary-button" type="submit">Save market focus</button>
