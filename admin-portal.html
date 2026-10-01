@@ -98,7 +98,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             requireAdminPortal,
             subscribeAuth,
             signOut,
-            isAdminPortalEligible
+            portalGuardDestination
         } from './js/pulse-auth.js';
         import { renderAdminIdentity, bindAdminChrome } from './js/admin-portal.js?v=20260927d';
         import { mountAdminProjects } from './js/admin-projects.js?v=20260927d';
@@ -124,12 +124,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 subscribeAuth((next) => {
                     if (next.loading) return;
-                    if (!next.authenticated) {
-                        window.location.replace('admin-login.html');
-                        return;
-                    }
-                    if (!isAdminPortalEligible(next)) {
-                        window.location.replace('admin-unauthorized.html');
+                    const destination = portalGuardDestination(next, 'admin');
+                    if (destination) {
+                        window.location.replace(destination);
                         return;
                     }
                     renderAdminIdentity(next);

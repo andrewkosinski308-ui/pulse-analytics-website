@@ -30,19 +30,19 @@ test("client sign-in uses the account creation scene and keeps sign-in behavior"
   assert.doesNotMatch(client, /clients\.status/);
 });
 
-test("admin sign-in uses the same scene and keeps administrator checks", () => {
+test("admin sign-in uses the same scene and the shared portal login", () => {
   assert.match(admin, /class="onboard-scene"/);
   assert.match(admin, /Welcome back\./);
-  assert.match(admin, /Sign in to the Pulse Analytics Admin Portal\./);
-  assert.match(admin, /Authorized Pulse Analytics administrators only/);
+  assert.match(admin, /Sign in to the Pulse Analytics Admin \/ Staff Portal\./);
+  assert.match(admin, /Pulse Analytics administrators and staff/);
   assert.match(admin, /Keep me signed in on this browser/);
   assert.match(admin, /id="admin-login-form" class="onboard-form" hidden/);
   assert.match(admin, /id="toggle-password"/);
-  assert.match(admin, /signIn\(email, password, 'admin'\)/);
-  assert.match(admin, /isAdminPortalEligible\(authState\)/);
+  assert.match(admin, /signIn\(email, password, 'portal'\)/);
+  assert.match(admin, /loginRedirectDestination\(authState\)/);
   assert.match(admin, /setAdminPersistPreference\(remember\.checked\)/);
-  assert.match(admin, /window\.location\.replace\('admin-portal\.html'\)/);
-  assert.match(admin, /window\.location\.replace\('admin-unauthorized\.html'\)/);
+  assert.match(admin, /window\.location\.replace\(destination\)/);
+  assert.doesNotMatch(admin, /signIn\(email, password, 'admin'\)/);
   assert.doesNotMatch(admin, /service_role|SERVICE_ROLE/);
   assert.doesNotMatch(admin, /href="\/account\/create"/);
 });
@@ -55,7 +55,7 @@ test("password reset pages keep the existing reset calls", () => {
   assert.match(clientReset, /href="\/client-login\.html"/);
   assert.match(adminReset, /class="onboard-scene"/);
   assert.match(adminReset, /await resetPassword\(email, 'admin-update-password\.html'\)/);
-  assert.match(adminReset, /Authorized Pulse Analytics administrators only/);
+  assert.match(adminReset, /Pulse Analytics administrators and staff/);
 });
 
 test("account creation stays the visual source and shares the background field", () => {

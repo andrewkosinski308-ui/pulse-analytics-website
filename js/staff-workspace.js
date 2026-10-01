@@ -1,10 +1,11 @@
 import {
-  initAuth,
-  signIn,
   signOut,
-  isStaffWorkspaceEligible,
   getAuthState,
-  getSupabase
+  getSupabase,
+  requireAdminStaffPortal,
+  subscribeAuth,
+  isAdminPortalEligible,
+  portalGuardDestination
 } from "./pulse-auth.js";
 import {
   FILE_CATEGORIES,
@@ -403,7 +404,6 @@ async function publishReport(button, clients) {
 }
 
 async function showWorkspace() {
-  document.getElementById("staff-login").hidden = true;
   document.getElementById("staff-app").hidden = false;
   const clients = await loadClients();
   const tabs = document.getElementById("staff-tabs");
@@ -419,30 +419,42 @@ async function showWorkspace() {
   };
   window.onhashchange = show;
   document.getElementById("staff-sign-out").onclick = async () => {
-    await signOut();
-    window.location.reload();
+    try {
+      await signOut();
+      window.location.replace("admin-login.html");
+    } catch (error) {
+      showAlert(error.message || "Sign-out failed.");
+    }
   };
   show();
 }
 
+function showAdminLink(auth) {
+  const link = document.getElementById("staff-admin-link");
+  if (link) link.hidden = !isAdminPortalEligible(auth);
+}
+
 export async function startStaffWorkspace() {
-  await initAuth();
-  const login = document.getElementById("staff-login-form");
-  login.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    showAlert("");
-    try {
-      await signIn(login.email.value, login.password.value, "staff");
-      await showWorkspace();
-    } catch (error) {
-      showAlert(error.message || "Sign-in failed.");
-    }
-  });
-  if (isStaffWorkspaceEligible(getAuthState())) {
-    try {
-      await showWorkspace();
-    } catch (error) {
-      showAlert(error.message || "The staff workspace could not be loaded.");
+  const gate = document.getElementById("staff-gate");
+  try {
+    const auth = await requireAdminStaffPortal();
+    if (!auth) return;
+    if (gate) gate.hidden = true;
+    showAdminLink(auth);
+    await showWorkspace();
+    subscribeAuth((next) => {
+      if (next.loading) return;
+      const destination = portalGuardDestination(next, "staff");
+      if (destination) {
+        window.location.replace(destination);
+        return;
+      }
+      showAdminLink(next);
+    });
+  } catch (error) {
+    if (gate) {
+      gate.hidden = false;
+      gate.textContent = error.message || "Unable to verify portal access.";
     }
   }
 }

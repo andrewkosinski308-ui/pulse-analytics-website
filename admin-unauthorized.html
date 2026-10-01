@@ -63,6 +63,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     enforceAdminPersistPreference,
     getAuthState,
     isAdminPortalEligible,
+    isAdminStaffPortalEligible,
     isClientPortalEligible,
     signOut
   } from './js/pulse-auth.js';
@@ -91,6 +92,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       window.location.replace('admin-login.html');
     } else if (isAdminPortalEligible(authState)) {
       window.location.replace('admin-portal.html');
+    } else if (isAdminStaffPortalEligible(authState)) {
+      window.location.replace('staff-workspace.html');
     } else {
       const email = authState.profile?.email || authState.user?.email || '';
       lead.textContent = 'You are signed in, but this account does not have administrator access.';

@@ -6,6 +6,14 @@
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm';
 import { ONBOARDING_PAGES } from './onboarding-catalog.js';
+import {
+  isAdminPortalEligible as adminEligible,
+  isAdminStaffPortalEligible as staffPortalEligible,
+  loginRedirectDestination,
+  portalGuardDestination
+} from './portal-guard.js';
+
+export { loginRedirectDestination, portalGuardDestination };
 
 /** @typedef {'admin' | 'employee' | 'client'} AppRole */
 
@@ -43,7 +51,7 @@ const listeners = new Set();
 let initPromise = null;
 let handlingAuthChange = false;
 
-/** Preference only — never a password or token. '0' means end an admin session with the browser tab. */
+/** Preference only — never a password or token. '0' means end an admin or employee portal session with the browser tab. */
 const ADMIN_PERSIST_KEY = 'pulse-admin-persist';
 const ADMIN_TAB_KEY = 'pulse-admin-tab';
 const ACCESS_COOKIE = 'pulse-access';
@@ -339,11 +347,12 @@ export async function signUpClient({ fullName, email, password }) {
 
 /** Active administrator on the existing profiles.role column. Employees and clients are not administrators. */
 export function isAdminPortalEligible(authState = getAuthState()) {
-  return Boolean(
-    authState.authenticated &&
-      authState.profile?.role === 'admin' &&
-      authState.profile?.is_active !== false
-  );
+  return adminEligible(authState);
+}
+
+/** Active administrator or employee for the shared Admin / Staff Portal. */
+export function isAdminStaffPortalEligible(authState = getAuthState()) {
+  return staffPortalEligible(authState);
 }
 
 export function getAdminPersistPreference() {
@@ -369,7 +378,7 @@ export function setAdminPersistPreference(remember) {
 }
 
 /**
- * Signs out an administrator who chose not to keep the session, once the tab session is gone.
+ * Signs out an administrator or employee who chose not to keep the portal session, once the tab session is gone.
  * Does not sign out client accounts.
  * @returns {Promise<boolean>} true when an admin session was ended
  */
@@ -383,7 +392,8 @@ export async function enforceAdminPersistPreference() {
     return false;
   }
   if (remember || tabAlive) return false;
-  if (getAuthState().profile?.role !== 'admin') return false;
+  const role = getAuthState().profile?.role;
+  if (role !== 'admin' && role !== 'employee') return false;
   await signOut();
   return true;
 }
@@ -442,32 +452,27 @@ async function assertClientPortalAccess(current) {
   return current;
 }
 
+/** Same people who may open Staff Workspace: active administrators and employees. */
 export function isStaffWorkspaceEligible(authState = getAuthState()) {
-  const role = authState.profile?.role;
-  return Boolean(
-    authState.authenticated &&
-      authState.profile?.is_active !== false &&
-      (role === 'admin' || role === 'employee')
-  );
+  return isAdminStaffPortalEligible(authState);
 }
 
-async function assertStaffWorkspaceAccess(current) {
+async function assertAdminStaffPortalAccess(current) {
   if (!current.profile) {
     const message = current.error || 'Your account profile was not found.';
     await signOut();
     throw new Error(message);
   }
-  if (current.profile.is_active === false) {
+  if ((current.profile.role === 'admin' || current.profile.role === 'employee') && current.profile.is_active === false) {
     await signOut();
     throw new Error('This staff account is inactive.');
   }
   if (current.profile.role === 'client') {
-    await signOut();
-    throw new Error('This account uses the Client Portal, not the staff file workspace.');
+    throw new Error('This account is a client account. The Admin / Staff Portal is for Pulse Analytics staff.');
   }
-  if (!isStaffWorkspaceEligible(current)) {
+  if (!isAdminStaffPortalEligible(current)) {
     await signOut();
-    throw new Error('This account is not authorized for staff file exchange.');
+    throw new Error('This account is not authorized for the Admin / Staff Portal.');
   }
   return current;
 }
@@ -498,12 +503,13 @@ async function assertAdminPortalAccess(current) {
 
 /**
  * Sign in with the shared Supabase Auth client.
- * @param {'client' | 'admin' | 'staff'} [portal='client'] Client Portal rules stay the default.
+ * @param {'client' | 'admin' | 'portal'} [portal='client'] Client Portal rules stay the default.
+ * `portal` admits an active administrator or employee. `admin` remains administrator-only.
  */
 export async function signIn(email, password, portal = 'client') {
   const current = await establishSession(email, password);
   if (portal === 'admin') return assertAdminPortalAccess(current);
-  if (portal === 'staff') return assertStaffWorkspaceAccess(current);
+  if (portal === 'portal') return assertAdminStaffPortalAccess(current);
   return assertClientPortalAccess(current);
 }
 
@@ -576,35 +582,38 @@ function adminPage(filename) {
   return `${getSiteRootPrefix()}${filename}`;
 }
 
-/** No session → admin login. Signed-in non-admin → access denied. Active admin → allow. */
+function leaveFor(destination) {
+  if (!destination) return false;
+  window.location.replace(adminPage(destination));
+  return true;
+}
+
+/** No session → shared login. Employee → Staff Workspace. Other non-admins → access denied. Active admin → allow. */
 export async function requireAdminPortal() {
   await initAuth();
   const ended = await enforceAdminPersistPreference();
   const current = getAuthState();
-  if (ended || !current.authenticated) {
-    window.location.replace(adminPage('admin-login.html'));
-    return null;
-  }
-  if (!isAdminPortalEligible(current)) {
-    window.location.replace(adminPage('admin-unauthorized.html'));
-    return null;
-  }
+  const destination = ended ? 'admin-login.html' : portalGuardDestination(current, 'admin');
+  if (leaveFor(destination)) return null;
   return current;
 }
 
-/** Active admin leaves the login page. Any other signed-in account is denied, without ending a client session. */
+/** Shared Admin / Staff Portal gate. Administrators and employees may continue. */
+export async function requireAdminStaffPortal() {
+  await initAuth();
+  const ended = await enforceAdminPersistPreference();
+  const current = getAuthState();
+  const destination = ended ? 'admin-login.html' : portalGuardDestination(current, 'staff');
+  if (leaveFor(destination)) return null;
+  return current;
+}
+
+/** Active admin or employee leaves the login page for their portal. A client session is denied, without ending it. */
 export async function redirectAuthenticatedAdminFromLogin() {
   await initAuth();
   const ended = await enforceAdminPersistPreference();
   if (ended) return getAuthState();
-  const current = getAuthState();
-  if (isAdminPortalEligible(current)) {
-    window.location.replace(adminPage('admin-portal.html'));
-    return null;
-  }
-  if (current.authenticated) {
-    window.location.replace(adminPage('admin-unauthorized.html'));
-    return null;
-  }
-  return current;
+  const destination = loginRedirectDestination(getAuthState());
+  if (leaveFor(destination)) return null;
+  return getAuthState();
 }
