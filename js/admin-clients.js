@@ -73,6 +73,8 @@ export function mountAdminClients() {
   function showClients() {
     if (dashboard) dashboard.hidden = true;
     if (projects) projects.hidden = true;
+    const employees = document.getElementById("admin-employees");
+    if (employees) employees.hidden = true;
     root.hidden = false;
     markCurrent();
     closeSidebar();
@@ -82,6 +84,8 @@ export function mountAdminClients() {
 
   function showDashboard() {
     root.hidden = true;
+    const employees = document.getElementById("admin-employees");
+    if (employees) employees.hidden = true;
     nav.classList.remove("is-current");
     nav.removeAttribute("aria-current");
   }

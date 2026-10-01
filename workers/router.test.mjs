@@ -167,6 +167,13 @@ test("checkout sessions are handled by the worker and not static assets", async 
   assert.equal(JSON.stringify(body).includes("sk_"), false);
 });
 
+test("employee invitations are handled by the worker and not static assets", async () => {
+  const mock = assets();
+  const response = await worker.fetch(new Request("https://pulseanalyticsgroupllc.com/api/staff/invite", { method: "POST" }), mock.env);
+  assert.equal(response.status, 401);
+  assert.equal(mock.calls.length, 0);
+});
+
 test("billing routes are handled by the worker and not static assets", async () => {
   const mock = assets();
   const response = await worker.fetch(new Request("https://pulseanalyticsgroupllc.com/api/billing/summary"), mock.env);

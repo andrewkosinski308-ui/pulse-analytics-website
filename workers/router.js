@@ -17,6 +17,7 @@
 
 import { handleBenchmarksRequest } from "./benchmarks/api.js";
 import { handleBillingRequest } from "./billing/api.js";
+import { handleStaffInvite } from "./staff/invite.js";
 import { handleCheckoutRequest } from "./checkout/api.js";
 import { handleMarketIntelligenceRequest } from "./market-intelligence/api.js";
 import { handleOnboardingRequest } from "./onboarding/gate.js";
@@ -133,6 +134,10 @@ export default {
 
     if (url.pathname.startsWith("/api/billing/") || url.pathname === "/api/stripe/webhook") {
       return handleBillingRequest(request, env);
+    }
+
+    if (url.pathname === "/api/staff/invite") {
+      return handleStaffInvite(request, env);
     }
 
     const onboarding = await handleOnboardingRequest(request, env);

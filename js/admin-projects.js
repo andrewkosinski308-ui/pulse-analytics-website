@@ -88,6 +88,8 @@ export function mountAdminProjects() {
 
   function showProjects() {
     hideClients();
+    const employees = document.getElementById("admin-employees");
+    if (employees) employees.hidden = true;
     if (dashboard) dashboard.hidden = true;
     root.hidden = false;
     dashNav?.classList.remove("is-current");
@@ -100,6 +102,8 @@ export function mountAdminProjects() {
 
   function showDashboard() {
     hideClients();
+    const employees = document.getElementById("admin-employees");
+    if (employees) employees.hidden = true;
     root.hidden = true;
     if (dashboard) dashboard.hidden = false;
     nav.classList.remove("is-current");

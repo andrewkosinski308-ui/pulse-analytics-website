@@ -58,6 +58,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <button type="button" class="admin-nav-link is-current" id="nav-dashboard" aria-current="page">Dashboard</button>
                 <button type="button" class="admin-nav-link" id="nav-clients">Clients</button>
                 <button type="button" class="admin-nav-link" id="nav-projects">Projects</button>
+                <button type="button" class="admin-nav-link" id="nav-employees">Employees</button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Tasks</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Files</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Reports</span><span class="admin-soon">Coming soon</span></button>
@@ -71,7 +72,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <section class="admin-dashboard" id="admin-dashboard" tabindex="-1" aria-labelledby="admin-welcome">
                 <h1 id="admin-welcome">Welcome to Pulse Analytics Group LLC</h1>
                 <p class="admin-lead">This is the internal administration shell for authorized administrators. Dashboard, Clients, and Projects are available now. Tasks, Files, Reports, Blog, and Settings will be added in later releases.</p>
-                <p><button type="button" class="secondary-button" id="admin-open-clients">Clients</button> <button type="button" class="secondary-button" id="admin-open-projects">Projects</button></p>
+                <p><button type="button" class="secondary-button" id="admin-open-clients">Clients</button> <button type="button" class="secondary-button" id="admin-open-projects">Projects</button> <button type="button" class="secondary-button" id="admin-open-employees">Employees</button></p>
                 <p class="admin-lead-note">No business metrics are shown yet. Client file exchange is available to assigned staff.</p>
                 <p><a class="primary-button" href="staff-workspace.html">Client files and support</a></p>
                 <div class="admin-cards">
@@ -89,6 +90,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </section>
             <section class="admin-clients" id="admin-clients" hidden tabindex="-1" aria-labelledby="admin-clients-title"></section>
             <section class="admin-projects" id="admin-projects" hidden tabindex="-1" aria-labelledby="admin-projects-title"></section>
+            <section class="admin-clients" id="admin-employees" hidden tabindex="-1" aria-labelledby="admin-employees-title"></section>
         </main>
     </div>
 
@@ -103,6 +105,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         import { renderAdminIdentity, bindAdminChrome } from './js/admin-portal.js?v=20260927d';
         import { mountAdminProjects } from './js/admin-projects.js?v=20260927d';
         import { mountAdminClients } from './js/admin-clients.js?v=20260927d';
+        import { mountAdminEmployees } from './js/admin-employees.js?v=20261001a';
 
         const gate = document.getElementById('admin-gate');
         const shell = document.getElementById('admin-app');
@@ -120,6 +123,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 bindAdminChrome();
                 mountAdminProjects();
                 mountAdminClients();
+                mountAdminEmployees();
                 reveal(authState);
 
                 subscribeAuth((next) => {
