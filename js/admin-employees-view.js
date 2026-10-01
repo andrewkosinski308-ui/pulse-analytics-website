@@ -74,7 +74,8 @@ export function employmentPayload(input = {}) {
     phone: String(input.phone || "").trim() || null,
     job_title: String(input.job_title || "").trim() || null,
     department: String(input.department || "").trim() || null,
-    started_on: started || null
+    started_on: started || null,
+    ended_on: String(input.ended_on || "").trim() || null
   };
 }
 

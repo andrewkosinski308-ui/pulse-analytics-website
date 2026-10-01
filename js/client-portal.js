@@ -3,6 +3,7 @@ import {
   subscribeAuth,
   signOut,
   updatePassword,
+  updateEmail,
   isClientPortalEligible,
   clientEntryPath,
   getAuthState,
@@ -19,6 +20,20 @@ import {
   sharedStoragePath
 } from "./file-rules.js";
 import { projectGroup, projectStatusLabel } from "./project-status.js";
+import {
+  businessFieldsHtml,
+  businessPayload,
+  emailChangeRequest,
+  interestFieldsHtml,
+  marketFieldsHtml,
+  personalFieldsHtml,
+  personalPayload,
+  readInterestForm,
+  readMarketForm,
+  readPersonalForm,
+  serviceChangeRequest
+} from "./account-profile.js";
+import { SERVICE_OFFERS, ladderMoves, offerName } from "./service-offers.js";
 
 const loginHref = `${getSiteRootPrefix()}client-login.html`;
 
@@ -544,6 +559,7 @@ async function renderBilling() {
   setViewHtml(`
     ${pageHead("Billing", `${body.clientName || "Your account"}. Stripe is the billing record.`)}
     ${body.memberRole === "owner" ? `<div class="portal-button-row"><button type="button" class="primary-button" id="open-portal">Manage billing in Stripe</button></div>` : `<p class="portal-empty">Billing management is available to the client owner. You can still review status below.</p>`}
+    ${body.memberRole === "owner" ? serviceChangeHtml(subs) : ""}
     <section class="portal-card portal-card-static">
       <h3>Subscriptions</h3>
       ${subs.length ? `<ul class="portal-record-list">${subs.map((row) => `<li><span>${esc(row.productName || "Subscription")}</span> ${statusBadge(row.status)}${row.currentPeriodEnd ? `<span class="portal-time">through ${esc(fmtDate(row.currentPeriodEnd))}</span>` : ""}</li>`).join("")}</ul>` : `<p class="portal-empty">No subscription is synced for this client.</p>`}
@@ -556,6 +572,70 @@ async function renderBilling() {
     </section>
   `);
   document.getElementById("open-portal")?.addEventListener("click", openBillingPortal);
+  document.getElementById("service-add")?.addEventListener("submit", (event) => submitServiceChange(event, "add"));
+  document.querySelectorAll("[data-service-change]").forEach((form) => {
+    form.addEventListener("submit", (event) => submitServiceChange(event, form.getAttribute("data-service-change")));
+  });
+  document.querySelectorAll("[data-remove-service]").forEach((button) => {
+    button.addEventListener("click", () => submitServiceChange(null, "remove", button.getAttribute("data-remove-service")));
+  });
+}
+
+function serviceChangeHtml(subs) {
+  const offers = SERVICE_OFFERS.map((item) => `<option value="${esc(item.id)}">${esc(item.name)}</option>`).join("");
+  const plans = (subs || []).map((sub) => {
+    const moves = ladderMoves(sub.catalogId);
+    const options = (ids) => ids.map((id) => `<option value="${esc(id)}">${esc(offerName(id))}</option>`).join("");
+    return `<li>
+      <strong>${esc(sub.productName || "Subscription")}</strong> ${statusBadge(sub.status)}
+      ${moves.upgrades.length ? `<form data-service-change="upgrade"><input type="hidden" name="subscriptionId" value="${esc(sub.id)}"><label>Upgrade<select name="catalogId">${options(moves.upgrades)}</select></label><button class="secondary-button" type="submit">Upgrade</button></form>` : ""}
+      ${moves.downgrades.length ? `<form data-service-change="downgrade"><input type="hidden" name="subscriptionId" value="${esc(sub.id)}"><label>Downgrade<select name="catalogId">${options(moves.downgrades)}</select></label><button class="secondary-button" type="submit">Downgrade</button></form>` : ""}
+      <button type="button" class="secondary-button" data-remove-service="${esc(sub.id)}">Remove at period end</button>
+    </li>`;
+  }).join("");
+  return `<section class="portal-card portal-card-static">
+    <h3>Change services</h3>
+    <p>Stripe confirms each change. This page does not mark a service paid or active.</p>
+    <form id="service-add" class="portal-form">
+      <label>Add a service<select name="catalogId">${offers}</select></label>
+      <button class="secondary-button" type="submit">Start checkout</button>
+    </form>
+    ${plans ? `<ul class="portal-record-list">${plans}</ul>` : `<p class="portal-empty">Plan changes appear here after a subscription is synced.</p>`}
+  </section>`;
+}
+
+async function submitServiceChange(event, action, subscriptionId) {
+  event?.preventDefault();
+  showAlert("");
+  const form = event?.currentTarget;
+  const requested = serviceChangeRequest({
+    action,
+    catalogId: form?.catalogId?.value || "",
+    subscriptionId: subscriptionId || form?.subscriptionId?.value || ""
+  });
+  if (requested.error) return showAlert(requested.error);
+  const button = form?.querySelector("button") || event?.currentTarget;
+  if (button) button.disabled = true;
+  const session = await getSupabase().auth.getSession();
+  const response = await fetch("/api/billing/service-change", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${session.data.session?.access_token || ""}`
+    },
+    body: JSON.stringify(requested)
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    if (button) button.disabled = false;
+    return showAlert(body.error || "That service could not be changed.");
+  }
+  if (body.url) {
+    window.location.assign(body.url);
+    return;
+  }
+  showAlert("Stripe is confirming that change. Billing will update after Stripe does.", "success");
+  await renderBilling();
 }
 
 async function openBillingPortal() {
@@ -646,24 +726,73 @@ async function renderSupport(requestId) {
 
 async function renderAccount() {
   const auth = getAuthState();
+  const sb = getSupabase();
+  const profileRows = await query(
+    sb.from("profiles")
+      .select("first_name,last_name,full_name,phone,timezone,notification_preferences")
+      .eq("id", auth.user.id)
+      .limit(1)
+  );
+  const profile = profileRows[0] || {};
+  let client = {};
+  let interests = [];
+  let markets = [];
+  let services = [];
+  if (clientId()) {
+    const clients = await query(
+      sb.from("clients")
+        .select("id,name,legal_name,website,industry,phone,address_line,city,region,postal_code,market_summary,industry_detail,interest_note,status")
+        .eq("id", clientId())
+        .limit(1)
+    );
+    client = clients[0] || {};
+    interests = await query(
+      sb.from("client_service_interests").select("slug,is_primary").eq("client_id", clientId())
+    );
+    markets = (await query(
+      sb.from("client_market_focus").select("slug").eq("client_id", clientId())
+    )).map((row) => row.slug);
+    const projects = await query(
+      sb.from("projects")
+        .select("name,project_services(services(name))")
+        .eq("client_id", clientId())
+        .in("status", ["planned", "active", "on_hold"])
+    );
+    services = [...new Set(projects.flatMap((project) => (project.project_services || []).map((row) => row.services?.name).filter(Boolean)))];
+  }
+  const owner = isOwner();
   setViewHtml(`
     ${pageHead("Account")}
-    <article class="portal-card portal-card-static">
-      <dl class="portal-meta portal-meta-grid">
-        <div><dt>Email</dt><dd>${esc(auth.profile?.email || auth.user?.email || "—")}</dd></div>
-        <div><dt>Company</dt><dd>${esc(auth.client?.name || "—")}</dd></div>
-        <div><dt>Website</dt><dd>${esc(auth.client?.website || "—")}</dd></div>
-        <div><dt>Industry</dt><dd>${esc(auth.client?.industry || "—")}</dd></div>
-        <div><dt>Client status</dt><dd>${statusBadge(auth.client?.status)}</dd></div>
-        <div><dt>Membership</dt><dd>${statusBadge(auth.membership?.member_role)}</dd></div>
-      </dl>
-    </article>
-    <form id="profile-form" class="portal-form portal-card portal-card-static">
-      <h3>Profile</h3>
-      <label>Name<input name="full_name" required maxlength="200" value="${esc(auth.profile?.full_name || "")}"></label>
-      <label>Phone<input name="phone" maxlength="40" value="${esc(auth.profile?.phone || "")}"></label>
-      <button class="primary-button" type="submit">Save profile</button>
+    <form id="email-form" class="portal-form portal-card portal-card-static">
+      <h3>Email</h3>
+      <p>This is the email you use to sign in. Supabase sends a confirmation before it changes.</p>
+      <label>Email<input name="email" type="email" required autocomplete="email" value="${esc(auth.user?.email || "")}"></label>
+      <button class="secondary-button" type="submit">Update email</button>
     </form>
+    <form id="profile-form" class="portal-form portal-card portal-card-static">
+      <h3>Personal information</h3>
+      ${personalFieldsHtml(profile)}
+      <button class="primary-button" type="submit">Save personal information</button>
+    </form>
+    <article class="portal-card portal-card-static">
+      <h3>Business information</h3>
+      ${owner ? `<form id="business-form" class="portal-form">${businessFieldsHtml(client)}<button class="primary-button" type="submit">Save business information</button></form>` : `<p class="portal-empty">The client owner can edit business information.</p><dl class="portal-meta"><div><dt>Business</dt><dd>${esc(client.name || "—")}</dd></div></dl>`}
+    </article>
+    <article class="portal-card portal-card-static">
+      <h3>Service interests</h3>
+      <p>Interests describe what you want to explore. They do not purchase a service or change billing.</p>
+      ${owner ? `<form id="interest-form" class="portal-form">${interestFieldsHtml(interests)}<button class="primary-button" type="submit">Save interests</button></form>` : `<p class="portal-empty">The client owner can edit service interests.</p>`}
+    </article>
+    <article class="portal-card portal-card-static">
+      <h3>Market focus</h3>
+      ${owner ? `<form id="market-form" class="portal-form">${marketFieldsHtml(markets)}<button class="primary-button" type="submit">Save market focus</button></form>` : `<p class="portal-empty">The client owner can edit market focus.</p>`}
+    </article>
+    <article class="portal-card portal-card-static">
+      <h3>Active services</h3>
+      <p>These are purchased services on open projects. Manage upgrades and new services in Billing.</p>
+      ${services.length ? `<ul>${services.map((name) => `<li>${esc(name)}</li>`).join("")}</ul>` : `<p class="portal-empty">No active project services are on file.</p>`}
+      <p><a href="#billing">Open billing</a></p>
+    </article>
     <form id="password-form" class="portal-form portal-card portal-card-static">
       <h3>Password</h3>
       <label>New password<input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
@@ -672,26 +801,70 @@ async function renderAccount() {
       <p class="portal-inline-link"><a href="client-forgot-password.html">Forgot password</a></p>
     </form>
   `);
+  document.getElementById("email-form").addEventListener("submit", saveEmail);
   document.getElementById("profile-form").addEventListener("submit", saveProfile);
+  document.getElementById("business-form")?.addEventListener("submit", saveBusiness);
+  document.getElementById("interest-form")?.addEventListener("submit", saveInterests);
+  document.getElementById("market-form")?.addEventListener("submit", saveMarkets);
   document.getElementById("password-form").addEventListener("submit", savePassword);
+}
+
+async function saveEmail(event) {
+  event.preventDefault();
+  showAlert("");
+  const requested = emailChangeRequest(event.currentTarget.email.value);
+  if (requested.error) return showAlert(requested.error);
+  const current = String(getAuthState().user?.email || "").toLowerCase();
+  if (requested.email === current) return showAlert("That is already your sign-in email.");
+  try {
+    await updateEmail(requested.email);
+    showAlert("Check your inbox to confirm the new email. Your sign-in email changes after you confirm it.", "success");
+  } catch (error) {
+    showAlert(error.message || "The email change could not be started.");
+  }
 }
 
 async function saveProfile(event) {
   event.preventDefault();
   showAlert("");
-  const form = event.currentTarget;
-  const fullName = String(form.full_name.value || "").trim();
-  const phone = String(form.phone.value || "").trim();
-  if (!fullName) return showAlert("Enter your name.");
-  const updated = await getSupabase().from("profiles").update({
-    full_name: fullName,
-    phone: phone || null
-  }).eq("id", getAuthState().user.id);
-  if (updated.error) return showAlert(updated.error.message);
+  const payload = personalPayload(readPersonalForm(event.currentTarget));
+  if (!payload.full_name) return showAlert("Enter your name.");
+  const updated = await getSupabase().from("profiles").update(payload).eq("id", getAuthState().user.id);
+  if (updated.error) return showAlert("Personal information could not be saved.");
   await getSupabase().rpc("record_own_security_event", { p_kind: "profile_updated" });
-  getAuthState().profile.full_name = fullName;
-  getAuthState().profile.phone = phone || null;
-  showAlert("Profile saved.", "success");
+  showAlert("Personal information saved.", "success");
+}
+
+async function saveBusiness(event) {
+  event.preventDefault();
+  showAlert("");
+  const payload = businessPayload(Object.fromEntries(new FormData(event.currentTarget).entries()));
+  if (!payload.name) return showAlert("Enter the business name.");
+  const updated = await getSupabase().from("clients").update(payload).eq("id", clientId());
+  if (updated.error) return showAlert("Business information could not be saved.");
+  showAlert("Business information saved.", "success");
+}
+
+async function saveInterests(event) {
+  event.preventDefault();
+  showAlert("");
+  const updated = await getSupabase().rpc("save_client_service_interests", {
+    p_client_id: clientId(),
+    p_interests: readInterestForm(event.currentTarget)
+  });
+  if (updated.error) return showAlert("Service interests could not be saved.");
+  showAlert("Service interests saved. This does not change your purchased services.", "success");
+}
+
+async function saveMarkets(event) {
+  event.preventDefault();
+  showAlert("");
+  const updated = await getSupabase().rpc("save_client_market_focus", {
+    p_client_id: clientId(),
+    p_markets: readMarketForm(event.currentTarget)
+  });
+  if (updated.error) return showAlert("Market focus could not be saved.");
+  showAlert("Market focus saved.", "success");
 }
 
 async function savePassword(event) {

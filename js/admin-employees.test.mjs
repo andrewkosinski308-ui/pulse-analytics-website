@@ -61,7 +61,8 @@ test("administrators edit employment fields without setting role or account stat
     phone: "555",
     job_title: "Analyst",
     department: "Insights",
-    started_on: "2026-01-02"
+    started_on: "2026-01-02",
+    ended_on: null
   });
   assert.equal(Object.hasOwn(payload, "role"), false);
   assert.equal(Object.hasOwn(payload, "is_active"), false);

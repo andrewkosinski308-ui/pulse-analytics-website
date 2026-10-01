@@ -17,6 +17,7 @@ import {
   reportDownloadLabel,
   sharedStoragePath
 } from "./file-rules.js";
+import { mountSelfProfile } from "./self-profile.js";
 
 function esc(value) {
   return String(value ?? "")
@@ -408,8 +409,18 @@ async function showWorkspace() {
   const clients = await loadClients();
   const tabs = document.getElementById("staff-tabs");
   const show = () => {
-    const tab = location.hash === "#support" ? "support" : location.hash === "#reports" ? "reports" : "files";
-    const run = tab === "support" ? renderSupport : tab === "reports" ? renderReports : renderFiles;
+    const tab = location.hash.replace("#", "");
+    const current = ["support", "reports", "account"].includes(tab) ? tab : "files";
+    tabs.querySelectorAll("button[data-tab]").forEach((button) => {
+      if (button.dataset.tab === current) button.setAttribute("aria-current", "page");
+      else button.removeAttribute("aria-current");
+    });
+    if (current === "account") {
+      mountSelfProfile(document.getElementById("staff-panel"), showAlert, { employment: true })
+        .catch((error) => showAlert(error.message));
+      return;
+    }
+    const run = current === "support" ? renderSupport : current === "reports" ? renderReports : renderFiles;
     run(clients).catch((error) => showAlert(error.message));
   };
   tabs.onclick = (event) => {

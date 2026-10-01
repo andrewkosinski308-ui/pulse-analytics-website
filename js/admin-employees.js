@@ -81,11 +81,11 @@ export function mountAdminEmployees() {
   let searchTimer = 0;
 
   function hideOthers() {
-    ["admin-clients", "admin-projects"].forEach((id) => {
+    ["admin-clients", "admin-projects", "admin-account"].forEach((id) => {
       const section = document.getElementById(id);
       if (section) section.hidden = true;
     });
-    ["nav-clients", "nav-projects", "nav-dashboard"].forEach((id) => {
+    ["nav-clients", "nav-projects", "nav-dashboard", "nav-account"].forEach((id) => {
       const button = document.getElementById(id);
       button?.classList.remove("is-current");
       button?.removeAttribute("aria-current");
@@ -114,6 +114,7 @@ export function mountAdminEmployees() {
   document.getElementById("nav-dashboard")?.addEventListener("click", hideSelf);
   document.getElementById("nav-clients")?.addEventListener("click", hideSelf);
   document.getElementById("nav-projects")?.addEventListener("click", hideSelf);
+  document.getElementById("nav-account")?.addEventListener("click", hideSelf);
   document.addEventListener("admin-open-project", hideSelf);
 
   async function loadList() {
@@ -149,7 +150,11 @@ export function mountAdminEmployees() {
     } else {
       state.detail = detailOf(response.data);
       if (!state.detail) state.error = "That employee account was not found.";
-      else if (state.detail.role === "employee" && state.detail.is_active) await loadClients();
+      else {
+        const employment = await getSupabase().from("profiles").select("ended_on").eq("id", id).maybeSingle();
+        if (!employment.error) state.detail.ended_on = employment.data?.ended_on || null;
+        if (state.detail.role === "employee" && state.detail.is_active) await loadClients();
+      }
     }
     if (ticket !== requestId) return;
     render();
@@ -251,6 +256,7 @@ export function mountAdminEmployees() {
         <label>Job title <input name="job_title" value="${esc(person.job_title)}" autocomplete="off"></label>
         <label>Department <input name="department" value="${esc(person.department)}" autocomplete="off"></label>
         <label>Started on <input name="started_on" type="date" value="${esc(String(person.started_on || "").slice(0, 10))}"></label>
+        <label>Ended on <input name="ended_on" type="date" value="${esc(String(person.ended_on || "").slice(0, 10))}"></label>
         <p><button type="submit" class="primary-button" ${state.busy ? "disabled" : ""}>Save employment</button></p>
         <dl>
           ${meta("Account status", accountStateLabel(person.account_state))}

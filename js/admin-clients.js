@@ -1,5 +1,13 @@
 import { getSupabase } from "./pulse-auth.js";
 import {
+  businessFieldsHtml,
+  businessPayload,
+  interestFieldsHtml,
+  marketFieldsHtml,
+  readInterestForm,
+  readMarketForm
+} from "./account-profile.js";
+import {
   CLIENT_SORTS,
   clientCardHtml,
   clientListRequest,
@@ -75,6 +83,8 @@ export function mountAdminClients() {
     if (projects) projects.hidden = true;
     const employees = document.getElementById("admin-employees");
     if (employees) employees.hidden = true;
+    const account = document.getElementById("admin-account");
+    if (account) account.hidden = true;
     root.hidden = false;
     markCurrent();
     closeSidebar();
@@ -86,6 +96,8 @@ export function mountAdminClients() {
     root.hidden = true;
     const employees = document.getElementById("admin-employees");
     if (employees) employees.hidden = true;
+    const account = document.getElementById("admin-account");
+    if (account) account.hidden = true;
     nav.classList.remove("is-current");
     nav.removeAttribute("aria-current");
   }
@@ -184,6 +196,22 @@ export function mountAdminClients() {
       return;
     }
     root.innerHTML = detailHtml(state.detail);
+    root.insertAdjacentHTML("beforeend", `<form class="admin-project-form" id="admin-client-business">
+        <h2>Business information</h2>
+        ${businessFieldsHtml(state.detail)}
+        <button class="primary-button" type="submit">Save business information</button>
+      </form>
+      <form class="admin-project-form" id="admin-client-interests">
+        <h2>Service interests</h2>
+        <p>Interests do not purchase a service or change billing.</p>
+        ${interestFieldsHtml(state.detail.interests || [])}
+        <button class="secondary-button" type="submit">Save interests</button>
+      </form>
+      <form class="admin-project-form" id="admin-client-markets">
+        <h2>Market focus</h2>
+        ${marketFieldsHtml(state.detail.markets || [])}
+        <button class="secondary-button" type="submit">Save market focus</button>
+      </form>`);
     document.getElementById("admin-clients-back")?.addEventListener("click", () => loadList());
     document.getElementById("admin-client-projects")?.addEventListener("click", () => {
       document.dispatchEvent(new CustomEvent("admin-open-project", { detail: { clientId: state.clientId } }));
@@ -194,6 +222,32 @@ export function mountAdminClients() {
           detail: { clientId: state.clientId, projectId: button.getAttribute("data-open-project") }
         }));
       });
+    });
+    document.getElementById("admin-client-business")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const payload = businessPayload(Object.fromEntries(new FormData(event.currentTarget).entries()));
+      if (!payload.name) return;
+      const updated = await getSupabase().rpc("admin_save_client_business", {
+        p_client_id: state.clientId,
+        p_fields: payload
+      });
+      if (!updated.error) await loadDetail(state.clientId);
+    });
+    document.getElementById("admin-client-interests")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const updated = await getSupabase().rpc("save_client_service_interests", {
+        p_client_id: state.clientId,
+        p_interests: readInterestForm(event.currentTarget)
+      });
+      if (!updated.error) await loadDetail(state.clientId);
+    });
+    document.getElementById("admin-client-markets")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const updated = await getSupabase().rpc("save_client_market_focus", {
+        p_client_id: state.clientId,
+        p_markets: readMarketForm(event.currentTarget)
+      });
+      if (!updated.error) await loadDetail(state.clientId);
     });
     root.focus();
   }

@@ -59,6 +59,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <button type="button" class="admin-nav-link" id="nav-clients">Clients</button>
                 <button type="button" class="admin-nav-link" id="nav-projects">Projects</button>
                 <button type="button" class="admin-nav-link" id="nav-employees">Employees</button>
+                <button type="button" class="admin-nav-link" id="nav-account">Account</button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Tasks</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Files</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Reports</span><span class="admin-soon">Coming soon</span></button>
@@ -91,6 +92,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <section class="admin-clients" id="admin-clients" hidden tabindex="-1" aria-labelledby="admin-clients-title"></section>
             <section class="admin-projects" id="admin-projects" hidden tabindex="-1" aria-labelledby="admin-projects-title"></section>
             <section class="admin-clients" id="admin-employees" hidden tabindex="-1" aria-labelledby="admin-employees-title"></section>
+            <section class="admin-clients" id="admin-account" hidden tabindex="-1" aria-labelledby="admin-account-title"></section>
         </main>
     </div>
 
@@ -106,6 +108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         import { mountAdminProjects } from './js/admin-projects.js?v=20260927d';
         import { mountAdminClients } from './js/admin-clients.js?v=20260927d';
         import { mountAdminEmployees } from './js/admin-employees.js?v=20261001a';
+        import { mountAdminAccount } from './js/admin-account.js?v=20261002a';
 
         const gate = document.getElementById('admin-gate');
         const shell = document.getElementById('admin-app');
@@ -124,6 +127,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 mountAdminProjects();
                 mountAdminClients();
                 mountAdminEmployees();
+                mountAdminAccount();
                 reveal(authState);
 
                 subscribeAuth((next) => {

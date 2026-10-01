@@ -549,6 +549,19 @@ export async function updatePassword(newPassword) {
   return data.user;
 }
 
+/** Ask Supabase Auth to confirm an email change. The profile email follows Auth. */
+export async function updateEmail(email) {
+  const client = getSupabase();
+  const { data, error } = await client.auth.updateUser({ email: String(email || '').trim() });
+  if (error) {
+    throw new Error(error.message || 'Unable to update email.');
+  }
+  state.authEvent = 'USER_UPDATED';
+  if (data.user) state.user = data.user;
+  notify();
+  return data.user;
+}
+
 export function requireClientPortalOrRedirect() {
   const loginHref = '/client-login.html';
 

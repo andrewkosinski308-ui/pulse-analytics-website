@@ -1,5 +1,7 @@
 import { shouldReconcileEngagement } from "./client-lifecycle.js";
 import { linkCheckoutCustomer, maybeCreateProjectFromCheckout } from "./purchase-project.js";
+import { resolveCheckoutItems } from "../checkout/catalog.js";
+import { catalogIdForPrice, planServiceChange } from "./service-plan.js";
 
 const STRIPE_API = "https://api.stripe.com/v1";
 const STRIPE_VERSION = "2025-03-31.basil";
@@ -223,9 +225,11 @@ async function syncCustomer(env, secret, clientId, customerId, fetchImpl) {
 
   return {
     subscriptions: subscriptionRows.map((row) => ({
+      id: row.stripe_subscription_id,
       status: row.status,
       productName: row.product_name,
       priceId: row.price_id,
+      catalogId: catalogIdForPrice(row.price_id),
       currentPeriodEnd: row.current_period_end,
       cancelAtPeriodEnd: row.cancel_at_period_end
     })),
@@ -551,6 +555,97 @@ export async function handleStripeWebhook(request, env, fetchImpl = fetch) {
   return json({ received: true });
 }
 
+async function clientRole(env, jwt, userId, fetchImpl) {
+  const response = await fetchImpl(
+    `${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(userId)}&select=role`,
+    { headers: restHeaders(env.SUPABASE_ANON_KEY, { Authorization: `Bearer ${jwt}` }) }
+  );
+  const rows = await response.json().catch(() => null);
+  return Array.isArray(rows) ? rows[0]?.role || "" : "";
+}
+
+export async function handleServiceChange(request, env, fetchImpl = fetch) {
+  const auth = await authorizedClient(request, env, fetchImpl);
+  if (auth.error) return auth.error;
+  if (auth.context.membership.member_role !== "owner") {
+    return json({ error: "You do not have permission to perform this action." }, 403);
+  }
+  const role = await clientRole(env, auth.context.jwt, auth.context.userId, fetchImpl);
+  if (role !== "client") return json({ error: "You do not have permission to perform this action." }, 403);
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "That service change is not available." }, 400);
+  }
+  const subscriptionId = typeof body?.subscriptionId === "string" ? body.subscriptionId : "";
+  if (body?.action !== "add" && !/^sub_[A-Za-z0-9]+$/.test(subscriptionId)) {
+    return json({ error: "Choose an active service." }, 400);
+  }
+
+  let currentCatalogId = "";
+  let stripeSubscription = null;
+  if (body?.action !== "add") {
+    const loaded = await stripeGet(secretKey(env), `/subscriptions/${encodeURIComponent(subscriptionId)}`, fetchImpl);
+    stripeSubscription = loaded.payload;
+    const customer = typeof stripeSubscription?.customer === "string"
+      ? stripeSubscription.customer
+      : stripeSubscription?.customer?.id;
+    if (!loaded.response.ok || customer !== auth.context.client.stripe_customer_id) {
+      return json({ error: "That service could not be changed." }, 403);
+    }
+    currentCatalogId = catalogIdForPrice(stripeSubscription?.items?.data?.[0]?.price?.id || "");
+  }
+
+  const planned = planServiceChange({
+    action: body?.action,
+    catalogId: typeof body?.catalogId === "string" ? body.catalogId : "",
+    currentCatalogId
+  });
+  if (planned.error) return json({ error: planned.error }, 400);
+
+  const secret = secretKey(env);
+  if (planned.kind === "checkout") {
+    const resolved = resolveCheckoutItems([{ id: planned.catalogId, quantity: 1 }]);
+    if (!resolved.ok) return json({ error: resolved.error }, resolved.status);
+    const origin = new URL(request.url).origin;
+    const params = new URLSearchParams();
+    params.set("mode", resolved.mode);
+    params.set("success_url", `${origin}/client-portal.html#billing`);
+    params.set("cancel_url", `${origin}/client-portal.html#billing`);
+    params.set("metadata[client_id]", auth.context.client.id);
+    if (auth.context.client.stripe_customer_id) params.set("customer", auth.context.client.stripe_customer_id);
+    resolved.lineItems.forEach((item, index) => {
+      params.set(`line_items[${index}][price]`, item.priceId);
+      params.set(`line_items[${index}][quantity]`, String(item.quantity));
+    });
+    const created = await stripeForm(secret, "/checkout/sessions", params, "POST", fetchImpl);
+    if (!created.response.ok || !created.payload?.url) {
+      return json({ error: "Checkout could not be started. Please try again." }, 502);
+    }
+    return json({ ok: true, url: created.payload.url });
+  }
+
+  if (planned.kind === "cancel") {
+    const params = new URLSearchParams();
+    params.set("cancel_at_period_end", "true");
+    const canceled = await stripeForm(secret, `/subscriptions/${encodeURIComponent(subscriptionId)}`, params, "POST", fetchImpl);
+    if (!canceled.response.ok) return json({ error: "That service could not be changed. Please try again." }, 502);
+    return json({ ok: true, pending: true });
+  }
+
+  const itemId = stripeSubscription?.items?.data?.[0]?.id;
+  if (!itemId) return json({ error: "That service could not be changed." }, 409);
+  const params = new URLSearchParams();
+  params.set("items[0][id]", itemId);
+  params.set("items[0][price]", planned.priceId);
+  params.set("proration_behavior", "create_prorations");
+  const updated = await stripeForm(secret, `/subscriptions/${encodeURIComponent(subscriptionId)}`, params, "POST", fetchImpl);
+  if (!updated.response.ok) return json({ error: "That service could not be changed. Please try again." }, 502);
+  return json({ ok: true, pending: true });
+}
+
 export async function handleBillingRequest(request, env, fetchImpl = fetch) {
   const url = new URL(request.url);
   try {
@@ -562,6 +657,9 @@ export async function handleBillingRequest(request, env, fetchImpl = fetch) {
     }
     if (url.pathname === "/api/billing/portal" && request.method === "POST") {
       return await handleBillingPortal(request, env, fetchImpl);
+    }
+    if (url.pathname === "/api/billing/service-change" && request.method === "POST") {
+      return await handleServiceChange(request, env, fetchImpl);
     }
     return json({ error: "Not found" }, 404);
   } catch (error) {
