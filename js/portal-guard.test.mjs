@@ -24,11 +24,11 @@ test("shared login routes an active administrator to the Admin Portal", () => {
   assert.equal(loginRedirectDestination(auth), "admin-portal.html");
 });
 
-test("shared login routes an active employee to the Staff Portal", () => {
+test("shared login routes an active employee to the shared Admin / Staff shell", () => {
   const auth = session("employee");
   assert.equal(isAdminPortalEligible(auth), false);
   assert.equal(isAdminStaffPortalEligible(auth), true);
-  assert.equal(loginRedirectDestination(auth), "staff-workspace.html");
+  assert.equal(loginRedirectDestination(auth), "admin-portal.html");
 });
 
 test("shared login denies a client", () => {
@@ -52,11 +52,12 @@ test("Staff Workspace admits employees and administrators and refuses everyone e
   assert.equal(portalGuardDestination({ authenticated: false }, "staff"), "admin-login.html");
 });
 
-test("Admin Portal admits only an active administrator", () => {
+test("the shared shell admits active administrators and employees", () => {
   assert.equal(portalGuardDestination(session("admin"), "admin"), null);
-  assert.equal(portalGuardDestination(session("employee"), "admin"), "staff-workspace.html");
+  assert.equal(portalGuardDestination(session("employee"), "admin"), null);
   assert.equal(portalGuardDestination(session("client"), "admin"), "admin-unauthorized.html");
   assert.equal(portalGuardDestination({ authenticated: false }, "admin"), "admin-login.html");
+  assert.equal(portalGuardDestination(session("employee", { is_active: false }), "admin"), "admin-unauthorized.html");
 });
 
 test("an inactive or signed-out session cannot stay on a protected portal page", () => {
@@ -74,6 +75,7 @@ test("Staff Workspace no longer has its own login", () => {
   const script = read("js/staff-workspace.js");
   assert.match(page, /requireAdminStaffPortal|staff-gate/);
   assert.match(script, /requireAdminStaffPortal/);
+  assert.match(script, /isAdminStaffPortalEligible/);
   assert.match(script, /portalGuardDestination\(next, "staff"\)/);
   assert.match(script, /admin-login\.html/);
   assert.doesNotMatch(page, /staff-login-form|Staff sign in/);
@@ -85,13 +87,31 @@ test("Staff Workspace no longer has its own login", () => {
   assert.match(script, /from\("support_messages"\)/);
 });
 
-test("Admin Portal keeps the administrator-only gate", () => {
+test("the staff workspace link keeps its route and names the shell for the signed-in role", () => {
+  const page = read("staff-workspace.html");
+  const script = read("js/staff-workspace.js");
+  assert.match(page, /href="admin-portal.html" id="staff-admin-link"/);
+  assert.equal((page.match(/id="staff-admin-link"/g) || []).length, 1);
+  assert.match(script, /isAdminPortalEligible\(auth\) \? "Admin Portal" : "Staff Portal"/);
+  assert.match(script, /link\.hidden = !isAdminStaffPortalEligible\(auth\)/);
+});
+
+test("the shared shell mounts administrator modules only for administrators", () => {
   const page = read("admin-portal.html");
-  const auth = read("js/pulse-auth.js");
+  const shell = read("js/admin-portal.js");
   assert.match(page, /requireAdminPortal/);
-  assert.match(page, /portalGuardDestination\(next, 'admin'\)/);
+  assert.match(page, /isAdminPortalEligible/);
+  assert.match(page, /applyAdminShellRole/);
+  assert.match(page, /data-admin-only/);
+  assert.match(page, /if \(administrator && isAdminPortalEligible\(authState\)\)/);
+  assert.match(shell, /element\.hidden = !admin/);
+  assert.match(page, /mountAdminAccount\(\)/);
+  assert.match(page, /staff-workspace\.html/);
+  assert.doesNotMatch(page, /mountAdminClients\(\);\s*mountAdminEmployees\(\);\s*mountAdminAccount/);
+  const auth = read("js/pulse-auth.js");
   assert.match(auth, /export async function requireAdminPortal/);
   assert.match(auth, /export async function requireAdminStaffPortal/);
   assert.doesNotMatch(auth, /portal === 'staff'/);
+  assert.match(read("js/staff-workspace.js"), /requireAdminStaffPortal/);
   assert.doesNotMatch(read("supabase/migrations/20260927050000_remove_leads_contacts_appointments.sql"), /DISABLE ROW LEVEL SECURITY/);
 });

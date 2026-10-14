@@ -33,7 +33,7 @@ export function onboardingDecision({ pathname, authenticated, role, active, step
   }
 
   if (role === "admin") return { type: "redirect", location: "/admin-portal.html" };
-  if (role === "employee") return { type: "redirect", location: "/staff-workspace.html" };
+  if (role === "employee") return { type: "redirect", location: "/admin-portal.html" };
   if (active === false) return { type: "redirect", location: "/client-login.html" };
 
   const current = Number(step);

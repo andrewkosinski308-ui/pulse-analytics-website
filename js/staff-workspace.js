@@ -5,6 +5,7 @@ import {
   requireAdminStaffPortal,
   subscribeAuth,
   isAdminPortalEligible,
+  isAdminStaffPortalEligible,
   portalGuardDestination
 } from "./pulse-auth.js";
 import {
@@ -442,7 +443,9 @@ async function showWorkspace() {
 
 function showAdminLink(auth) {
   const link = document.getElementById("staff-admin-link");
-  if (link) link.hidden = !isAdminPortalEligible(auth);
+  if (!link) return;
+  link.textContent = isAdminPortalEligible(auth) ? "Admin Portal" : "Staff Portal";
+  link.hidden = !isAdminStaffPortalEligible(auth);
 }
 
 export async function startStaffWorkspace() {

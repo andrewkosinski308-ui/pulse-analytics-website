@@ -1434,3 +1434,28 @@ body.client-portal-page .portal-project-card h3 {
 body.client-portal-page .portal-project-card p {
   margin: 0 0 0.65rem;
 }
+
+/* Staff Portal only. The shared marketing header is fixed, so this page
+   kept its content underneath the logo, title, subtitle, and Website link.
+   Keep that header in normal flow and scroll the workspace beneath it. */
+body.staff-portal-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body.staff-portal-page > header {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+body.staff-portal-page > .client-portal-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-5);
+}

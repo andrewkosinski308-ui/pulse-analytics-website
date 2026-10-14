@@ -129,6 +129,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
       showAlert('Sign-in succeeded, but this account cannot access the Client Portal.', 'error');
     } catch (err) {
+      if (err.staffDestination) {
+        leaving = true;
+        window.location.replace(err.staffDestination);
+        return;
+      }
       showAlert(err.message || 'Sign-in failed. Check your credentials and try again.', 'error');
     } finally {
       if (!leaving) {

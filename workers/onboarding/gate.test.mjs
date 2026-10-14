@@ -26,7 +26,7 @@ test("a finished client leaves the form pages and can open the completion page",
 
 test("staff accounts are sent to their own portals", () => {
   assert.equal(onboardingDecision({ pathname: "/account/create", authenticated: true, role: "admin", active: true, step: 5 }).location, "/admin-portal.html");
-  assert.equal(onboardingDecision({ pathname: "/account/business", authenticated: true, role: "employee", active: true, step: 2 }).location, "/staff-workspace.html");
+  assert.equal(onboardingDecision({ pathname: "/account/business", authenticated: true, role: "employee", active: true, step: 2 }).location, "/admin-portal.html");
 });
 
 test("routes outside onboarding are ignored", () => {

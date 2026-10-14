@@ -97,8 +97,9 @@ test("phase 4 portal routing still separates administrators, employees, and clie
   assert.match(portal, /export async function requireAdminStaffPortal/);
   assert.doesNotMatch(portal, /portal === 'staff'/);
   assert.equal(loginRedirectDestination({ authenticated: true, profile: { role: "admin", is_active: true } }), "admin-portal.html");
-  assert.equal(loginRedirectDestination({ authenticated: true, profile: { role: "employee", is_active: true } }), "staff-workspace.html");
+  assert.equal(loginRedirectDestination({ authenticated: true, profile: { role: "employee", is_active: true } }), "admin-portal.html");
   assert.equal(loginRedirectDestination({ authenticated: true, profile: { role: "client", is_active: true } }), "admin-unauthorized.html");
   assert.equal(portalGuardDestination({ authenticated: false }, "staff"), "admin-login.html");
-  assert.equal(portalGuardDestination({ authenticated: true, profile: { role: "employee", is_active: true } }, "admin"), "staff-workspace.html");
+  assert.equal(portalGuardDestination({ authenticated: true, profile: { role: "employee", is_active: true } }, "admin"), null);
+  assert.equal(portalGuardDestination({ authenticated: true, profile: { role: "employee", is_active: false } }, "admin"), "admin-unauthorized.html");
 });

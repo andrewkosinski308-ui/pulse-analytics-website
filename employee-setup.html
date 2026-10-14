@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TKX3TLC3');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Setup | Pulse Analytics Group LLC</title>
+<meta name="description" content="Accept your Pulse Analytics employee invitation and set a password.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assetts/images/Pulse%20Analytics%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/account-onboarding.css?v=20260927b">
+<link rel="stylesheet" href="/css/auth-shell.css?v=20260927f">
+</head>
+<body class="enter-forward">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class="onboard-scene" aria-hidden="true">
+  <div class="onboard-gradient"></div>
+  <div class="onboard-grid"></div>
+  <div class="onboard-orb onboard-orb-a"></div>
+  <div class="onboard-orb onboard-orb-b"></div>
+  <div class="onboard-orb onboard-orb-c"></div>
+  <canvas id="onboard-field"></canvas>
+</div>
+<div class="onboard-app">
+  <header class="onboard-top">
+    <a class="onboard-brand" href="/index.html">
+      <img src="/assetts/images/transparent-logo-PA.jpeg" alt="">
+      <span><strong>Pulse Analytics Group LLC</strong><span>Employee invitation</span></span>
+    </a>
+    <a class="onboard-top-link" href="/index.html">Website home</a>
+  </header>
+  <div class="onboard-layout auth-layout">
+    <aside class="onboard-progress">
+      <p class="onboard-kicker">Employee invitation</p>
+      <h1>Set up your employee account.</h1>
+      <p class="auth-support">You are accepting an invitation to the Pulse Analytics staff workspace. Choose a password for this account.</p>
+    </aside>
+    <main class="onboard-panel">
+      <h2>Create your password</h2>
+      <div id="auth-alert" class="onboard-alert" role="alert" aria-live="polite"></div>
+      <p id="setup-status" class="auth-status" role="status">Checking this invitation…</p>
+      <form id="recovery-form" class="onboard-form" hidden novalidate>
+        <p class="onboard-lead">If you already have an employee account, we can email you a password setup link.</p>
+        <label>Email
+          <input id="recovery-email" name="email" type="email" autocomplete="email" required>
+        </label>
+        <div class="onboard-actions">
+          <button type="submit" class="onboard-continue" id="recovery-btn">Email setup link</button>
+        </div>
+      </form>
+      <form id="setup-form" class="onboard-form" hidden novalidate>
+        <label class="password-row">New password
+          <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8">
+          <button type="button" class="password-toggle" id="toggle-password" aria-controls="password" aria-pressed="false" aria-label="Show password">Show</button>
+        </label>
+        <label class="password-row">Confirm password
+          <input id="confirm" name="confirm" type="password" autocomplete="new-password" required minlength="8">
+          <button type="button" class="password-toggle" id="toggle-confirm" aria-controls="confirm" aria-pressed="false" aria-label="Show password confirmation">Show</button>
+        </label>
+        <div class="onboard-actions">
+          <button type="submit" class="onboard-continue" id="setup-btn">Save password</button>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+<script src="/js/supabase-env.js"></script>
+<script type="module">
+  import { startAuthScene, bindPasswordToggle } from './js/auth-scene.js';
+  import { initAuth, updatePassword, getAuthState } from './js/pulse-auth.js';
+  import { requestEmployeePasswordRecovery } from './js/employee-recovery.js';
+  import {
+    employeeSetupAccess,
+    employeeSetupDestination,
+    employeeRecoveryRequest,
+    passwordSetupError,
+    passwordSaveAllowed,
+    recoveryRequestAllowed
+  } from './js/employee-setup-rules.js';
+
+  startAuthScene();
+  bindPasswordToggle(document.getElementById('password'), document.getElementById('toggle-password'), 'password');
+  bindPasswordToggle(document.getElementById('confirm'), document.getElementById('toggle-confirm'), 'password confirmation');
+
+  const alertEl = document.getElementById('auth-alert');
+  const statusEl = document.getElementById('setup-status');
+  const form = document.getElementById('setup-form');
+  const button = document.getElementById('setup-btn');
+  const recoveryForm = document.getElementById('recovery-form');
+  const recoveryButton = document.getElementById('recovery-btn');
+  let ready = false;
+  let saving = false;
+  let sending = false;
+
+  function showAlert(message, type = 'error') {
+    alertEl.textContent = message;
+    alertEl.dataset.type = type;
+    alertEl.classList.add('is-visible');
+  }
+
+  function showStatus(message) {
+    statusEl.hidden = false;
+    statusEl.textContent = message;
+    form.hidden = true;
+    recoveryForm.hidden = true;
+    ready = false;
+  }
+
+  function showForm() {
+    ready = true;
+    statusEl.hidden = true;
+    form.hidden = false;
+    recoveryForm.hidden = true;
+  }
+
+  function showRecoveryRequest() {
+    recoveryForm.hidden = false;
+  }
+
+  try {
+    await initAuth();
+    const access = employeeSetupAccess(getAuthState(), window.location.href);
+    if (access.ok) showForm();
+    else {
+      showStatus(access.message);
+      if (access.allowRecoveryRequest) showRecoveryRequest();
+    }
+  } catch (err) {
+    showStatus(err.message || 'This invitation could not be checked.');
+    showRecoveryRequest();
+  }
+
+  recoveryForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!recoveryRequestAllowed({ sending })) return;
+    const plan = employeeRecoveryRequest(recoveryForm.email.value);
+    if (plan.error) {
+      showAlert(plan.error);
+      return;
+    }
+    sending = true;
+    recoveryButton.disabled = true;
+    recoveryButton.textContent = 'Sending…';
+    try {
+      await requestEmployeePasswordRecovery(plan.email, plan.redirectTo);
+    } catch (_) {
+      /* The same message is shown when the address exists, is unknown, or the send fails. */
+    }
+    showAlert(plan.message, 'success');
+    recoveryForm.reset();
+    sending = false;
+    recoveryButton.disabled = false;
+    recoveryButton.textContent = 'Email setup link';
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const access = employeeSetupAccess(getAuthState(), window.location.href);
+    if (!access.ok || !passwordSaveAllowed({ ready, saving })) {
+      if (!access.ok) showStatus(access.message);
+      return;
+    }
+    const passwordError = passwordSetupError(form.password.value, form.confirm.value);
+    if (passwordError) {
+      showAlert(passwordError);
+      return;
+    }
+
+    saving = true;
+    button.disabled = true;
+    button.textContent = 'Saving…';
+    try {
+      await updatePassword(form.password.value);
+      form.reset();
+      const destination = employeeSetupDestination(getAuthState());
+      if (!destination) {
+        showStatus('The password was saved, but this account is not an active employee. Ask an administrator for help.');
+        return;
+      }
+      showAlert('Password saved. Opening the staff workspace…', 'success');
+      window.setTimeout(() => window.location.replace(destination), 1200);
+    } catch (err) {
+      showAlert(err.message || 'The password could not be saved.');
+      saving = false;
+      button.disabled = false;
+      button.textContent = 'Save password';
+    }
+  });
+</script>
+</body>
+</html>
