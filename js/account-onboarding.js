@@ -275,7 +275,7 @@ async function guard(record) {
     return false;
   }
   if (auth.profile?.role === "employee") {
-    window.location.replace("/staff-workspace.html");
+    window.location.replace("/admin-portal.html");
     return false;
   }
   if (auth.profile?.is_active === false) {

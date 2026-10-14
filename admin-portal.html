@@ -26,7 +26,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKX3TLC3"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-    <p id="admin-gate" class="admin-gate" role="status">Verifying administrator access…</p>
+    <p id="admin-gate" class="admin-gate" role="status">Verifying staff access…</p>
 
     <div id="admin-app" class="admin-frame" hidden>
         <header class="admin-topbar">
@@ -56,9 +56,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p class="admin-sidebar-label">Administration</p>
             <nav class="admin-nav" aria-label="Admin portal">
                 <button type="button" class="admin-nav-link is-current" id="nav-dashboard" aria-current="page">Dashboard</button>
-                <button type="button" class="admin-nav-link" id="nav-clients">Clients</button>
-                <button type="button" class="admin-nav-link" id="nav-projects">Projects</button>
-                <button type="button" class="admin-nav-link" id="nav-employees">Employees</button>
+                <button type="button" class="admin-nav-link" id="nav-clients" data-admin-only>Clients</button>
+                <button type="button" class="admin-nav-link" id="nav-projects" data-admin-only>Projects</button>
+                <button type="button" class="admin-nav-link" id="nav-employees" data-admin-only>Employees</button>
                 <button type="button" class="admin-nav-link" id="nav-account">Account</button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Tasks</span><span class="admin-soon">Coming soon</span></button>
                 <button type="button" class="admin-nav-link is-soon" aria-disabled="true"><span>Files</span><span class="admin-soon">Coming soon</span></button>
@@ -72,12 +72,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <main class="admin-main">
             <section class="admin-dashboard" id="admin-dashboard" tabindex="-1" aria-labelledby="admin-welcome">
                 <h1 id="admin-welcome">Welcome to Pulse Analytics Group LLC</h1>
-                <p class="admin-lead">This is the internal administration shell for authorized administrators. Dashboard, Clients, and Projects are available now. Tasks, Files, Reports, Blog, and Settings will be added in later releases.</p>
-                <p><button type="button" class="secondary-button" id="admin-open-clients">Clients</button> <button type="button" class="secondary-button" id="admin-open-projects">Projects</button> <button type="button" class="secondary-button" id="admin-open-employees">Employees</button></p>
+                <p class="admin-lead" id="admin-lead">This is the internal administration shell for authorized administrators. Dashboard, Clients, and Projects are available now. Tasks, Files, Reports, Blog, and Settings will be added in later releases.</p>
+                <p data-admin-only><button type="button" class="secondary-button" id="admin-open-clients">Clients</button> <button type="button" class="secondary-button" id="admin-open-projects">Projects</button> <button type="button" class="secondary-button" id="admin-open-employees">Employees</button></p>
                 <p class="admin-lead-note">No business metrics are shown yet. Client file exchange is available to assigned staff.</p>
                 <p><a class="primary-button" href="staff-workspace.html">Client files and support</a></p>
                 <div class="admin-cards">
-                    <article class="admin-card">
+                    <article class="admin-card" data-admin-only>
                         <p class="admin-card-label">Placeholder</p>
                         <h2>Clients</h2>
                         <p>Open Clients to review accounts, engagements, and history.</p>
@@ -102,9 +102,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             requireAdminPortal,
             subscribeAuth,
             signOut,
-            portalGuardDestination
+            portalGuardDestination,
+            isAdminPortalEligible
         } from './js/pulse-auth.js';
-        import { renderAdminIdentity, bindAdminChrome } from './js/admin-portal.js?v=20260927d';
+        import { renderAdminIdentity, bindAdminChrome, applyAdminShellRole } from './js/admin-portal.js?v=20261012a';
         import { mountAdminProjects } from './js/admin-projects.js?v=20260927d';
         import { mountAdminClients } from './js/admin-clients.js?v=20260927d';
         import { mountAdminEmployees } from './js/admin-employees.js?v=20261001a';
@@ -124,9 +125,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const authState = await requireAdminPortal();
             if (authState) {
                 bindAdminChrome();
-                mountAdminProjects();
-                mountAdminClients();
-                mountAdminEmployees();
+                const administrator = applyAdminShellRole(authState);
+                if (administrator && isAdminPortalEligible(authState)) {
+                    mountAdminProjects();
+                    mountAdminClients();
+                    mountAdminEmployees();
+                }
                 mountAdminAccount();
                 reveal(authState);
 
@@ -138,6 +142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         return;
                     }
                     renderAdminIdentity(next);
+                    applyAdminShellRole(next);
                 });
             }
         } catch (err) {

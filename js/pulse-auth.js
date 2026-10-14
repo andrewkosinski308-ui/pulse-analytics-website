@@ -9,11 +9,12 @@ import { ONBOARDING_PAGES } from './onboarding-catalog.js';
 import {
   isAdminPortalEligible as adminEligible,
   isAdminStaffPortalEligible as staffPortalEligible,
+  clientLoginStaffDestination,
   loginRedirectDestination,
   portalGuardDestination
 } from './portal-guard.js';
 
-export { loginRedirectDestination, portalGuardDestination };
+export { clientLoginStaffDestination, loginRedirectDestination, portalGuardDestination };
 
 /** @typedef {'admin' | 'employee' | 'client'} AppRole */
 
@@ -422,6 +423,16 @@ async function assertClientPortalAccess(current) {
   }
 
   if (current.profile.role !== 'client') {
+    const staffDestination = clientLoginStaffDestination(current);
+    if (staffDestination) {
+      const error = new Error(
+        current.profile.role === 'admin'
+          ? 'This account is an administrator account. Sign in through the Admin Portal.'
+          : 'This account is a staff account. Open the staff file workspace instead of the Client Portal.'
+      );
+      error.staffDestination = staffDestination;
+      throw error;
+    }
     await signOut();
     const role = current.profile.role;
     if (role === 'admin') {
@@ -582,6 +593,11 @@ export function requireClientPortalOrRedirect() {
 
 export function redirectAuthenticatedClientAwayFromLogin() {
   return initAuth().then((authState) => {
+    const staffDestination = clientLoginStaffDestination(authState);
+    if (staffDestination) {
+      window.location.replace(staffDestination);
+      return null;
+    }
     const destination = clientEntryPath(authState);
     if (destination) {
       window.location.replace(destination);
@@ -601,7 +617,7 @@ function leaveFor(destination) {
   return true;
 }
 
-/** No session → shared login. Employee → Staff Workspace. Other non-admins → access denied. Active admin → allow. */
+/** No session → shared login. Active administrator or employee → shared shell. Everyone else → access denied. */
 export async function requireAdminPortal() {
   await initAuth();
   const ended = await enforceAdminPersistPreference();

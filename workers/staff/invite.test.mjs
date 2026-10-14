@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { handleStaffInvite, planEmployeeInvite } from "./invite.js";
+import { employeeSetupRedirect, handleStaffInvite, planEmployeeInvite } from "./invite.js";
 
 const env = {
   SUPABASE_URL: "https://example.supabase.co",
@@ -8,8 +8,8 @@ const env = {
   SUPABASE_SERVICE_ROLE_KEY: "service-role-key-1234567890"
 };
 
-function request(body, token = "user-jwt") {
-  return new Request("https://pulseanalyticsgroupllc.com/api/staff/invite", {
+function request(body, token = "user-jwt", url = "https://pulseanalyticsgroupllc.com/api/staff/invite") {
+  return new Request(url, {
     method: "POST",
     headers: {
       origin: "https://pulseanalyticsgroupllc.com",
@@ -20,23 +20,41 @@ function request(body, token = "user-jwt") {
   });
 }
 
-function callsFor(urls) {
+const inviteBody = {
+  email: "ada@example.com",
+  first_name: "Ada",
+  last_name: "Lovelace"
+};
+
+function callsFor(urls, options = {}) {
   return async (url, init = {}) => {
-    const hit = { url, init };
+    const hit = { url: String(url), init };
     urls.push(hit);
-    if (String(url).endsWith("/auth/v1/user")) {
+    if (hit.url.endsWith("/auth/v1/user")) {
       return new Response(JSON.stringify({ id: "admin-1" }), { status: 200 });
     }
-    if (String(url).includes("/profiles?id=eq.admin-1")) {
+    if (hit.url.includes("/profiles?id=eq.admin-1")) {
       return new Response(JSON.stringify([{ role: "admin", is_active: true }]), { status: 200 });
     }
-    if (String(url).endsWith("/auth/v1/invite")) {
+    if (hit.url.endsWith("/auth/v1/invite")) {
+      if (options.inviteStatus) {
+        return new Response(JSON.stringify(options.inviteBody || { msg: "email failed" }), { status: options.inviteStatus });
+      }
       return new Response(JSON.stringify({ id: "employee-1", email: "ada@example.com" }), { status: 200 });
     }
-    if (String(url).includes("/profiles?id=eq.employee-1")) {
-      return new Response(JSON.stringify([{ id: "employee-1", role: "employee" }]), { status: 200 });
+    if (hit.url.includes("/rpc/admin_set_staff_role")) {
+      return new Response(null, { status: options.roleStatus || 204 });
     }
-    if (String(url).endsWith("/audit_logs")) {
+    if (hit.url.includes("/profiles?id=eq.employee-1") && init.method === "PATCH") {
+      return new Response(null, { status: options.profilePatchStatus || 204 });
+    }
+    if (hit.url.includes("/profiles?id=eq.employee-1")) {
+      return new Response(JSON.stringify([{ id: "employee-1", role: options.role || "employee" }]), { status: 200 });
+    }
+    if (hit.url.includes("/auth/v1/admin/users/")) {
+      return new Response(null, { status: options.deleteStatus || 200 });
+    }
+    if (hit.url.endsWith("/audit_logs")) {
       return new Response(null, { status: 201 });
     }
     return new Response(JSON.stringify({ error: "unexpected" }), { status: 500 });
@@ -91,22 +109,113 @@ test("an administrator invitation creates an employee profile and stores no pass
   assert.equal(JSON.stringify(body).includes(env.SUPABASE_SERVICE_ROLE_KEY), false);
 
   const invite = urls.find((item) => item.url.endsWith("/auth/v1/invite"));
-  const inviteBody = JSON.parse(invite.init.body);
-  assert.equal(inviteBody.email, "ada@example.com");
-  assert.equal(inviteBody.data.signup_intent, "staff_employee");
-  assert.equal(Object.hasOwn(inviteBody, "password"), false);
+  const sent = JSON.parse(invite.init.body);
+  assert.equal(sent.email, "ada@example.com");
+  assert.equal(sent.data.signup_intent, "staff_employee");
+  assert.equal(sent.redirect_to, "https://pulseanalyticsgroupllc.com/employee-setup.html");
+  assert.equal(sent.redirect_to.includes("admin-login"), false);
+  assert.equal(Object.hasOwn(sent, "password"), false);
   assert.equal(invite.init.headers.Authorization, `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`);
 
-  const patch = urls.find((item) => String(item.url).includes("/profiles?id=eq.employee-1"));
+  const roleCall = urls.find((item) => item.url.includes("/rpc/admin_set_staff_role"));
+  assert.deepEqual(JSON.parse(roleCall.init.body), { p_profile_id: "employee-1", p_role: "employee" });
+  assert.equal(roleCall.init.headers.Authorization, "Bearer user-jwt");
+
+  const patch = urls.find((item) => item.url.includes("/profiles?id=eq.employee-1") && item.init.method === "PATCH");
   const profile = JSON.parse(patch.init.body);
-  assert.equal(profile.role, "employee");
-  assert.equal(profile.is_active, true);
+  assert.equal(Object.hasOwn(profile, "role"), false);
   assert.equal(profile.job_title, "Analyst");
   assert.equal(Object.hasOwn(profile, "password"), false);
+  assert.equal(patch.init.headers.Authorization, "Bearer user-jwt");
 
   const audit = urls.find((item) => item.url.endsWith("/audit_logs"));
   assert.equal(JSON.parse(audit.init.body).action, "ADMIN_CREATED_EMPLOYEE");
-  const profileRead = urls.find((item) => String(item.url).includes("/profiles?id=eq.admin-1"));
+  assert.equal(audit.init.headers.Authorization, "Bearer user-jwt");
+  const profileRead = urls.find((item) => item.url.includes("/profiles?id=eq.admin-1"));
   assert.equal(profileRead.init.headers.Authorization, "Bearer user-jwt");
   assert.equal(profileRead.init.headers.apikey, env.SUPABASE_ANON_KEY);
+});
+
+test("the employee redirect is the setup page and an insecure origin is rejected", () => {
+  assert.equal(
+    employeeSetupRedirect("https://pulseanalyticsgroupllc.com/admin-login.html").redirect,
+    "https://pulseanalyticsgroupllc.com/employee-setup.html"
+  );
+  assert.equal(employeeSetupRedirect("http://evil.example/employee-setup.html").error, "The employee setup address is not allowed.");
+});
+
+test("an email failure does not assign a role or leave a success response", async () => {
+  const urls = [];
+  const response = await handleStaffInvite(request(inviteBody), env, callsFor(urls, { inviteStatus: 500 }));
+  assert.equal(response.status, 502);
+  const body = await response.json();
+  assert.match(body.error, /email could not be sent/);
+  assert.equal(urls.some((item) => item.url.includes("admin_set_staff_role")), false);
+});
+
+test("a role failure removes only the invited account and does not report success", async () => {
+  const urls = [];
+  const response = await handleStaffInvite(request(inviteBody), env, callsFor(urls, { roleStatus: 403 }));
+  assert.equal(response.status, 502);
+  const body = await response.json();
+  assert.match(body.error, /incomplete account was removed/);
+  const removed = urls.find((item) => item.url.includes("/auth/v1/admin/users/employee-1"));
+  assert.equal(removed.init.method, "DELETE");
+  assert.equal(urls.some((item) => item.url.endsWith("/audit_logs")), false);
+});
+
+test("a duplicate invitation is rejected without creating another account", async () => {
+  const urls = [];
+  const response = await handleStaffInvite(request(inviteBody), env, callsFor(urls, {
+    inviteStatus: 422,
+    inviteBody: { msg: "A user with this email address has already been registered" }
+  }));
+  assert.equal(response.status, 409);
+  const body = await response.json();
+  assert.match(body.error, /already exists/);
+  assert.equal(urls.some((item) => item.url.includes("/auth/v1/admin/users/")), false);
+});
+
+test("a client role left by signup is removed instead of reported as an employee", async () => {
+  const urls = [];
+  const response = await handleStaffInvite(request(inviteBody), env, callsFor(urls, { role: "client" }));
+  assert.equal(response.status, 502);
+  const body = await response.json();
+  assert.match(body.error, /incomplete account was removed/);
+  assert.equal(urls.some((item) => item.url.endsWith("/audit_logs")), false);
+});
+
+test("a failed profile update removes the incomplete invitation account", async () => {
+  const urls = [];
+  const response = await handleStaffInvite(request(inviteBody), env, callsFor(urls, { profilePatchStatus: 500 }));
+  assert.equal(response.status, 502);
+  const body = await response.json();
+  assert.match(body.error, /profile setup failed/i);
+  assert.match(body.error, /incomplete account was removed/i);
+  assert.match(body.error, /send the invitation again/i);
+  const removed = urls.filter((item) => item.url.includes("/auth/v1/admin/users/"));
+  assert.equal(removed.length, 1);
+  assert.equal(removed[0].url, "https://example.supabase.co/auth/v1/admin/users/employee-1");
+  assert.equal(removed[0].init.method, "DELETE");
+  assert.equal(removed[0].init.headers.Authorization, `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`);
+  assert.equal(urls.some((item) => item.url.endsWith("/audit_logs")), false);
+});
+
+test("a failed profile update reports when account cleanup also fails", async () => {
+  const urls = [];
+  const response = await handleStaffInvite(request(inviteBody), env, callsFor(urls, {
+    profilePatchStatus: 500,
+    deleteStatus: 500
+  }));
+  assert.equal(response.status, 502);
+  const body = await response.json();
+  assert.match(body.error, /invitation email was already sent/i);
+  assert.match(body.error, /profile setup failed/i);
+  assert.match(body.error, /account could not be removed/i);
+  assert.match(body.error, /do not ask the recipient to continue/i);
+  assert.match(body.error, /do not send another invitation/i);
+  const removed = urls.filter((item) => item.url.includes("/auth/v1/admin/users/"));
+  assert.equal(removed.length, 1);
+  assert.equal(removed[0].init.method, "DELETE");
+  assert.equal(urls.some((item) => item.url.endsWith("/audit_logs")), false);
 });

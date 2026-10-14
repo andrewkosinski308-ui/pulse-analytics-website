@@ -104,10 +104,11 @@ test("portal access follows role and account status", () => {
   const client = { authenticated: true, profile: { role: "client", is_active: true } };
   const admin = { authenticated: true, profile: { role: "admin", is_active: true } };
   assert.equal(loginRedirectDestination(admin), "admin-portal.html");
-  assert.equal(loginRedirectDestination(employee), "staff-workspace.html");
+  assert.equal(loginRedirectDestination(employee), "admin-portal.html");
   assert.equal(loginRedirectDestination(client), "admin-unauthorized.html");
   assert.equal(loginRedirectDestination(inactive), "admin-unauthorized.html");
-  assert.equal(portalGuardDestination(employee, "admin"), "staff-workspace.html");
+  assert.equal(portalGuardDestination(employee, "admin"), null);
+  assert.equal(portalGuardDestination(employee, "staff"), null);
   assert.equal(portalGuardDestination(client, "admin"), "admin-unauthorized.html");
   assert.equal(portalGuardDestination(inactive, "staff"), "admin-unauthorized.html");
 });

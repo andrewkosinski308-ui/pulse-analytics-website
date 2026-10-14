@@ -37,9 +37,20 @@ export function isAdminStaffPortalEligible(authState) {
  */
 export function loginRedirectDestination(authState) {
   if (!authState?.authenticated) return null;
-  if (isAdminPortalEligible(authState)) return "admin-portal.html";
-  if (isAdminStaffPortalEligible(authState)) return "staff-workspace.html";
+  if (isAdminStaffPortalEligible(authState)) return "admin-portal.html";
   return "admin-unauthorized.html";
+}
+
+/**
+ * Active staff who reach client sign-in keep the session and go to their staff portal.
+ * Inactive staff and other non-clients are not given that destination.
+ */
+export function clientLoginStaffDestination(authState) {
+  if (!authState?.authenticated) return null;
+  const role = roleOf(authState);
+  if (role !== "admin" && role !== "employee") return null;
+  if (!isActive(authState)) return null;
+  return loginRedirectDestination(authState);
 }
 
 /**
@@ -50,8 +61,7 @@ export function loginRedirectDestination(authState) {
 export function portalGuardDestination(authState, page) {
   if (!authState?.authenticated) return "admin-login.html";
   if (page === "admin") {
-    if (isAdminPortalEligible(authState)) return null;
-    if (isAdminStaffPortalEligible(authState)) return "staff-workspace.html";
+    if (isAdminStaffPortalEligible(authState)) return null;
     return "admin-unauthorized.html";
   }
   if (isAdminStaffPortalEligible(authState)) return null;

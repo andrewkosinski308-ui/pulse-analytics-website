@@ -1,7 +1,24 @@
 /**
- * Admin Portal shell only.
+ * Shared Admin / Staff shell.
  * Sign-in, session, role checks, and sign-out stay in pulse-auth.js.
+ * Administrator-only modules stay unmounted unless isAdminPortalEligible is true.
  */
+
+import { isAdminPortalEligible } from "./pulse-auth.js";
+
+const EMPLOYEE_LEAD = "Client files, reports, and support stay in the staff workspace. Client, project, and employee administration is limited to administrators.";
+
+export function applyAdminShellRole(authState) {
+  const admin = isAdminPortalEligible(authState);
+  document.querySelectorAll("[data-admin-only]").forEach((element) => {
+    element.hidden = !admin;
+  });
+  const lead = document.getElementById("admin-lead");
+  if (lead && !admin) lead.textContent = EMPLOYEE_LEAD;
+  const brand = document.querySelector(".admin-brand-text span");
+  if (brand) brand.textContent = admin ? "Admin Portal" : "Staff Portal";
+  return admin;
+}
 
 export function renderAdminIdentity(authState) {
   const email = authState?.profile?.email || authState?.user?.email || '';
@@ -10,7 +27,7 @@ export function renderAdminIdentity(authState) {
   const emailEl = document.getElementById('admin-user-email');
   if (!nameEl || !emailEl) return;
 
-  const label = fullName || email || 'Administrator';
+  const label = fullName || email || (authState?.profile?.role === "employee" ? "Staff" : "Administrator");
   nameEl.textContent = label;
   emailEl.textContent = email;
   emailEl.hidden = !email || email === label;

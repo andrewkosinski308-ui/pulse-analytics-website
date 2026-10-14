@@ -36,6 +36,30 @@ function clean(value, max) {
   return text.slice(0, max);
 }
 
+export const EMPLOYEE_SETUP_PAGE = "employee-setup.html";
+
+/**
+ * Exact invitation redirect. The path is always the employee setup page.
+ * Auth will ignore it until that exact URL is on the redirect allow list.
+ */
+export function employeeSetupRedirect(pageUrl) {
+  let url;
+  try {
+    url = new URL(pageUrl);
+  } catch {
+    return { error: "The employee setup address is not allowed." };
+  }
+  const local = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  if (url.protocol !== "https:" && !local) {
+    return { error: "The employee setup address is not allowed." };
+  }
+  const redirect = `${url.origin}/${EMPLOYEE_SETUP_PAGE}`;
+  if (new URL(redirect).pathname !== `/${EMPLOYEE_SETUP_PAGE}`) {
+    return { error: "The employee setup address is not allowed." };
+  }
+  return { redirect };
+}
+
 /** Reject passwords and any role other than employee before a privileged call. */
 export function planEmployeeInvite(body) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
@@ -106,7 +130,9 @@ export async function handleStaffInvite(request, env, fetchImpl = fetch) {
     return json({ error: "You do not have permission to perform this action." }, 403);
   }
 
-  const redirectTo = `${new URL(request.url).origin}/admin-update-password.html`;
+  const redirectPlan = employeeSetupRedirect(request.url);
+  if (redirectPlan.error) return json({ error: redirectPlan.error }, 500);
+  const redirectTo = redirectPlan.redirect;
   const invited = await fetchImpl(`${env.SUPABASE_URL}/auth/v1/invite`, {
     method: "POST",
     headers: {
@@ -131,57 +157,77 @@ export async function handleStaffInvite(request, env, fetchImpl = fetch) {
     if (invited.status === 422 || already.includes("already")) {
       return json({ error: "An account with this email already exists." }, 409);
     }
-    return json({ error: "The invitation could not be sent. Please try again." }, 502);
+    return json({ error: "The invitation email could not be sent. No employee account was created." }, 502);
   }
 
-  const profileFields = {
-    email: employee.email,
-    first_name: employee.first_name,
-    last_name: employee.last_name,
-    full_name: employee.full_name,
-    job_title: employee.job_title,
-    department: employee.department,
-    started_on: employee.started_on,
-    role: "employee",
-    is_active: true
+  const adminHeaders = {
+    apikey: env.SUPABASE_ANON_KEY,
+    Authorization: `Bearer ${jwt}`,
+    "content-type": "application/json"
   };
+  const roleCall = await fetchImpl(`${env.SUPABASE_URL}/rest/v1/rpc/admin_set_staff_role`, {
+    method: "POST",
+    headers: adminHeaders,
+    body: JSON.stringify({ p_profile_id: invitedBody.id, p_role: "employee" })
+  });
+  const roleCheck = roleCall.ok
+    ? await fetchImpl(
+      `${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(invitedBody.id)}&select=role`,
+      { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${jwt}` } }
+    )
+    : null;
+  const roleRows = roleCheck ? await roleCheck.json().catch(() => null) : null;
+  const roleApplied = roleCall.ok && roleCheck?.ok && Array.isArray(roleRows) && roleRows[0]?.role === "employee";
+  if (!roleApplied) {
+    const removed = await fetchImpl(
+      `${env.SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(invitedBody.id)}`,
+      { method: "DELETE", headers: { apikey: key, Authorization: `Bearer ${key}` } }
+    );
+    if (removed.ok) {
+      return json({
+        error: "The employee role could not be applied. The incomplete account was removed. Send the invitation again."
+      }, 502);
+    }
+    return json({
+      error: "The invitation email was sent, but the account was left without the employee role. Do not ask the recipient to continue. No second invitation was sent."
+    }, 502);
+  }
+
   const profilePatch = await fetchImpl(
     `${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(invitedBody.id)}`,
     {
       method: "PATCH",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "content-type": "application/json",
-        Prefer: "return=representation"
-      },
-      body: JSON.stringify(profileFields)
+      headers: { ...adminHeaders, Prefer: "return=minimal" },
+      body: JSON.stringify({
+        email: employee.email,
+        first_name: employee.first_name,
+        last_name: employee.last_name,
+        full_name: employee.full_name,
+        job_title: employee.job_title,
+        department: employee.department,
+        started_on: employee.started_on
+      })
     }
   );
-  const patched = await profilePatch.json().catch(() => null);
-  if (!profilePatch.ok) return json({ error: "The invitation could not be sent. Please try again." }, 502);
-  if (Array.isArray(patched) && patched.length === 0) {
-    const created = await fetchImpl(`${env.SUPABASE_URL}/rest/v1/profiles`, {
-      method: "POST",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "content-type": "application/json",
-        Prefer: "return=minimal"
-      },
-      body: JSON.stringify({ id: invitedBody.id, ...profileFields })
-    });
-    if (!created.ok) return json({ error: "The invitation could not be sent. Please try again." }, 502);
+
+  if (!profilePatch.ok) {
+    const cleanup = await fetchImpl(
+      `${env.SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(invitedBody.id)}`,
+      { method: "DELETE", headers: { apikey: key, Authorization: `Bearer ${key}` } }
+    );
+    if (cleanup.ok) {
+      return json({
+        error: "Employee profile setup failed. The incomplete account was removed. Send the invitation again."
+      }, 502);
+    }
+    return json({
+      error: "The invitation email was already sent, but employee profile setup failed and the account could not be removed. Do not ask the recipient to continue. Do not send another invitation."
+    }, 502);
   }
 
   await fetchImpl(`${env.SUPABASE_URL}/rest/v1/audit_logs`, {
     method: "POST",
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "content-type": "application/json",
-      Prefer: "return=minimal"
-    },
+    headers: { ...adminHeaders, Prefer: "return=minimal" },
     body: JSON.stringify({
       actor_id: user.id,
       action: "ADMIN_CREATED_EMPLOYEE",
