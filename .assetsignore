@@ -2,10 +2,14 @@
 # Placed at the assets root (repository root). Same syntax as .gitignore.
 # Prevents development/build-only files from being uploaded as public assets.
 
-.git/
+# `.git` is a file in a linked worktree and a directory in a normal checkout.
+# A trailing slash matches only the directory, so the worktree file was uploaded.
+.git
 .github/
 .wrangler/
 .cursor/
+.gitignore
+.gitattributes
 
 node_modules/
 **/node_modules/**
@@ -13,7 +17,6 @@ node_modules/
 # Local secrets and env (do not ignore js/supabase-env.js — auth pages load it when present)
 .env
 .env.*
-!.env.example
 
 # Package manager / tooling noise
 package-lock.json
@@ -41,6 +44,19 @@ wrangler.toml
 wrangler.json
 wrangler.jsonc
 
-# Supabase CLI local state (keep migrations in git; do not ship CLI temp dirs)
+# Supabase CLI local state. Do not ship the whole supabase directory:
+# only migrations, tests, CLI config, and CLI temp files are local.
 supabase/.temp/
+supabase/config.toml
+supabase/migrations/
+supabase/tests/
 .supabase/
+
+# Local tests and internal documentation. Runtime JavaScript is not excluded.
+*.test.mjs
+*.test.js
+docs/
+src/
+README.md
+SECURITY.md
+package.json
